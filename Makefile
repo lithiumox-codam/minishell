@@ -5,8 +5,8 @@ OBJS = $(patsubst src/%.c, build/%.o, $(SRCS))
 LIBFT = libft/libft.a
 
 CODAM_FLAGS = -Wall -Wextra -Werror
-LIBS = MLX42/build/libmlx42.a libft/libft.a
-INCLUDES = -I $(CURDIR)/incl -I $(CURDIR)/libft
+LIBS = libft/libft.a
+INCLUDES = -I $(CURDIR)/includes -I $(CURDIR)/libft
 
 COLOR_INFO = \033[1;36m
 COLOR_SUCCESS = \033[1;32m
@@ -25,7 +25,7 @@ $(NAME): $(LIBFT) $(OBJS)
 	@sleep 0.25
 	@printf "✅\n"
 
-build/%.o: src/%.c incl/minishell.h
+build/%.o: src/%.c includes/minishell.h
 	@mkdir -p $(@D)
 	@gcc $(INCLUDES) $(CODAM_FLAGS) -c $< -o $@
 
