@@ -1,0 +1,55 @@
+name: Norminette check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  norminette:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Check for C and header files in diff
+        id: check_files
+        run: |
+          files=$(git diff --name-only HEAD~1 HEAD)
+          check=false
+          for file in $files; do
+            if [[ $file == *.c ]] || [[ $file == *.h ]]; then
+              check=true
+              break
+            fi
+          done
+          echo "check=$check" >> $GITHUB_ENV
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+        if: env.check == 'true'
+
+      - name: Install Norminette
+        run: |
+          python3 -m pip install --upgrade pip setuptools
+          python3 -m pip install norminette
+        if: env.check == 'true'
+
+      - name: Run Norminette
+        run: |
+          files=$(git diff --name-only HEAD~1 HEAD)
+          for file in $files; do
+            if [[ $file == *.c ]] || [[ $file == *.h ]]; then
+              norminette "$file"
+              # The script should fail if any error occurs
+              if grep -r "Error" "$file"; then
+                exit 1
+              fi
+            fi
+          done
+        if: env.check == 'true'

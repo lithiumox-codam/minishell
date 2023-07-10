@@ -1,0 +1,14 @@
+# *.out
+# *.o
+# *.a
+
+*
+!*/
+!*.[ch]
+!Makefile
+!.gitignore
+!.vscode
+!.github/workflows/norminette.yml
+!src/*
+!includes/*
+!libft/*
