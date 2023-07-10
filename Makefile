@@ -65,6 +65,9 @@ re: fclean $(NAME)
 bonus: all
 
 module-update:
+	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Updating submodules...$(COLOR_RESET)\t"
 	@git submodule update --remote --merge
+	@sleep 0.25
+	@printf "✅\n"
 
 .PHONY: all clean fclean run re module-update
