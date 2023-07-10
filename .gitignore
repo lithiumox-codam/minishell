@@ -8,7 +8,7 @@
 !Makefile
 !.gitignore
 !.vscode
-!.github/workflows/norminette.yml
+!.github/workflows/*
 !src/*
 !includes/*
 !libft/*

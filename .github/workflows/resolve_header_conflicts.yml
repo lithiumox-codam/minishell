@@ -1,0 +1,42 @@
+name: Resolve Merge Conflicts
+
+on:
+    pull_request:
+        branches-ignore: main
+
+jobs:
+    auto-merge:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout Base Branch
+              uses: actions/checkout@v2
+              with:
+                  ref: 'main'
+                  fetch-depth: 0
+
+            - name: Checkout Feature Branch
+              uses: actions/checkout@v2
+              with:
+                  ref: ${{ github.event.ref }}
+                  fetch-depth: 0
+                  path: 'incoming'
+
+            - name: Merge Feature Branch
+              run: |
+                  git merge --strategy-option=theirs incoming/${{ github.event.ref }}
+                  if [ $? -ne 0 ]; then
+                    echo "There are merge conflicts."
+                    for file in $(git diff --name-only --diff-filter=U); do
+                      # Only resolve conflicts for .c and .h files
+                      if [[ $file == *.c ]] || [[ $file == *.h ]]; then
+                        echo "Resolving conflicts for $file"
+                        head -n 11 incoming/${{ github.event.ref }}/$file > $file
+                        tail -n +12 $file >> temp.txt
+                        mv temp.txt $file
+                        git add $file
+                      fi
+                    done
+                    git commit -m "Resolved merge conflicts"
+                    git push origin main
+                  fi
