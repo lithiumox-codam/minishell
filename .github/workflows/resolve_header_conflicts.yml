@@ -1,8 +1,8 @@
-name: Resolve Merge Conflicts
+name: Resolve Header Conflicts
 
 on:
     pull_request:
-        branches-ignore: main
+        branches: main
 
 jobs:
     auto-merge:
