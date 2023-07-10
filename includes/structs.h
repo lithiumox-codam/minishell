@@ -1,19 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   minishell.h                                        :+:    :+:            */
+/*   structs.h                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/07/10 11:15:34 by mdekker       ########   odam.nl         */
+/*   Created: 2023/07/10 11:15:16 by mdekker       #+#    #+#                 */
+/*   Updated: 2023/07/10 11:15:26 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef STRUCTS_H
+# define STRUCTS_H
 
-# include <libft.h>
-# include <structs.h>
+typedef struct s_env
+{
+	char	*key;
+	char	*value;
+}			t_env;
 
 #endif
