@@ -1,0 +1,11 @@
+{
+	"[c]": {
+		"editor.wordBasedSuggestions": false,
+		"editor.suggest.insertMode": "replace",
+		"editor.semanticHighlighting.enabled": true,
+		"editor.quickSuggestions": {
+			"comments": false,
+			"strings": false
+		},
+	}
+}
