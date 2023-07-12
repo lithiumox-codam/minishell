@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   main.c                                             :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
+/*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/07/10 10:10:41 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/07/10 11:58:12 by mdekker       ########   odam.nl         */
+/*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
+/*   Updated: 2023/07/12 14:11:01 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
