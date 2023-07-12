@@ -58,7 +58,7 @@ run: $(NAME)
 	@./$(NAME) 1
 
 norm:
-	@norminette $(SRCS) incl/fractol.h libft
+	@norminette $(SRCS) includes libft
 
 re: fclean $(NAME)
 
