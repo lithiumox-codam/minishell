@@ -44,7 +44,7 @@ $(LIBFT):
 
 $(READLINE):
 	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Building Readline...$(COLOR_RESET)\t\t"
-	@$(CURDIR)/readline/configure
+
 	@$(MAKE) static -C readline
 	@sleep 0.25
 	@printf "✅\n"
