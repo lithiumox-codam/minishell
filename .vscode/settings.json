@@ -1,4 +1,8 @@
 {
+	"codamheader.CodamUsername": "mdekker/jde-baai",
+	"codamheader.CodamEmail": "team@codam.nl",
+	"codamheader.ChangeAuthor": true,
+	"codamheader.UpdateTime": true,
 	"[c]": {
 		"editor.wordBasedSuggestions": false,
 		"editor.suggest.insertMode": "replace",
