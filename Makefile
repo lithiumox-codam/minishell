@@ -3,10 +3,13 @@ SRC = main
 SRCS = $(addsuffix .c, $(addprefix src/, $(SRC)))
 OBJS = $(patsubst src/%.c, build/%.o, $(SRCS))
 LIBFT = libft/libft.a
+READLINE = readline/libreadline.a
 
+G_FLAGS = -DREADLINE_LIBRARY
 CODAM_FLAGS = -Wall -Wextra -Werror
-LIBS = libft/libft.a
-INCLUDES = -I $(CURDIR)/includes -I $(CURDIR)/libft
+LIBS = libft/libft.a readline/libreadline.a readline/libhistory.a
+LINKER = -lncurses
+INCLUDES = -I $(CURDIR)/includes -I $(CURDIR)/libft -I $(CURDER)/readline
 
 COLOR_INFO = \033[1;36m
 COLOR_SUCCESS = \033[1;32m
@@ -19,15 +22,15 @@ EMOJI_RUN = 🚀
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJS)
+$(NAME): $(LIBFT) $(READLINE) $(OBJS)
 	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Compiling $(NAME)...$(COLOR_RESET)\t"
-	@cc $(OBJS) $(LIBS) $(INCLUDES) $(LINKERS) $(CODAM_FLAGS) -o $@
+	@cc $(OBJS) $(CODAM_FLAGS) $(LINKER) $(INCLUDES) $(LIBS) -o $@
 	@sleep 0.25
 	@printf "✅\n"
 
 build/%.o: src/%.c includes/minishell.h
 	@mkdir -p $(@D)
-	@gcc $(INCLUDES) $(CODAM_FLAGS) -c $< -o $@
+	@cc $(INCLUDES) $(CODAM_FLAGS) -c $< -o $@
 
 $(LIBFT):
 	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Initializing submodules...$(COLOR_RESET)\t"
@@ -39,9 +42,17 @@ $(LIBFT):
 	@sleep 0.25
 	@printf "✅\n"
 
+$(READLINE):
+	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Building Readline...$(COLOR_RESET)\t\t"
+	@$(CURDIR)/readline/configure
+	@$(MAKE) static -C readline
+	@sleep 0.25
+	@printf "✅\n"
+
 clean:
 	@printf "$(COLOR_INFO)$(EMOJI_CLEAN)  Cleaning up...$(COLOR_RESET)\t\t"
 	@$(MAKE) -C libft clean > /dev/null
+
 	@rm -rf build
 	@sleep 0.25
 	@printf "✅\n"
