@@ -6,17 +6,29 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 11:15:16 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/07/12 14:11:33 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/13 18:02:52 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
-typedef struct s_env
+# include <enum.h>
+
+/**
+ * @brief The struct for the tokens
+ *
+ * @param type The type of token
+ * @param value The value of the token
+ * @param prev The previous token
+ * @param next The next token
+ */
+typedef struct s_token
 {
-	char	*key;
-	char	*value;
-}			t_env;
+	t_types			type;
+	char			*value;
+	struct t_token	*prev;
+	struct t_token	*next;
+}					t_token;
 
 #endif
