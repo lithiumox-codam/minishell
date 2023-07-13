@@ -43,16 +43,16 @@ $(LIBFT):
 	@printf "✅\n"
 
 $(READLINE):
-	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Building Readline...$(COLOR_RESET)\t\t"
-
-	@$(MAKE) static -C readline
+	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Building Readline...$(COLOR_RESET)\t"
+	@cd readline && ./configure > /dev/null
+	@$(MAKE) static -C readline > /dev/null
+	@rm -rf doc && rm -rf examples
 	@sleep 0.25
 	@printf "✅\n"
 
 clean:
 	@printf "$(COLOR_INFO)$(EMOJI_CLEAN)  Cleaning up...$(COLOR_RESET)\t\t"
 	@$(MAKE) -C libft clean > /dev/null
-
 	@rm -rf build
 	@sleep 0.25
 	@printf "✅\n"
@@ -60,6 +60,7 @@ clean:
 fclean: clean
 	@printf "$(COLOR_INFO)$(EMOJI_CLEAN)  Removing executable...$(COLOR_RESET)\t"
 	@$(MAKE) -C libft fclean > /dev/null
+	@rm -f $(LIBS)
 	@rm -f $(NAME)
 	@sleep 0.25
 	@printf "✅\n"

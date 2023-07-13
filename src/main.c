@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/12 15:11:59 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/12 22:20:09 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	main(int ac, char **av, char **env)
 	(void)env;
 	while (1)
 	{
-		input = readline("\033[1;32mminishell$ \033[0m");
+		input = readline("\n\033[1;32mminishell$ \033[0m");
 		if (!input)
 			break ;
 		add_history(input);
