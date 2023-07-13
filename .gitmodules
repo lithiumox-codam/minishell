@@ -4,3 +4,6 @@
 [submodule "builtins"]
 	path = src/builtins
 	url = git@github.com:lithiumox-codam/built-ins.git
+[submodule "readline"]
+	path = readline
+	url = git://git.savannah.gnu.org/readline.git
