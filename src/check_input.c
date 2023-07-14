@@ -6,13 +6,13 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/14 14:50:16 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/14 14:55:07 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/14 16:12:11 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*find_next(char *str, char quote, char other)
+static char	*find_next(char *str, char quote, char other)
 {
 	int	i;
 
@@ -33,7 +33,7 @@ char	*find_next(char *str, char quote, char other)
 	return (str);
 }
 
-char	*parentheses(char *str)
+static char	*parentheses(char *str)
 {
 	if (!str)
 		return (NULL);
@@ -90,5 +90,23 @@ bool	check_quotes_parantheses(char *input)
 		}
 		input++;
 	}
+	return (true);
+}
+
+/**
+ * @brief	checks if both strings are exactly equal
+ * @return	true if strings are equal, false if strings are not equal
+*/
+bool	mini_strcmp(char *str1, char *str2)
+{
+	while (*str1 != '\0' && *str2 != '\0')
+	{
+		if (*str1 != *str2)
+			return (false);
+		str1++;
+		str2++;
+	}
+	if (*str1 != *str2)
+		return (false);
 	return (true);
 }

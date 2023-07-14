@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/14 15:00:24 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/14 16:14:15 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ int	main(int ac, char **av, char **env)
 		if (!input)
 			break ;
 		add_history(input);
-		if (!check_quotes_parantheses(input))
-		{
+		if (mini_strcmp(input, "exit"))
+			break ;
+		else if (!check_quotes_parantheses(input))
 			printf("minishell: syntax error: unfinished quote or parantheses\n");
-		}
 		else
 			printf("input: %s\n", input);
 		free(input);
