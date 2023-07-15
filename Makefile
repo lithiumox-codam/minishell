@@ -9,7 +9,7 @@ G_FLAGS = -DREADLINE_LIBRARY
 CODAM_FLAGS = -Wall -Wextra -Werror
 LIBS = libft/libft.a readline/libreadline.a readline/libhistory.a
 LINKER = -lncurses
-INCLUDES = -I $(CURDIR)/includes -I $(CURDIR)/libft -I $(CURDER)/readline
+INCLUDES = -I $(CURDIR)/includes -I $(CURDIR)/libft/includes -I $(CURDER)/readline
 
 COLOR_INFO = \033[1;36m
 COLOR_SUCCESS = \033[1;32m
@@ -28,7 +28,7 @@ $(NAME): $(LIBFT) $(READLINE) $(OBJS)
 	@sleep 0.25
 	@printf "✅\n"
 
-build/%.o: src/%.c includes/minishell.h
+build/%.o: src/%.c includes/minishell.h includes/structs.h includes/enum.h
 	@mkdir -p $(@D)
 	@cc $(INCLUDES) $(CODAM_FLAGS) -c $< -o $@
 
