@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/07/13 18:00:44 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/15 22:06:11 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,9 @@
 */
 t_token	*list_append(t_token *head, char *str, t_types type);
 t_token	*list_insert(t_token *head, char *str, t_types type, size_t index);
+
+/* input_check */
+bool	check_quotes_parantheses(char *input);
+bool	mini_strcmp(char *str1, char *str2);
 
 #endif
