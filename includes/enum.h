@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/13 17:41:00 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/13 17:42:54 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/15 15:09:31 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,28 +18,29 @@
  *
  * @param DOUBLE_QUOTE (")
  * @param SINGLE_QUOTE (')
- * @param SPACE ( )
  * @param PIPE (|)
  * @param SEMICOLON (;)
- * @param REDIRECT (< >)
- * @param END (\0)
+ * @param OR (||)
  * @param ENV ($)
- * @param ENV_VAR The name of the environment variable
- * @param CHAR Any other character
+ * @param DQ_ENV An environment variable in double quotes ("$")
+ * @param STRING A string
+ * @param O_REDIRECT (>)
+ * @param I_REDIRECT (<)
+ * @param HERE_DOC (<<)
  */
 typedef enum e_types
 {
 	DOUBLE_QUOTE,
 	SINGLE_QUOTE,
-	SPACE,
 	PIPE,
 	SEMICOLON,
-	REDIRECT,
-	END,
+	OR,
 	ENV,
-	ENV_VAR,
-	CHAR,
-
+	DQ_ENV,
+	STRING,
+	O_REDIRECT,
+	I_REDIRECT,
+	HERE_DOC
 }	t_types;
 
 #endif
