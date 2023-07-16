@@ -11,8 +11,5 @@
 			"comments": false,
 			"strings": false
 		},
-	},
-	"files.associations": {
-		"sstream": "c"
 	}
 }
