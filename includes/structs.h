@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 11:15:16 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/07/15 22:06:35 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/16 01:35:08 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,8 @@
  */
 typedef struct s_token
 {
-	t_types			type;
-	char			*value;
-	struct t_token	*prev;
-	struct t_token	*next;
-}					t_token;
+	t_types	type;
+	char	*value;
+}			t_token;
 
 #endif
