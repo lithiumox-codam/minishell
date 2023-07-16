@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/12 22:20:09 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/16 14:04:11 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,12 @@ int	main(int ac, char **av, char **env)
 		if (!input)
 			break ;
 		add_history(input);
-		printf("input: %s\n", input);
+		if (ft_strcmp(input, "exit") == 0)
+			return (free(input), 0);
+		else if (!check_quotes_parantheses(input))
+			continue ;
+		else
+			printf("input: %s\n", input);
 		free(input);
 	}
 	return (0);
