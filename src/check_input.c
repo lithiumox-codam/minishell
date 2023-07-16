@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/14 14:50:16 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/15 15:18:46 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/16 14:03:40 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,23 +87,5 @@ bool	check_quotes_parantheses(char *input)
 		}
 		input++;
 	}
-	return (true);
-}
-
-/**
- * @brief	checks if both strings are exactly equal
- * @return	true if strings are equal, false if strings are not equal
-*/
-bool	mini_strcmp(char *str1, char *str2)
-{
-	while (*str1 != '\0' && *str2 != '\0')
-	{
-		if (*str1 != *str2)
-			return (false);
-		str1++;
-		str2++;
-	}
-	if (*str1 != *str2)
-		return (false);
 	return (true);
 }
