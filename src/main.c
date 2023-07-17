@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/17 23:41:49 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/18 00:50:24 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	pretty_print_vector(t_vector *tokens)
 	size_t	i;
 
 	i = 0;
-	while (i < tokens->size)
+	while (i < tokens->lenght)
 	{
 		token = (t_token *)ft_vec_get(tokens, i);
 		if (token != NULL)
@@ -28,6 +28,7 @@ void	pretty_print_vector(t_vector *tokens)
 			printf("├── Token %zu:\n", i);
 			printf("│   ├── Value: %s\n", token->value);
 			printf("│   └── Type: %i\n", token->type);
+			printf("│   └── Adress: %p\n", token);
 			printf("\033[1;34m│\n");
 			printf("\033[0m");
 		}
@@ -47,19 +48,18 @@ static void	clear_token(void *data)
 static void	tokenize(char *input, t_vector tokens)
 {
 	char	**tmp;
-	t_token	*token;
+	t_token	token;
 	size_t	i;
 
 	i = 0;
 	tmp = ft_split(input, ' ');
 	while (tmp[i])
 	{
-		token = malloc(sizeof(t_token));
-		token->type = DOUBLE_QUOTE;
+		token.type = DOUBLE_QUOTE;
 		if (i % 2)
-			token->type = SINGLE_QUOTE;
-		token->value = tmp[i];
-		ft_vec_push(&tokens, (void *)token);
+			token.type = SINGLE_QUOTE;
+		token.value = tmp[i];
+		ft_vec_push(&tokens, (void *)&token);
 		i++;
 	}
 	free(tmp);
