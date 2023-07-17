@@ -9,7 +9,7 @@
 			"request": "launch",
 			"name": "Debug",
 			"program": "${workspaceFolder}/minishell",
-			"args": ["hey ther"],
+			"args": ["hey there delilah whats it like in new york city I'm a thousand miles away."],
 			"cwd": "${workspaceFolder}"
 		}
 	]

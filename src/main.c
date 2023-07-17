@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/17 23:09:34 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/17 23:41:49 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ void	pretty_print_vector(t_vector *tokens)
 		token = (t_token *)ft_vec_get(tokens, i);
 		if (token != NULL)
 		{
-			printf("\033[1;34m");
-			printf("┌─────────────────────────────\n");
-			printf("│ Token %zu:                   \n", i);
-			printf("│   Value: %s                 \n", token->value);
-			printf("│   Type: %i                  \n", token->type);
-			printf("└─────────────────────────────\n");
+			printf("\033[1;32m●\n");
+			printf("\033[1;34m│\n");
+			printf("├── Token %zu:\n", i);
+			printf("│   ├── Value: %s\n", token->value);
+			printf("│   └── Type: %i\n", token->type);
+			printf("\033[1;34m│\n");
 			printf("\033[0m");
 		}
 		i++;
@@ -77,7 +77,6 @@ int	main(int ac, char **av, char **env)
 	if (ac == 2)
 	{
 		tokenize(av[1], tokens);
-		ft_vec_free(&tokens, clear_token);
 		return (0);
 	}
 	while (1)
@@ -86,7 +85,7 @@ int	main(int ac, char **av, char **env)
 		if (!input)
 			break ;
 		add_history(input);
-		if (mini_strcmp(input, "exit"))
+		if (!ft_strcmp(input, "exit"))
 			return (free(input), 0);
 		else
 			tokenize(input, tokens);
