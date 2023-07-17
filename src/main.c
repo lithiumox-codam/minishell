@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/17 21:52:06 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/17 22:10:29 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,13 @@ static void	tokenize(char *input, t_vector tokens)
 			token->value = tmp[i];
 		else
 			token->value = "";
+		printf("Token:\n  Value: %s\n  Type: %i\n", token->value, token->type);
 		ft_vec_push(&tokens, (void *)token);
 		i++;
 	}
 	pretty_print_vector(&tokens);
 	ft_vec_free(&tokens, clear_token);
+	ft_vec_init(&tokens, 5, sizeof(t_token));
 }
 
 int	main(int ac, char **av, char **env)
@@ -71,11 +73,9 @@ int	main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	(void)env;
-	tokens = (t_vector){NULL, 0, 0, 0};
+	ft_vec_init(&tokens, 1, sizeof(t_token));
 	while (1)
 	{
-		if (tokens.data == NULL)
-			ft_vec_init(&tokens, 5, sizeof(t_token));
 		input = readline("\n\033[1;32mminishell$ \033[0m");
 		if (!input)
 			break ;
@@ -87,7 +87,6 @@ int	main(int ac, char **av, char **env)
 		else
 			tokenize(input, tokens);
 		free(input);
-		tokens = (t_vector){NULL, 0, 0, 0};
 	}
 	return (0);
 }
