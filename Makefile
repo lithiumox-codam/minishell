@@ -9,7 +9,7 @@ G_FLAGS = -DREADLINE_LIBRARY
 CODAM_FLAGS = -Wall -Wextra -Werror
 LIBS = libft/libft.a readline/libreadline.a readline/libhistory.a
 LINKER = -lncurses
-INCLUDES = -I $(CURDIR)/includes -I $(CURDIR)/libft -I $(CURDER)/readline
+INCLUDES = -I $(CURDIR)/includes -I $(CURDIR)/libft/includes -I $(CURDER)/readline
 
 COLOR_INFO = \033[1;36m
 COLOR_SUCCESS = \033[1;32m

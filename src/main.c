@@ -6,35 +6,38 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/17 21:05:59 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/17 21:52:06 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void	print_vec(t_vector *tokens)
+void	pretty_print_vector(t_vector *tokens)
 {
 	t_token	*token;
+	size_t	i;
 
-	printf("tokens->used: %zu\n", tokens->used);
-	for (size_t i = 0; i < tokens->used; i++)
+	i = 0;
+	while (i < tokens->size)
 	{
 		token = (t_token *)ft_vec_get(tokens, i);
-		if (DEBUG)
-			printf("[%zu]: %s (%i)\n", i, token->value, token->type);
+		if (token != NULL)
+		{
+			printf("Token %zu:\n", i);
+			printf("  Value: %s\n", token->value);
+			printf("  Type: %i\n", token->type);
+		}
+		i++;
 	}
 }
 
-static void	clear_structs_vec(t_vector *tokens)
+static void	clear_token(void *data)
 {
 	t_token	*token;
 
-	while (tokens->used > 0)
-	{
-		token = (t_token *)ft_vec_pop(tokens);
-		printf("token->value: %p\n", token->value);
-		free(token);
-	}
+	token = (t_token *)data;
+	free(token->value);
+	free(token);
 }
 
 static void	tokenize(char *input, t_vector tokens)
@@ -49,13 +52,15 @@ static void	tokenize(char *input, t_vector tokens)
 	{
 		token = malloc(sizeof(t_token));
 		token->type = DOUBLE_QUOTE;
-		token->value = tmp[i];
-		printf("token->value: %s\n", token->value);
+		if (tmp[i] != NULL)
+			token->value = tmp[i];
+		else
+			token->value = "";
 		ft_vec_push(&tokens, (void *)token);
-		free(*tmp);
 		i++;
 	}
-	print_vec(&tokens);
+	pretty_print_vector(&tokens);
+	ft_vec_free(&tokens, clear_token);
 }
 
 int	main(int ac, char **av, char **env)
@@ -82,8 +87,7 @@ int	main(int ac, char **av, char **env)
 		else
 			tokenize(input, tokens);
 		free(input);
-		clear_structs_vec(&tokens);
-		printf("tokens->used: %zu\n", tokens.used);
+		tokens = (t_vector){NULL, 0, 0, 0};
 	}
 	return (0);
 }
