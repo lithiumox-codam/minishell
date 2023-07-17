@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/17 22:16:32 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/17 22:23:47 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,10 @@ static void	tokenize(char *input, t_vector tokens)
 		token->type = DOUBLE_QUOTE;
 		if (tmp[i] != NULL)
 			token->value = tmp[i];
-		else
-			token->value = "";
-		printf("Token:\n  Value: %s\n  Type: %i\n", token->value, token->type);
 		ft_vec_push(&tokens, (void *)token);
 		i++;
 	}
+	free(tmp);
 	pretty_print_vector(&tokens);
 	ft_vec_free(&tokens, clear_token);
 }
