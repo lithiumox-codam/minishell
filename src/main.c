@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/18 22:47:30 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/18 22:48:59 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	uncapitalize_token(void *data)
 	}
 }
 
-static void	tokenize(char *input, t_vector t)
+static void	tokenize(char *input, t_vector tokens)
 {
 	char	**tmp;
 	t_token	token;
@@ -71,25 +71,25 @@ static void	tokenize(char *input, t_vector t)
 		if (i % 3)
 			token.type = SINGLE_QUOTE;
 		token.value = tmp[i];
-		ft_vec_push(&t, (void *)&token);
+		ft_vec_push(&tokens, (void *)&token);
 		i++;
 	}
 	free(tmp);
-	ft_vec_apply(&t, uncapitalize_token);
-	pretty_print_vector(&t);
-	ft_vec_free(&t, clear_token);
+	ft_vec_apply(&tokens, uncapitalize_token);
+	pretty_print_vector(&tokens);
+	ft_vec_free(&tokens, clear_token);
 }
 
 int	main(int ac, char **av, char **env)
 {
 	char		*input;
-	t_vector	t;
+	t_vector	tokens;
 
 	(void)env;
-	ft_vec_init(&t, 5, sizeof(t_token));
+	ft_vec_init(&tokens, 5, sizeof(t_token));
 	if (ac == 2)
 	{
-		tokenize(av[1], t);
+		tokenize(av[1], tokens);
 		return (0);
 	}
 	while (1)
@@ -101,9 +101,9 @@ int	main(int ac, char **av, char **env)
 		if (!ft_strcmp(input, "exit"))
 			return (free(input), 0);
 		else
-			tokenize(input, t);
+			tokenize(input, tokens);
 		free(input);
-		ft_vec_init(&t, 5, sizeof(t_token));
+		ft_vec_init(&tokens, 5, sizeof(t_token));
 	}
 	return (0);
 }
