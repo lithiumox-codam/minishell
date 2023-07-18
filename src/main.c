@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/18 00:50:24 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/18 12:27:28 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	pretty_print_vector(t_vector *tokens)
 			printf("\033[1;34m│\n");
 			printf("├── Token %zu:\n", i);
 			printf("│   ├── Value: %s\n", token->value);
-			printf("│   └── Type: %i\n", token->type);
+			printf("│   ├── Type: %i\n", token->type);
 			printf("│   └── Adress: %p\n", token);
 			printf("\033[1;34m│\n");
 			printf("\033[0m");
