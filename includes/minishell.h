@@ -32,6 +32,5 @@ t_token	*list_insert(t_token *head, char *str, t_types type, size_t index);
 
 /* input_check */
 bool	check_quotes_parantheses(char *input);
-bool	mini_strcmp(char *str1, char *str2);
 
 #endif
