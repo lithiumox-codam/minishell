@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/18 12:27:28 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/18 19:58:23 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ static void	clear_token(void *data)
 
 	token = (t_token *)data;
 	free(token->value);
-	free(token);
 }
 
 static void	tokenize(char *input, t_vector tokens)

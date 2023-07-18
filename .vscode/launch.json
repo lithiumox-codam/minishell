@@ -9,7 +9,7 @@
 			"request": "launch",
 			"name": "Debug",
 			"program": "${workspaceFolder}/minishell",
-			"args": ["hey there delilah whats it like in new york city I'm a thousand miles away."],
+			"args": ["hey there delilah whats it like in new york city I'm a thousand miles away. but girl tonight you look so pretty yes you do! Ney york doesn't shine as bright as you. test test test test test test test test test test test test test test test"],
 			"cwd": "${workspaceFolder}"
 		}
 	]
