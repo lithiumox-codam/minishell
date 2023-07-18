@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/18 19:58:23 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/18 21:02:50 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,13 @@ void	pretty_print_vector(t_vector *tokens)
 		{
 			printf("\033[1;32m●\n");
 			printf("\033[1;34m│\n");
-			printf("├── Token %zu:\n", i);
+			printf("├── Token %zu:\n", i++);
 			printf("│   ├── Value: %s\n", token->value);
 			printf("│   ├── Type: %i\n", token->type);
 			printf("│   └── Adress: %p\n", token);
 			printf("\033[1;34m│\n");
 			printf("\033[0m");
 		}
-		i++;
 	}
 }
 
@@ -42,6 +41,20 @@ static void	clear_token(void *data)
 
 	token = (t_token *)data;
 	free(token->value);
+}
+
+static void	capitalize_token(void *data)
+{
+	t_token	*token;
+	char	*temp;
+
+	token = (t_token *)data;
+	temp = token->value;
+	while (*temp)
+	{
+		*temp = ft_tolower(*temp);
+		temp++;
+	}
 }
 
 static void	tokenize(char *input, t_vector tokens)
@@ -55,13 +68,14 @@ static void	tokenize(char *input, t_vector tokens)
 	while (tmp[i])
 	{
 		token.type = DOUBLE_QUOTE;
-		if (i % 2)
+		if (i % 3)
 			token.type = SINGLE_QUOTE;
 		token.value = tmp[i];
 		ft_vec_push(&tokens, (void *)&token);
 		i++;
 	}
 	free(tmp);
+	ft_vec_apply(&tokens, capitalize_token);
 	pretty_print_vector(&tokens);
 	ft_vec_free(&tokens, clear_token);
 }
