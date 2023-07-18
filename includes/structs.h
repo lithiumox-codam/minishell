@@ -6,14 +6,14 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 11:15:16 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/07/16 01:35:08 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/18 23:06:38 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
-# include <enum.h>
+# include "enum.h"
 /**
  * @brief The struct for the tokens
  *
