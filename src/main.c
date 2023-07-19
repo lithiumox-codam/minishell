@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/19 21:27:53 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/07/19 22:01:20 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,14 @@ int main(int ac, char **av, char **env)
 	ft_vec_init(&tokens, 5, sizeof(t_token));
 	if (ac == 2)
 	{
-		tokenize(av[1], tokens);
+		// tokenize(av[1], tokens);
+		if(!lexer(av[1], &tokens))
+		{
+			printf("lexer error");
+			return (1);
+		}
+		pretty_print_vector(&tokens);
+		ft_vec_free(&tokens, clear_token);
 		return (0);
 	}
 	while (1)
