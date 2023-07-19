@@ -5,6 +5,8 @@ OBJS = $(patsubst src/%.c, build/%.o, $(SRCS))
 LIBFT = libft/libft.a
 READLINE = readline/libreadline.a
 
+DEBUG ?= 0
+DEBUG_FLAGS = -g
 G_FLAGS = -DREADLINE_LIBRARY
 CODAM_FLAGS = -Wall -Wextra -Werror
 LIBS = libft/libft.a readline/libreadline.a readline/libhistory.a
@@ -24,17 +26,17 @@ all: $(NAME)
 
 $(NAME): $(LIBFT) $(READLINE) $(OBJS)
 	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Compiling $(NAME)...$(COLOR_RESET)\t"
-	@cc $(OBJS) $(CODAM_FLAGS) $(LINKER) $(INCLUDES) $(LIBS) -o $@
+	@cc $(OBJS) $(CODAM_FLAGS) $(if DEBUG, $(DEBUG_FLAGS)) -DDEBUG=$(DEBUG) $(LINKER) $(INCLUDES) $(LIBS) -o $@
 	@sleep 0.25
 	@printf "✅\n"
 
 build/%.o: src/%.c includes/minishell.h includes/structs.h includes/enum.h
 	@mkdir -p $(@D)
-	@cc $(INCLUDES) $(CODAM_FLAGS) -c $< -o $@
+	@cc $(INCLUDES) $(CODAM_FLAGS) $(if DEBUG, $(DEBUG_FLAGS)) -DDEBUG=$(DEBUG) -c $< -o $@
 
 $(LIBFT):
 	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Initializing submodules...$(COLOR_RESET)\t"
-	# @git submodule update --init --recursive > /dev/null
+# @git submodule update --init --recursive > /dev/null
 	@sleep 0.25
 	@printf "✅\n"
 	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Building Libft...$(COLOR_RESET)\t\t"
