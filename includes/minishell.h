@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/07/17 15:44:32 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/19 12:06:59 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@
 # include <structs.h>
 # include <unistd.h>
 
-# define DEBUG 1
+# ifndef DEBUG
+#  define DEBUG 0
+# endif
 
 /*
 	Lists

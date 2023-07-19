@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/18 22:48:59 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/19 13:26:56 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,19 @@ static void	tokenize(char *input, t_vector tokens)
 	ft_vec_free(&tokens, clear_token);
 }
 
+void	check_leaks(void)
+{
+	system("leaks minishell");
+}
+
 int	main(int ac, char **av, char **env)
 {
 	char		*input;
 	t_vector	tokens;
 
 	(void)env;
+	if (DEBUG)
+		atexit(check_leaks);
 	ft_vec_init(&tokens, 5, sizeof(t_token));
 	if (ac == 2)
 	{
@@ -99,7 +106,7 @@ int	main(int ac, char **av, char **env)
 			break ;
 		add_history(input);
 		if (!ft_strcmp(input, "exit"))
-			return (free(input), 0);
+			return (free(input), ft_vec_free(&tokens, false), 0);
 		else
 			tokenize(input, tokens);
 		free(input);
