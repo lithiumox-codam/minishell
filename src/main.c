@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/19 20:41:39 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/19 20:59:23 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static void tokenize(char *input, t_vector tokens)
 	free(tmp);
 	ft_vec_apply(&tokens, uncapitalize_token);
 	pretty_print_vector(&tokens);
-	ft_vec_free(&tokens, true);
+	ft_vec_free(&tokens, clear_token);
 }
 
 int main(int ac, char **av, char **env)
@@ -86,7 +86,7 @@ int main(int ac, char **av, char **env)
 	t_vector tokens;
 
 	(void)env;
-	ft_vec_init(&tokens, 5, sizeof(t_token), &clear_token);
+	ft_vec_init(&tokens, 5, sizeof(t_token));
 	if (ac == 2)
 	{
 		tokenize(av[1], tokens);
@@ -103,7 +103,7 @@ int main(int ac, char **av, char **env)
 		else
 			tokenize(input, tokens);
 		free(input);
-		ft_vec_init(&tokens, 5, sizeof(t_token), &clear_token);
+		ft_vec_init(&tokens, 5, sizeof(t_token));
 	}
 	return (0);
 }
