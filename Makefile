@@ -34,7 +34,7 @@ build/%.o: src/%.c includes/minishell.h includes/structs.h includes/enum.h
 
 $(LIBFT):
 	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Initializing submodules...$(COLOR_RESET)\t"
-	@git submodule update --init --recursive > /dev/null
+	# @git submodule update --init --recursive > /dev/null
 	@sleep 0.25
 	@printf "✅\n"
 	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Building Libft...$(COLOR_RESET)\t\t"

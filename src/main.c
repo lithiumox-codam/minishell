@@ -6,16 +6,16 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/18 22:48:59 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/19 20:41:39 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	pretty_print_vector(t_vector *tokens)
+void pretty_print_vector(t_vector *tokens)
 {
-	t_token	*token;
-	size_t	i;
+	t_token *token;
+	size_t i;
 
 	i = 0;
 	while (i < tokens->lenght)
@@ -35,18 +35,18 @@ void	pretty_print_vector(t_vector *tokens)
 	}
 }
 
-static void	clear_token(void *data)
+static void clear_token(void *data)
 {
-	t_token	*token;
+	t_token *token;
 
 	token = (t_token *)data;
 	free(token->value);
 }
 
-static void	uncapitalize_token(void *data)
+static void uncapitalize_token(void *data)
 {
-	t_token	*token;
-	char	*temp;
+	t_token *token;
+	char *temp;
 
 	token = (t_token *)data;
 	temp = token->value;
@@ -57,11 +57,11 @@ static void	uncapitalize_token(void *data)
 	}
 }
 
-static void	tokenize(char *input, t_vector tokens)
+static void tokenize(char *input, t_vector tokens)
 {
-	char	**tmp;
-	t_token	token;
-	size_t	i;
+	char **tmp;
+	t_token token;
+	size_t i;
 
 	i = 0;
 	tmp = ft_split(input, ' ');
@@ -77,16 +77,16 @@ static void	tokenize(char *input, t_vector tokens)
 	free(tmp);
 	ft_vec_apply(&tokens, uncapitalize_token);
 	pretty_print_vector(&tokens);
-	ft_vec_free(&tokens, clear_token);
+	ft_vec_free(&tokens, true);
 }
 
-int	main(int ac, char **av, char **env)
+int main(int ac, char **av, char **env)
 {
-	char		*input;
-	t_vector	tokens;
+	char *input;
+	t_vector tokens;
 
 	(void)env;
-	ft_vec_init(&tokens, 5, sizeof(t_token));
+	ft_vec_init(&tokens, 5, sizeof(t_token), &clear_token);
 	if (ac == 2)
 	{
 		tokenize(av[1], tokens);
@@ -96,14 +96,14 @@ int	main(int ac, char **av, char **env)
 	{
 		input = readline("\n\033[1;32mminishell$ \033[0m");
 		if (!input)
-			break ;
+			break;
 		add_history(input);
 		if (!ft_strcmp(input, "exit"))
 			return (free(input), 0);
 		else
 			tokenize(input, tokens);
 		free(input);
-		ft_vec_init(&tokens, 5, sizeof(t_token));
+		ft_vec_init(&tokens, 5, sizeof(t_token), &clear_token);
 	}
 	return (0);
 }
