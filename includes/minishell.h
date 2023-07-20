@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/07/20 18:11:23 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/20 20:28:56 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 # ifndef DEBUG
 #  define DEBUG 0
 # endif
+
+bool	init(void);
 
 /* input_check */
 bool	check_quotes_parantheses(char *input);

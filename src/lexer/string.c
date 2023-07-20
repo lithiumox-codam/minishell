@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 13:41:35 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/20 18:30:31 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/20 21:12:29 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 
 typedef struct s_local
 {
-	int	left;
-	int	right;
-}	t_local;
+	int		left;
+	int		right;
+}			t_local;
 
-static bool	build_string(char *str, size_t *i, t_vector *vec, t_local x)
+static bool	build_string(char *str, t_vector *vec, t_local x)
 {
 	char	*value;
 
-	while (x.left != 0 && checkchar(str[*i], "\'\") ") == 0)
+	while (x.left != 0 && checkchar(str[x.left], "\'\") ") == 0)
 		x.left--;
-	if (checkchar(str[*i], "\'\") ") == 1)
+	if (checkchar(str[x.left], "\'\") ") == 1)
 		x.left++;
 	value = ft_substr(str, x.left, x.right - x.left + 1);
 	if (!value)
@@ -47,7 +47,7 @@ bool	create_string(char *str, size_t *i, t_vector *vec)
 	if (x.left > 0)
 		x.left--;
 	if (x.left != 0)
-		build_string(str, i, vec, x);
+		build_string(str, vec, x);
 	while (str[*i] == ' ' && str[*i])
 		(*i)++;
 	return (true);
@@ -62,7 +62,7 @@ bool	create_quote_string(char *str, size_t *i, t_vector *vec)
 	char	c;
 	char	*value;
 
-	if ((*i) > 0 && checkchar(str[*i], "\'\") ") == 0)
+	if ((*i) > 0 && checkchar(str[(*i) - 1], " \'\")") == 0)
 		create_string(str, i, vec);
 	c = str[*i];
 	occur_right = (*i) + 1;
@@ -86,7 +86,7 @@ bool	create_paran_string(char *str, size_t *i, t_vector *vec)
 	int		parantheses;
 	char	*value;
 
-	if ((*i) > 0 && checkchar(str[*i], "\'\") ") == 0)
+	if ((*i) > 0 && checkchar(str[(*i) - 1], " \'\")") == 0)
 		create_string(str, i, vec);
 	occur_right = (*i) + 1;
 	parantheses = 1;

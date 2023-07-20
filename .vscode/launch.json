@@ -10,7 +10,7 @@
 			"name": "Debug",
 			"program": "${workspaceFolder}/minishell",
 			"args": [
-				"(()"
+				"city test 'test' > < >> << || | && () "
 			],
 			"cwd": "${workspaceFolder}"
 		}

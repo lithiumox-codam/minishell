@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/19 13:32:55 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/20 18:33:58 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/20 21:13:35 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ bool	lexer(char *input, t_vector *vec)
 		else
 			i++;
 	}
-	if (checkchar(input[i], "\"\') ") == 0)
+	if (i > 0 && checkchar(input[i - 1], "\"\') ") == 0)
 		if (!create_string(input, &i, vec))
 			return (err("malloc", NULL, 1), false);
 	return (true);

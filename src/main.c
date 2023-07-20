@@ -6,11 +6,13 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/20 18:10:35 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/20 20:38:55 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+t_global	g_data;
 
 void	check_leaks(void)
 {
@@ -64,27 +66,25 @@ static void	loop(t_vector *vec)
 
 int	main(int ac, char **av, char **env)
 {
-	t_vector	tokens;
-
 	(void)env;
 	if (DEBUG)
 		debug();
-	ft_vec_init(&tokens, 5, sizeof(t_token));
+	init();
 	if (ac == 2)
 	{
-		if (!lexer(av[1], &tokens))
-			return (ft_vec_free(&tokens, clear_token), 1);
-		parser(&tokens);
-		print_token_vector(&tokens);
-		ft_vec_free(&tokens, clear_token);
+		if (!lexer(av[1], &g_data.tokens))
+			return (ft_vec_free(&g_data.tokens, clear_token), 1);
+		// parser(&g_data.tokens);
+		print_token_vector(&g_data.tokens);
+		ft_vec_free(&g_data.tokens, clear_token);
 		return (0);
 	}
 	else if (ac == 1)
-		loop(&tokens);
+		loop(&g_data.tokens);
 	else
 	{
 		printf("Too many arguments");
-		ft_vec_free(&tokens, clear_token);
+		ft_vec_free(&g_data.tokens, clear_token);
 	}
 	return (0);
 }
