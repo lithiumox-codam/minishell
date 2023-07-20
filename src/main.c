@@ -6,18 +6,18 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/20 14:05:25 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/20 15:51:07 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void check_leaks(void)
+void	check_leaks(void)
 {
 	system("leaks minishell");
 }
 
-static void debug(void)
+static void	debug(void)
 {
 	atexit(check_leaks);
 	printf("\033[1;32m●\n");
@@ -27,9 +27,9 @@ static void debug(void)
 	printf("\033[0m");
 }
 
-static void loop(t_vector *vec)
+static void	loop(t_vector *vec)
 {
-	char *input;
+	char	*input;
 
 	while (1)
 	{
@@ -37,7 +37,7 @@ static void loop(t_vector *vec)
 		if (!input)
 		{
 			free(input);
-			break;
+			break ;
 		}
 		add_history(input);
 		if (!ft_strcmp(input, "exit"))
@@ -46,6 +46,7 @@ static void loop(t_vector *vec)
 		{
 			if (!lexer(input, vec))
 				printf("lexer error");
+			parser(vec);
 			print_token_vector(vec);
 		}
 		free(input);
@@ -54,9 +55,9 @@ static void loop(t_vector *vec)
 	}
 }
 
-int main(int ac, char **av, char **env)
+int	main(int ac, char **av, char **env)
 {
-	t_vector tokens;
+	t_vector	tokens;
 
 	(void)env;
 	if (DEBUG)
@@ -69,6 +70,7 @@ int main(int ac, char **av, char **env)
 			printf("lexer error");
 			return (1);
 		}
+		parser(&tokens);
 		print_token_vector(&tokens);
 		ft_vec_free(&tokens, clear_token);
 		return (0);
