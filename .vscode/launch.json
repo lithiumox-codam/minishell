@@ -10,7 +10,7 @@
 			"name": "Debug",
 			"program": "${workspaceFolder}/minishell",
 			"args": [
-				"'hello' 1 2  '34'  grarg'5' 'laatste''echt' "
+				"'"
 			],
 			"cwd": "${workspaceFolder}"
 		}
