@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/13 17:41:00 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/20 16:51:32 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/20 17:15:53 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 typedef enum e_types
 {
 	UNKNOWN,
+	STRING,
 	DOUBLE_QUOTE,
 	SINGLE_QUOTE,
 	PARENTHESES,
@@ -43,7 +44,6 @@ typedef enum e_types
 	AND,
 	ENV,
 	DQ_ENV,
-	STRING,
 	O_REDIRECT,
 	I_REDIRECT,
 	O_HEREDOC,
