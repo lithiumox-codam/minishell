@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/07/20 16:30:15 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/20 16:46:36 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	err(char *err, char *cmd, int exit_code);
 void	parser(t_vector *vec);
 bool	is_encased_dq(char *str);
 bool	is_encased_sq(char *str);
+bool	is_encased_parentheses(char *str);
 bool	is_pipe(char *str);
 bool	is_r_redirect(char *str);
 bool	is_l_redirect(char *str);

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/13 17:41:00 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/20 16:32:57 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/20 16:51:32 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
  * @param DOUBLE_QUOTE (")
  * @param SINGLE_QUOTE (')
  * @param PIPE (|)
+ * @param PARENTHESES (())
  * @param SEMICOLON (;)
  * @param OR (||)
  * @param AND (&&)
@@ -35,6 +36,7 @@ typedef enum e_types
 	UNKNOWN,
 	DOUBLE_QUOTE,
 	SINGLE_QUOTE,
+	PARENTHESES,
 	PIPE,
 	SEMICOLON,
 	OR,

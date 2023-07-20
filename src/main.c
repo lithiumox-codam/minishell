@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/20 15:51:07 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/20 16:52:59 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,13 @@ static void	debug(void)
 	printf("\033[1;34m│\n");
 	printf("\033[0m");
 }
-
+/**
+ * @brief The main loop of the program
+ *
+ * @param vec The vector to store the tokens in
+ *
+ * @todo Add a way to exit the program but not the shell
+ */
 static void	loop(t_vector *vec)
 {
 	char	*input;
@@ -45,7 +51,7 @@ static void	loop(t_vector *vec)
 		else
 		{
 			if (!lexer(input, vec))
-				printf("lexer error");
+				return (free(input), ft_vec_free(vec, clear_token));
 			parser(vec);
 			print_token_vector(vec);
 		}
@@ -66,10 +72,7 @@ int	main(int ac, char **av, char **env)
 	if (ac == 2)
 	{
 		if (!lexer(av[1], &tokens))
-		{
-			printf("lexer error");
-			return (1);
-		}
+			return (ft_vec_free(&tokens, clear_token), 1);
 		parser(&tokens);
 		print_token_vector(&tokens);
 		ft_vec_free(&tokens, clear_token);
