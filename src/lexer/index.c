@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/19 13:32:55 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/20 17:02:59 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/20 17:26:16 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static bool	check_parantheses(char *str, size_t *i)
 	}
 	if (str[*i] == '\0')
 		return (false);
+	(*i)++;
 	return (true);
 }
 
