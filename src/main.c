@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/20 16:52:59 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/20 18:10:35 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static void	debug(void)
 	printf("\033[1;34m│\n");
 	printf("\033[0m");
 }
+
 /**
  * @brief The main loop of the program
  *

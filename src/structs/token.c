@@ -12,9 +12,9 @@
 
 #include <minishell.h>
 
-t_token *create_token(char *value, int type)
+t_token	*create_token(char *value, int type)
 {
-	t_token *token;
+	t_token	*token;
 
 	token = malloc(sizeof(t_token));
 	if (!token)
@@ -24,9 +24,9 @@ t_token *create_token(char *value, int type)
 	return (token);
 }
 
-void clear_token(void *data)
+void	clear_token(void *data)
 {
-	t_token *token;
+	t_token	*token;
 
 	token = (t_token *)data;
 	free(token->value);

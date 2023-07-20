@@ -17,10 +17,10 @@
  *
  * @param tokens t_vector of t_token structs
  */
-void print_token_vector(t_vector *tokens)
+void	print_token_vector(t_vector *tokens)
 {
-	t_token *token;
-	size_t i;
+	t_token	*token;
+	size_t	i;
 
 	i = 0;
 	while (i < tokens->lenght)

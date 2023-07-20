@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/07/20 17:01:08 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/20 18:11:23 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ bool	lexer(char *input, t_vector *vec);
 bool	create_string(char *str, size_t *i, t_vector *vec);
 bool	create_quote_string(char *str, size_t *i, t_vector *vec);
 bool	create_paran_string(char *str, size_t *i, t_vector *vec);
-
 
 /* structs */
 t_token	*create_token(char *value, int type);

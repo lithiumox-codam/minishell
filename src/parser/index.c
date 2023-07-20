@@ -6,12 +6,19 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 11:12:20 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/07/20 16:50:59 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/20 18:15:40 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
+/**
+ * @brief A cheeky way to return a struct with a function pointer and a type
+ *
+ * @return t_func_map* A pointer to a t_func_map struct
+ * @note The last element of the array is a struct with a NULL function pointer
+ * and a type of 0 so the parser knows when to stop looping over the array
+ */
 t_func_map	*return_map(void)
 {
 	t_func_map	*func_map;
@@ -34,17 +41,15 @@ t_func_map	*return_map(void)
 	func_map[12] = (t_func_map){NULL, 0};
 	return (func_map);
 }
-void	parser(t_vector *vec)
-{
-	t_token		*token;
-	t_func_map	*func_map;
-	size_t		j;
-	size_t		i;
 
-	func_map = return_map();
-	if (func_map == NULL)
-		return (err("Malloc failed", "parser", 1));
+void	parse_loop(t_vector *vec, t_func_map *func_map)
+{
+	t_token	*token;
+	size_t	i;
+	size_t	j;
+
 	i = 0;
+	j = 0;
 	while (i < vec->lenght)
 	{
 		token = (t_token *)ft_vec_get(vec, i);
@@ -52,13 +57,32 @@ void	parser(t_vector *vec)
 		{
 			j = 0;
 			while (func_map[j].func != NULL)
+			{
 				if (!func_map[j].func(token->value))
 					j++;
 				else
 					break ;
+			}
 			token->type = func_map[j].type;
 		}
 		i++;
 	}
+}
+
+/**
+ * @brief Parses the tokens in the vector
+ *
+ * @note The parser will only parse tokens that have the type 0 so make sure
+ * to set the type of the tokens to 0 before calling this function
+ * @param vec The vector containing the tokens
+ */
+void	parser(t_vector *vec)
+{
+	t_func_map	*func_map;
+
+	func_map = return_map();
+	if (func_map == NULL)
+		return (err("Malloc failed", "parser", 1));
+	parse_loop(vec, func_map);
 	free(func_map);
 }
