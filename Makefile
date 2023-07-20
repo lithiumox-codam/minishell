@@ -1,5 +1,5 @@
 NAME = minishell
-SRC = main check_input lexer/index utils/error structs/token
+SRC = main check_input lexer/index utils/error structs/token parser/index parser/quotes debug/print_vector
 SRCS = $(addsuffix .c, $(addprefix src/, $(SRC)))
 OBJS = $(patsubst src/%.c, build/%.o, $(SRCS))
 LIBFT = libft/libft.a
@@ -24,7 +24,7 @@ EMOJI_RUN = 🚀
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(READLINE) $(OBJS)
+$(NAME): $(LIBFT) $(OBJS)
 	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Compiling $(NAME)...$(COLOR_RESET)\t"
 	@cc $(OBJS) $(CODAM_FLAGS) $(if DEBUG, $(DEBUG_FLAGS)) -DDEBUG=$(DEBUG) $(LINKER) $(INCLUDES) $(LIBS) -o $@
 	@sleep 0.25
@@ -62,7 +62,7 @@ clean:
 fclean: clean
 	@printf "$(COLOR_INFO)$(EMOJI_CLEAN)  Removing executable...$(COLOR_RESET)\t"
 	@$(MAKE) -C libft fclean > /dev/null
-	@rm -f $(LIBS)
+	@rm -f libft/libft.a
 	@rm -f $(NAME)
 	@sleep 0.25
 	@printf "✅\n"
@@ -77,6 +77,8 @@ norm:
 re: fclean $(NAME)
 
 bonus: all
+
+readline: $(READLINE)
 
 module-update:
 	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Updating submodules...$(COLOR_RESET)\t"

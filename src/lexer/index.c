@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/19 13:32:55 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/20 12:19:25 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/20 13:36:55 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,14 @@ static bool create_string(char *str, size_t *i, t_vector *vec)
 }
 /**
  * @todo "        hello'gmarmopg    grnrga'     'hey'"; check spaces runback
-*/
+ */
 static bool create_quote_string(char *str, size_t *i, t_vector *vec)
 {
 	size_t occur_right;
 	char c;
 	char *value;
 
-	if ((*i) > 0 && (str[(*i) - 1] != ' ' && str[(*i) - 1] != '\''  && str[(*i) - 1] != '\"' ))
+	if ((*i) > 0 && (str[(*i) - 1] != ' ' && str[(*i) - 1] != '\'' && str[(*i) - 1] != '\"'))
 		create_string(str, i, vec);
 	c = str[*i];
 	occur_right = (*i) + 1;
@@ -83,18 +83,14 @@ static bool create_quote_string(char *str, size_t *i, t_vector *vec)
 	return (true);
 }
 
-
-
 bool lexer(char *input, t_vector *vec)
 {
-	size_t	i;
+	size_t i;
 
-	if (!input)
-		return (false);
 	i = 0;
 	while (input[i])
 	{
-		if (input[i] == '\"' || input[i] == '\'' )
+		if (input[i] == '\"' || input[i] == '\'')
 		{
 			if (!check_next_quote(&input[i]))
 				return (err("unfinished quote", NULL, 1), false);
@@ -102,8 +98,10 @@ bool lexer(char *input, t_vector *vec)
 				return (err("malloc", NULL, 1), false);
 		}
 		else if (input[i] == ' ')
+		{
 			if (!create_string(input, &i, vec))
 				return (err("malloc", NULL, 1), false);
+		}
 		else
 			i++;
 	}

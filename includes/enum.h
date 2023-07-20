@@ -6,12 +6,12 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/13 17:41:00 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/18 22:45:44 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/20 11:24:07 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ENUM_H
-# define ENUM_H
+#define ENUM_H
 
 /**
  * @brief The enum for the different types of tokens
@@ -30,6 +30,7 @@
  */
 typedef enum e_types
 {
+	UNKNOWN,
 	DOUBLE_QUOTE,
 	SINGLE_QUOTE,
 	PIPE,
@@ -41,6 +42,6 @@ typedef enum e_types
 	O_REDIRECT,
 	I_REDIRECT,
 	HERE_DOC
-}	t_types;
+} t_types;
 
 #endif
