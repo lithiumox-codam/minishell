@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/20 20:38:55 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/20 21:15:12 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	main(int ac, char **av, char **env)
 	{
 		if (!lexer(av[1], &g_data.tokens))
 			return (ft_vec_free(&g_data.tokens, clear_token), 1);
-		// parser(&g_data.tokens);
+		parser(&g_data.tokens);
 		print_token_vector(&g_data.tokens);
 		ft_vec_free(&g_data.tokens, clear_token);
 		return (0);
