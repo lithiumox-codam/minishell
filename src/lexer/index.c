@@ -6,19 +6,19 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/19 13:32:55 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/20 17:26:16 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/20 18:33:58 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static bool check_next_quote(char *str, size_t *i)
+static bool	check_next_quote(char *str, size_t *i)
 {
-	char quote;
+	char	quote;
 
 	quote = str[(*i)];
 	(*i)++;
-	while (str[(*i)]!= '\0' && str[(*i)] != quote)
+	while (str[(*i)] != '\0' && str[(*i)] != quote)
 		(*i)++;
 	if (str[(*i)] == '\0')
 		return (false);
@@ -29,7 +29,7 @@ static bool check_next_quote(char *str, size_t *i)
 static bool	check_parantheses(char *str, size_t *i)
 {
 	(*i)++;
-	while(str[*i] != '\0' && str[*i] != ')')
+	while (str[*i] != '\0' && str[*i] != ')')
 	{
 		if (str[*i] == '(')
 		{
@@ -42,7 +42,7 @@ static bool	check_parantheses(char *str, size_t *i)
 				return (false);
 		}
 		else
-		 (*i)++;
+			(*i)++;
 	}
 	if (str[*i] == '\0')
 		return (false);
@@ -85,14 +85,14 @@ bool	make_string(char *str, size_t *i, t_vector *vec)
 	return (true);
 }
 
-bool lexer(char *input, t_vector *vec)
+bool	lexer(char *input, t_vector *vec)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (input[i])
 	{
-		if (input[i] == '\"' || input[i] == '\'' || input[i] == '(' || input[i] == ')')
+		if (checkchar(input[i], "\"\'()") == 1)
 		{
 			if (!check_delimiters(&input[i]))
 				return (err("bad quote(s) or parantheses", NULL, 1), false);
@@ -107,7 +107,7 @@ bool lexer(char *input, t_vector *vec)
 		else
 			i++;
 	}
-	if (input[i - 1] != ' ' && input[i - 1] != '\'' && input[i - 1] != '\"' && input[i - 1] != ')')
+	if (checkchar(input[i], "\"\') ") == 0)
 		if (!create_string(input, &i, vec))
 			return (err("malloc", NULL, 1), false);
 	return (true);

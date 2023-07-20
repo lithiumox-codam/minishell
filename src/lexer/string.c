@@ -6,39 +6,48 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 13:41:35 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/20 16:35:25 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/20 18:30:31 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-bool create_string(char *str, size_t *i, t_vector *vec)
+typedef struct s_local
 {
-	size_t left;
-	size_t right;
-	char *value;
+	int	left;
+	int	right;
+}	t_local;
 
-	right = (*i);
-	while (right > 0 && str[right] == ' ')
-		right--;
-	if (right > 0 && (str[right] == '\'' || str[right] == '\"' || str[right] == '('))
-		right--;
-	left = right;
-	if (left > 0)
-		left--;
-	if (left != 0)
-	{
-		while (left != 0 &&
-			   (str[left] != ' ' && str[left] != '\'' && str[left] != '\"' && str[left] != ')'))
-			left--;
-		if (str[left] == ' ' || str[left] == '\'' || str[left] == '\"' || str[left] == ')')
-			left++;
-		value = ft_substr(str, left, right - left + 1);
-		if (!value)
-			return (false);
-		if (!ft_vec_push(vec, (void *)create_token(value, 0)))
-			return (false);
-	}
+static bool	build_string(char *str, size_t *i, t_vector *vec, t_local x)
+{
+	char	*value;
+
+	while (x.left != 0 && checkchar(str[*i], "\'\") ") == 0)
+		x.left--;
+	if (checkchar(str[*i], "\'\") ") == 1)
+		x.left++;
+	value = ft_substr(str, x.left, x.right - x.left + 1);
+	if (!value)
+		return (false);
+	if (!ft_vec_push(vec, (void *)create_token(value, 0)))
+		return (false);
+	return (true);
+}
+
+bool	create_string(char *str, size_t *i, t_vector *vec)
+{
+	t_local	x;
+
+	x.right = (*i);
+	while (x.right > 0 && str[x.right] == ' ')
+		x.right--;
+	if (x.right > 0 && checkchar(str[*i], "\'\"(") == 1)
+		x.right--;
+	x.left = x.right;
+	if (x.left > 0)
+		x.left--;
+	if (x.left != 0)
+		build_string(str, i, vec, x);
 	while (str[*i] == ' ' && str[*i])
 		(*i)++;
 	return (true);
@@ -47,13 +56,13 @@ bool create_string(char *str, size_t *i, t_vector *vec)
 /**
  * @todo "        hello'gmarmopg    grnrga'     'hey'"; check spaces runback
 */
-bool create_quote_string(char *str, size_t *i, t_vector *vec)
+bool	create_quote_string(char *str, size_t *i, t_vector *vec)
 {
-	size_t occur_right;
-	char c;
-	char *value;
+	size_t	occur_right;
+	char	c;
+	char	*value;
 
-	if ((*i) > 0 && (str[(*i) - 1] != ' ' && str[(*i) - 1] != '\''  && str[(*i) - 1] != '\"' && str[(*i) - 1] != ')'))
+	if ((*i) > 0 && checkchar(str[*i], "\'\") ") == 0)
 		create_string(str, i, vec);
 	c = str[*i];
 	occur_right = (*i) + 1;
@@ -71,14 +80,13 @@ bool create_quote_string(char *str, size_t *i, t_vector *vec)
 	return (true);
 }
 
-
-bool create_paran_string(char *str, size_t *i, t_vector *vec)
+bool	create_paran_string(char *str, size_t *i, t_vector *vec)
 {
-	size_t occur_right;
-	int	parantheses;
-	char *value;
+	size_t	occur_right;
+	int		parantheses;
+	char	*value;
 
-	if ((*i) > 0 && (str[(*i) - 1] != ' ' && str[(*i) - 1] != '\''  && str[(*i) - 1] != '\"' && str[(*i) - 1] != ')'))
+	if ((*i) > 0 && checkchar(str[*i], "\'\") ") == 0)
 		create_string(str, i, vec);
 	occur_right = (*i) + 1;
 	parantheses = 1;
