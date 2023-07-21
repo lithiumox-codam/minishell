@@ -8,10 +8,10 @@
 			"type": "lldb",
 			"request": "launch",
 			"name": "Debug",
-			"program": "${workspaceFolder}/minishell",
+			"program": "${workspaceFolder}/./minishell",
 			"preLaunchTask": "build",
 			"args": [
-				"city test 'test' > < >> << || | && () "
+				"hello|test|split<these&tokens&&twice"
 			],
 			"cwd": "${workspaceFolder}"
 		}

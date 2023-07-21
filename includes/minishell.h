@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/07/21 19:48:33 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/21 19:58:27 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ bool	check_quotes_parantheses(char *input);
 bool	create_string(char *str, size_t *i, t_vector *vec);
 bool	create_quote_string(char *str, size_t *i, t_vector *vec);
 bool	create_paran_string(char *str, size_t *i, t_vector *vec);
+bool	operator_split(t_vector *vec);
 
 /* structs */
 t_token	*create_token(char *value, t_types type);

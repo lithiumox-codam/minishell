@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/21 17:45:26 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/21 18:18:07 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,11 +85,13 @@ int	main(int ac, char **av, char **env)
 	if (ac == 2)
 	{
 		if (!lexer(av[1], &g_data.tokens))
-			return (ft_vec_free(&g_data.tokens), 1);
+			return (free_global(true), 1);
 		parser(&g_data.tokens);
+		if (!operator_split(&g_data.tokens))
+			return (free_global(true), 1);
 		print_vector(&g_data.tokens, print_token);
-		if (DEBUG)
-			print_vector(&g_data.env, print_env);
+		// if (DEBUG)
+		// 	print_vector(&g_data.env, print_env);
 		free_global(false);
 		return (0);
 	}
