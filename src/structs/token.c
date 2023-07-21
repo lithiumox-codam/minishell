@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/19 22:36:40 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/21 04:29:02 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/21 17:44:48 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
  * @param type The type of the token
  * @return t_token* The created token
  */
-t_token	*create_token(char *value, int type)
+t_token	*create_token(char *value, t_types type)
 {
 	t_token	*token;
 
@@ -49,7 +49,7 @@ void	print_token(void *data, size_t i)
 	printf("\033[1;34m│\n");
 	printf("├── Token %zu:\n", i);
 	printf("│   ├── Value: %s\n", token->value);
-	printf("│   ├── Type: %i\n", token->type);
+	printf("│   ├── Type: %s\n", print_type(token->type));
 	printf("│   └── Adress: %p\n", token);
 	printf("\033[1;34m│\n");
 	printf("\033[0m");

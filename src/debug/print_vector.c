@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 13:51:45 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/21 03:47:23 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/21 17:43:28 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,50 @@ void	print_vector(t_vector *vec, void (*printer)(void *, size_t))
 		printer(vec->get(vec, i), i);
 		i++;
 	}
+}
+
+static char	*extra_types(t_types type)
+{
+	if (type == AND)
+		return ("AND");
+	if (type == ENV)
+		return ("ENV");
+	if (type == DQ_ENV)
+		return ("DQ_ENV");
+	if (type == STRING)
+		return ("STRING");
+	if (type == O_REDIRECT)
+		return ("O_REDIRECT");
+	if (type == I_REDIRECT)
+		return ("I_REDIRECT");
+	if (type == O_HEREDOC)
+		return ("O_HEREDOC");
+	if (type == I_HEREDOC)
+		return ("I_HEREDOC");
+	return ("");
+}
+
+/**
+ * @brief Prints type names when provided with a token type
+ *
+ * @param type The t_types enum
+ * @return char* The name of the type
+ */
+char	*print_type(t_types type)
+{
+	if (type == DOUBLE_QUOTE)
+		return ("DOUBLE_QUOTE");
+	if (type == SINGLE_QUOTE)
+		return ("SINGLE_QUOTE");
+	if (type == PIPE)
+		return ("PIPE");
+	if (type == PARENTHESES)
+		return ("PARENTHESES");
+	if (type == SEMICOLON)
+		return ("SEMICOLON");
+	if (type == OR)
+		return ("OR");
+	if (extra_types(type)[0] != '\0')
+		return (extra_types(type));
+	return ("UNKNOWN");
 }

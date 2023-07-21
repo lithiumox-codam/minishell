@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 11:12:20 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/07/21 04:35:10 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/21 17:48:58 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	parse_loop(t_vector *vec, t_func_map *func_map)
 	while (i < vec->lenght)
 	{
 		token = (t_token *)vec->get(vec, i);
-		if (token->type == 0)
+		if (token->type == UNKNOWN)
 		{
 			j = 0;
 			while (func_map[j].func != NULL)
@@ -89,5 +89,24 @@ void	parser(t_vector *vec)
 	if (func_map == NULL)
 		return (err("Malloc failed", "parser", 1));
 	parse_loop(vec, func_map);
+	free(func_map);
+}
+
+void	parse_one(t_token *token)
+{
+	t_func_map	*func_map;
+
+	func_map = return_map();
+	if (func_map == NULL)
+		return (err("Malloc failed", "parser", 1));
+	while (func_map->func != NULL)
+	{
+		if (func_map->func(token->value))
+		{
+			token->type = func_map->type;
+			break ;
+		}
+		func_map++;
+	}
 	free(func_map);
 }
