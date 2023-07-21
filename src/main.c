@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/21 04:11:47 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/21 04:14:54 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	loop(t_vector *vec)
 		}
 		add_history(input);
 		if (!ft_strcmp(input, "exit"))
-			return (free(input), ft_vec_free(vec));
+			return (free(input), ft_vec_free(vec), ft_vec_free(&g_data.env));
 		else
 		{
 			if (!lexer(input, vec))
@@ -73,21 +73,10 @@ static void	loop(t_vector *vec)
 		}
 		free(input);
 		ft_vec_free(vec);
+		ft_vec_free(&g_data.env);
 		ft_vec_init(vec, 5, sizeof(t_token), clear_token);
 	}
 }
-
-// static bool	is_path(void *data)
-// {
-// 	char	*str;
-
-// 	str = ((t_env *)data)->key;
-// 	if (ft_strcmp(str, "PATH") == 0)
-// 		return (true);
-// 	return (false);
-// }
-
-// print_env((void *)g_data.env.find(&g_data.env, is_path), 0);
 
 int	main(int ac, char **av, char **env)
 {
