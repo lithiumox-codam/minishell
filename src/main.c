@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/21 03:40:06 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/21 04:11:47 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@ t_global	g_data;
 
 void	check_leaks(void)
 {
+	printf("\033[1;10m●\n");
+	printf("\033[1;12m│\n");
+	printf("├── Checking for leaks 💦\n");
+	printf("\033[1;12m│\n");
+	printf("\033[0m\n");
 	system("leaks minishell");
 }
 
