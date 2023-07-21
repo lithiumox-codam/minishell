@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/21 02:49:36 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/21 03:40:06 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ static void	debug(void)
 	printf("\033[0m");
 }
 
-static bool	token_is_pipe(void *data)
-{
-	t_token	*token;
+// static bool	token_is_pipe(void *data)
+// {
+// 	t_token	*token;
 
-	token = (t_token *)data;
-	return (token->type == PIPE);
-}
+// 	token = (t_token *)data;
+// 	return (token->type == PIPE);
+// }
 
 /**
  * @brief The main loop of the program
@@ -58,37 +58,46 @@ static void	loop(t_vector *vec)
 		}
 		add_history(input);
 		if (!ft_strcmp(input, "exit"))
-			return (free(input), ft_vec_free(vec, clear_token));
+			return (free(input), ft_vec_free(vec));
 		else
 		{
 			if (!lexer(input, vec))
-				return (free(input), ft_vec_free(vec, clear_token));
+				return (free(input), ft_vec_free(vec));
 			parser(vec);
-			print_token_vector(vec);
+			print_vector(vec, print_token);
 		}
 		free(input);
-		printf("\n\n\n\amount of pipes: %zu\n\n\n", ft_vec_count(vec,
-					token_is_pipe));
-		ft_vec_free(vec, clear_token);
+		ft_vec_free(vec);
 		ft_vec_init(vec, 5, sizeof(t_token), clear_token);
 	}
 }
 
+// static bool	is_path(void *data)
+// {
+// 	char	*str;
+
+// 	str = ((t_env *)data)->key;
+// 	if (ft_strcmp(str, "PATH") == 0)
+// 		return (true);
+// 	return (false);
+// }
+
+// print_env((void *)g_data.env.find(&g_data.env, is_path), 0);
+
 int	main(int ac, char **av, char **env)
 {
-	(void)env;
 	if (DEBUG)
 		debug();
-	init();
+	init(env);
 	if (ac == 2)
 	{
 		if (!lexer(av[1], &g_data.tokens))
-			return (ft_vec_free(&g_data.tokens, clear_token), 1);
+			return (ft_vec_free(&g_data.tokens), 1);
 		parser(&g_data.tokens);
-		print_token_vector(&g_data.tokens);
-		printf("\n\n\n\amount of pipes: %zu\n\n\n", ft_vec_count(&g_data.tokens,
-					token_is_pipe));
-		ft_vec_free(&g_data.tokens, clear_token);
+		print_vector(&g_data.tokens, print_token);
+		print_vector(&g_data.env, print_env);
+		ft_vec_free(&g_data.env);
+		ft_vec_free(&g_data.tokens);
 		return (0);
 	}
 	else if (ac == 1)
@@ -96,7 +105,7 @@ int	main(int ac, char **av, char **env)
 	else
 	{
 		printf("Too many arguments");
-		ft_vec_free(&g_data.tokens, clear_token);
+		ft_vec_free(&g_data.tokens);
 	}
 	return (0);
 }

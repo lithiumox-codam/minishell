@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 13:41:35 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/20 21:12:29 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/21 03:03:11 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static bool	build_string(char *str, t_vector *vec, t_local x)
 	value = ft_substr(str, x.left, x.right - x.left + 1);
 	if (!value)
 		return (false);
-	if (!ft_vec_push(vec, (void *)create_token(value, 0)))
+	if (!vec->push(vec, (void *)create_token(value, 0)))
 		return (false);
 	return (true);
 }
@@ -72,7 +72,7 @@ bool	create_quote_string(char *str, size_t *i, t_vector *vec)
 	value = ft_substr(str, *i, occur_right - (*i));
 	if (!value)
 		return (false);
-	if (!ft_vec_push(vec, (void *)create_token(value, 0)))
+	if (!vec->push(vec, (void *)create_token(value, 0)))
 		return (false);
 	*i = occur_right;
 	while (str[*i] == ' ' && str[*i])
@@ -101,7 +101,7 @@ bool	create_paran_string(char *str, size_t *i, t_vector *vec)
 	value = ft_substr(str, *i, occur_right - (*i));
 	if (!value)
 		return (false);
-	if (!ft_vec_push(vec, (void *)create_token(value, 0)))
+	if (!vec->push(vec, (void *)create_token(value, 0)))
 		return (false);
 	*i = occur_right;
 	while (str[*i] == ' ' && str[*i])

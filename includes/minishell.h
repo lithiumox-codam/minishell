@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/07/20 20:28:56 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/21 03:21:24 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 #  define DEBUG 0
 # endif
 
-bool	init(void);
+bool	init(char **envp);
 
 /* input_check */
 bool	check_quotes_parantheses(char *input);
@@ -37,7 +37,11 @@ bool	create_paran_string(char *str, size_t *i, t_vector *vec);
 
 /* structs */
 t_token	*create_token(char *value, int type);
+void	print_token(void *data, size_t i);
 void	clear_token(void *data);
+t_env	*create_env(char *key, char *value);
+void	print_env(void *data, size_t i);
+void	clear_env(void *data);
 /* utils */
 void	err(char *err, char *cmd, int exit_code);
 
@@ -55,6 +59,5 @@ bool	contains_env_var(char *str);
 bool	is_or(char *str);
 bool	is_and(char *str);
 /* debug */
-void	print_token_vector(t_vector *tokens);
-
+void	print_vector(t_vector *vec, void (*printer)(void *, size_t));
 #endif
