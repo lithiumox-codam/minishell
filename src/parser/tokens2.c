@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 16:29:02 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/21 04:31:43 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/21 18:23:15 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,13 @@ bool	is_and(char *str)
 bool	is_or(char *str)
 {
 	if (ft_strcmp(str, "||") == 0)
+		return (true);
+	return (false);
+}
+
+bool	is_env_questionmark(char *str)
+{
+	if (ft_strncmp(str, "$?", 2) == 0)
 		return (true);
 	return (false);
 }

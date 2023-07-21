@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 13:51:45 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/21 17:43:28 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/21 18:25:14 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ char	*print_type(t_types type)
 		return ("SEMICOLON");
 	if (type == OR)
 		return ("OR");
+	if (type == ENV_QUESTION)
+		return ("ENV_QUESTION");
 	if (extra_types(type)[0] != '\0')
 		return (extra_types(type));
 	return ("UNKNOWN");

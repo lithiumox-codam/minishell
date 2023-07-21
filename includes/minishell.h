@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/07/21 17:49:32 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/21 18:24:37 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ bool	is_l_hd(char *str);
 bool	contains_env_var(char *str);
 bool	is_or(char *str);
 bool	is_and(char *str);
-
+bool	is_env_questionmark(char *str);
 /* debug */
 void	print_vector(t_vector *vec, void (*printer)(void *, size_t));
 void	print_token(void *data, size_t i);
