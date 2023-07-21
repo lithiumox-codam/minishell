@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/20 21:15:12 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/21 02:49:36 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,14 @@ static void	debug(void)
 	printf("├── Debug mode enabled\n");
 	printf("\033[1;34m│\n");
 	printf("\033[0m");
+}
+
+static bool	token_is_pipe(void *data)
+{
+	t_token	*token;
+
+	token = (t_token *)data;
+	return (token->type == PIPE);
 }
 
 /**
@@ -59,8 +67,10 @@ static void	loop(t_vector *vec)
 			print_token_vector(vec);
 		}
 		free(input);
+		printf("\n\n\n\amount of pipes: %zu\n\n\n", ft_vec_count(vec,
+					token_is_pipe));
 		ft_vec_free(vec, clear_token);
-		ft_vec_init(vec, 5, sizeof(t_token));
+		ft_vec_init(vec, 5, sizeof(t_token), clear_token);
 	}
 }
 
@@ -76,6 +86,8 @@ int	main(int ac, char **av, char **env)
 			return (ft_vec_free(&g_data.tokens, clear_token), 1);
 		parser(&g_data.tokens);
 		print_token_vector(&g_data.tokens);
+		printf("\n\n\n\amount of pipes: %zu\n\n\n", ft_vec_count(&g_data.tokens,
+					token_is_pipe));
 		ft_vec_free(&g_data.tokens, clear_token);
 		return (0);
 	}
