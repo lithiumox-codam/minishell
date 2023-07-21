@@ -6,12 +6,20 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/19 13:32:55 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/20 21:13:35 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/21 04:40:38 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
+/**
+ * @brief Checks if the next quote is valid
+ *
+ * @param str The string to check
+ * @param i The index of the string to check
+ * @return true The next quote is valid
+ * @return false The next quote is not valid
+ */
 static bool	check_next_quote(char *str, size_t *i)
 {
 	char	quote;
@@ -26,6 +34,14 @@ static bool	check_next_quote(char *str, size_t *i)
 	return (true);
 }
 
+/**
+ * @brief Checks if the parantheses are valid
+ *
+ * @param str The string to check
+ * @param i The index of the string to check
+ * @return true The parantheses are valid
+ * @return false The parantheses are not valid
+ */
 static bool	check_parantheses(char *str, size_t *i)
 {
 	(*i)++;
@@ -50,6 +66,13 @@ static bool	check_parantheses(char *str, size_t *i)
 	return (true);
 }
 
+/**
+ * @brief Checks if the delimiters are valid
+ *
+ * @param str The string to check
+ * @return true The delimiters are valid
+ * @return false The delimiters are not valid
+ */
 static bool	check_delimiters(char *str)
 {
 	size_t	i;
@@ -70,6 +93,15 @@ static bool	check_delimiters(char *str)
 	return (true);
 }
 
+/**
+ * @brief Creates a string from another string
+ *
+ * @param str The string to create a string from
+ * @param i The index of the string to create
+ * @param vec The vector to store the string in
+ * @return true The string was succesfully stored
+ * @return false The string could not be stored
+ */
 bool	make_string(char *str, size_t *i, t_vector *vec)
 {
 	if (str[*i] == '\"' || str[*i] == '\'')
@@ -85,6 +117,16 @@ bool	make_string(char *str, size_t *i, t_vector *vec)
 	return (true);
 }
 
+/**
+ * @brief Splits a string into tokens
+ *
+ * @param input	The string to split
+ * @param vec The vector to store the tokens in
+ * @return true The string was succesfully split
+ * @return false The string could not be split
+ *
+ * @note The vector must be initialized before calling this function
+ */
 bool	lexer(char *input, t_vector *vec)
 {
 	size_t	i;

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 11:15:16 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/07/20 20:30:18 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/21 04:24:55 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
  * @param value The value of the token
  * @param prev The previous token
  * @param next The next token
+ *
+ * @note The value is malloced
  */
 typedef struct s_token
 {
@@ -28,6 +30,14 @@ typedef struct s_token
 	char		*value;
 }				t_token;
 
+/**
+ * @brief The struct for the environment variables
+ *
+ * @param key The key of the variable
+ * @param value The value of the variable
+ *
+ * @note The key and value are both malloced
+ */
 typedef struct env
 {
 	char		*key;
@@ -35,11 +45,11 @@ typedef struct env
 }				t_env;
 
 /**
- * @brief THe strt for signals
+ * @brief The struct for signals
  *
- * @param quit The quit signal
- * @param interrupt The interrupt signal
- * @param pipe The pipe signal
+ * @param quit The quit signal (ctrl + D)
+ * @param inte The interrupt signal (ctrl + C)
+ * @param pipe The pipe signal (ctrl + \)
  */
 typedef struct s_signal
 {

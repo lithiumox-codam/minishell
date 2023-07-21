@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/07/21 03:21:24 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/21 04:20:30 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,7 @@ bool	is_or(char *str);
 bool	is_and(char *str);
 /* debug */
 void	print_vector(t_vector *vec, void (*printer)(void *, size_t));
+
+/* global */
+void	free_global(bool exit);
 #endif

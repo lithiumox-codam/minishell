@@ -6,18 +6,30 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 13:41:35 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/21 03:03:11 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/21 04:40:27 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
+/**
+ * @brief Struct to store the left and right index of a string
+ */
 typedef struct s_local
 {
 	int		left;
 	int		right;
 }			t_local;
 
+/**
+ * @brief Builds a string from a given string
+ *
+ * @param str The string to build from
+ * @param vec The vector to push the string to
+ * @param x The left and right index of the string
+ * @return true The string was built and pushed to the vector
+ * @return false The string was not built and not pushed to the vector
+ */
 static bool	build_string(char *str, t_vector *vec, t_local x)
 {
 	char	*value;
@@ -34,6 +46,15 @@ static bool	build_string(char *str, t_vector *vec, t_local x)
 	return (true);
 }
 
+/**
+ * @brief Create a string from different characters
+ *
+ * @param str The string to create from
+ * @param i The index of the string to create from
+ * @param vec The vector to push the string to
+ * @return true The string was created and pushed to the vector
+ * @return false The string was not created and not pushed to the vector
+ */
 bool	create_string(char *str, size_t *i, t_vector *vec)
 {
 	t_local	x;
@@ -54,8 +75,14 @@ bool	create_string(char *str, size_t *i, t_vector *vec)
 }
 
 /**
- * @todo "        hello'gmarmopg    grnrga'     'hey'"; check spaces runback
-*/
+ * @brief Create a quote string object
+ *
+ * @param str The string to create from
+ * @param i The index of the string to create from
+ * @param vec The vector to push the string to
+ * @return true The string was created and pushed to the vector
+ * @return false The string was not created and not pushed to the vector
+ */
 bool	create_quote_string(char *str, size_t *i, t_vector *vec)
 {
 	size_t	occur_right;
@@ -80,6 +107,15 @@ bool	create_quote_string(char *str, size_t *i, t_vector *vec)
 	return (true);
 }
 
+/**
+ * @brief Create a paran string object
+ *
+ * @param str The string to create from
+ * @param i The index of the string to create from
+ * @param vec The vector to push the string to
+ * @return true The string was created and pushed to the vector
+ * @return false The string was not created and not pushed to the vector
+ */
 bool	create_paran_string(char *str, size_t *i, t_vector *vec)
 {
 	size_t	occur_right;

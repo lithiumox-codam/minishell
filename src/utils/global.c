@@ -1,30 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   error.c                                            :+:    :+:            */
+/*   global.c                                           :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/07/19 21:42:24 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/21 04:41:35 by mdekker/jde   ########   odam.nl         */
+/*   Created: 2023/07/21 04:17:23 by mdekker/jde   #+#    #+#                 */
+/*   Updated: 2023/07/21 04:25:46 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
+extern t_global	g_data;
+
 /**
- * @brief Prints an error message
+ * @brief Frees the global variables
  *
- * @param err The error message
- * @param cmd The command that caused the error
- * @param exit_code The exit code of the error
+ * @param exit If is true, the exit status will be freed
  */
-void	err(char *err, char *cmd, int exit_code)
+void	free_global(bool exit)
 {
-	printf("\033[1;31m");
-	printf("❗️ Error: %s\n", err);
-	if (cmd)
-		printf("In command: %s\n", cmd);
-	printf("Exit code: %d\n", exit_code);
-	printf("\033[0m");
+	ft_vec_free(&g_data.tokens);
+	ft_vec_free(&g_data.env);
+	if (exit)
+		free(g_data.exit_status);
 }

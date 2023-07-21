@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/21 04:14:54 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/21 04:21:16 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	loop(t_vector *vec)
 		}
 		add_history(input);
 		if (!ft_strcmp(input, "exit"))
-			return (free(input), ft_vec_free(vec), ft_vec_free(&g_data.env));
+			return (free(input), free_global(true));
 		else
 		{
 			if (!lexer(input, vec))
@@ -72,8 +72,7 @@ static void	loop(t_vector *vec)
 			print_vector(vec, print_token);
 		}
 		free(input);
-		ft_vec_free(vec);
-		ft_vec_free(&g_data.env);
+		free_global(false);
 		ft_vec_init(vec, 5, sizeof(t_token), clear_token);
 	}
 }
@@ -90,8 +89,7 @@ int	main(int ac, char **av, char **env)
 		parser(&g_data.tokens);
 		print_vector(&g_data.tokens, print_token);
 		print_vector(&g_data.env, print_env);
-		ft_vec_free(&g_data.env);
-		ft_vec_free(&g_data.tokens);
+		free_global(false);
 		return (0);
 	}
 	else if (ac == 1)
@@ -99,7 +97,7 @@ int	main(int ac, char **av, char **env)
 	else
 	{
 		printf("Too many arguments");
-		ft_vec_free(&g_data.tokens);
+		free_global(true);
 	}
 	return (0);
 }

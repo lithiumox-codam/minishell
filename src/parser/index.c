@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 11:12:20 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/07/21 02:59:56 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/21 04:35:10 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_func_map	*return_map(void)
 {
 	t_func_map	*func_map;
 
-	func_map = (t_func_map *)malloc(sizeof(t_func_map) * 13);
+	func_map = (t_func_map *)malloc(sizeof(t_func_map) * 12);
 	if (func_map == NULL)
 		return (NULL);
 	func_map[0] = (t_func_map){is_encased_dq, DOUBLE_QUOTE};
@@ -38,10 +38,15 @@ t_func_map	*return_map(void)
 	func_map[9] = (t_func_map){is_r_hd, O_HEREDOC};
 	func_map[10] = (t_func_map){is_l_hd, I_HEREDOC};
 	func_map[11] = (t_func_map){NULL, STRING};
-	func_map[12] = (t_func_map){NULL, 0};
 	return (func_map);
 }
 
+/**
+ * @brief Loops over the tokens in the vector and parses them
+ *
+ * @param vec The vector containing the tokens
+ * @param func_map The array of structs with function pointers and types
+ */
 void	parse_loop(t_vector *vec, t_func_map *func_map)
 {
 	t_token	*token;
