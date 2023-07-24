@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/24 10:21:28 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/24 20:46:53 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_global	g_data;
 
-void	check_leaks(void)
+static void	check_leaks(void)
 {
 	printf("\033[1;10m●\n");
 	printf("\033[1;12m│\n");
@@ -34,20 +34,10 @@ static void	debug(void)
 	printf("\033[0m");
 }
 
-// static bool	token_is_pipe(void *data)
-// {
-// 	t_token	*token;
-
-// 	token = (t_token *)data;
-// 	return (token->type == PIPE);
-// }
-
 /**
  * @brief The main loop of the program
  *
  * @param vec The vector to store the tokens in
- *
- * @todo Add a way to exit the program but not the shell
  */
 static void	loop(t_vector *vec)
 {
@@ -67,7 +57,7 @@ static void	loop(t_vector *vec)
 		else
 		{
 			if (!lexer(input, vec))
-				return (free(input), ft_vec_free(vec));
+				return (free(input), free_global(true));
 			parser(vec);
 			print_vector(vec, print_token);
 		}
@@ -81,7 +71,8 @@ int	main(int ac, char **av, char **env)
 {
 	if (DEBUG)
 		debug();
-	init(env);
+	if (!init(env))
+		return (1);
 	if (ac == 2)
 	{
 		if (!lexer(av[1], &g_data.tokens))
@@ -90,8 +81,8 @@ int	main(int ac, char **av, char **env)
 		if (!operator_split(&g_data.tokens))
 			return (free_global(true), 1);
 		print_vector(&g_data.tokens, print_token);
-		// if (DEBUG)
-		// 	print_vector(&g_data.env, print_env);
+		if (DEBUG)
+			print_vector(&g_data.env, print_env);
 		free_global(false);
 		return (0);
 	}

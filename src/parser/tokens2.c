@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 16:29:02 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/21 19:48:27 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/24 11:58:33 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
  */
 bool	contains_env_var(char *str)
 {
+	if (str[0] == '\0')
+		return (false);
 	if (str[0] == '$')
 		return (true);
 	return (false);
@@ -35,6 +37,8 @@ bool	contains_env_var(char *str)
  */
 bool	is_and(char *str)
 {
+	if (str[0] == '\0')
+		return (false);
 	if (ft_strcmp(str, "&&") == 0)
 		return (true);
 	return (false);
@@ -49,6 +53,8 @@ bool	is_and(char *str)
  */
 bool	is_or(char *str)
 {
+	if (str[0] == '\0')
+		return (false);
 	if (ft_strcmp(str, "||") == 0)
 		return (true);
 	return (false);
