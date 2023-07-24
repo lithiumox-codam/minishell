@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/21 13:06:18 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/24 10:43:36 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/24 11:39:00 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,11 +161,13 @@ bool	operator_split(t_vector *vec)
 		if (token->type == STRING && find_operator(token))
 		{
 			array = split(token);
-			if (!array || !vec->set(vec, i, array[0]))
+			printf("array: %s\n", array[0]);
+			if (!array || !vec->remove(vec, i))
 				return (err("malloc", NULL, 1), false);
 			j = 0;
 			while (array[j])
 			{
+				printf("array: %s\n", array[j]);
 				token = create_token(array[j], UNKNOWN);
 				if (!token || !vec->insert(vec, i + j, token))
 					return (err("malloc", NULL, 1), false);
