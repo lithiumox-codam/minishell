@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/24 20:46:53 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/29 14:32:28 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,20 @@ static void	loop(t_vector *vec)
 	}
 }
 
+static bool	find_strings(void *data)
+{
+	t_token	*token;
+
+	token = (t_token *)data;
+	if (token->type == STRING)
+		return (true);
+	return (false);
+}
+
 int	main(int ac, char **av, char **env)
 {
+	t_found	**found;
+
 	if (DEBUG)
 		debug();
 	if (!init(env))
@@ -78,11 +90,30 @@ int	main(int ac, char **av, char **env)
 		if (!lexer(av[1], &g_data.tokens))
 			return (free_global(true), 1);
 		parser(&g_data.tokens);
+		printf("Parsed!\n");
 		if (!operator_split(&g_data.tokens))
 			return (free_global(true), 1);
+		found = g_data.tokens.find(&g_data.tokens, find_strings);
+		if (!found)
+		{
+			printf("%zu counted\n", g_data.tokens.count(&g_data.tokens,
+						find_strings));
+			printf("No matches found\n");
+		}
+		else
+		{
+			printf("Printing matches:\n");
+			while (*found)
+			{
+				print_token((*found)->item, (*found)->index);
+				free(*found);
+				found++;
+			}
+			free(found);
+		}
 		print_vector(&g_data.tokens, print_token);
-		if (DEBUG)
-			print_vector(&g_data.env, print_env);
+		// if (DEBUG)
+		// 	print_vector(&g_data.env, print_env);
 		free_global(false);
 		return (0);
 	}

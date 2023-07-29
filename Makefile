@@ -6,7 +6,7 @@ LIBFT = libft/libft.a
 READLINE = readline/libreadline.a
 
 DEBUG ?= 0
-DEBUG_FLAGS = -g -fsanitize=address
+DEBUG_FLAGS = -g
 G_FLAGS = -DREADLINE_LIBRARY
 CODAM_FLAGS = -Wall -Wextra -Werror
 LIBS = libft/libft.a readline/libreadline.a readline/libhistory.a

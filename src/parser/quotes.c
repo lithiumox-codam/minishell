@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 11:37:28 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/24 11:58:04 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/24 20:48:19 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@
  */
 bool	is_encased_dq(char *str)
 {
-	if (str[0] == '\0')
-		return (false);
 	if (str[0] == '\"' && str[ft_strlen(str) - 1] == '\"')
 		return (true);
 	return (false);
@@ -37,8 +35,6 @@ bool	is_encased_dq(char *str)
  */
 bool	is_encased_sq(char *str)
 {
-	if (str[0] == '\0')
-		return (false);
 	if (str[0] == '\'' && str[ft_strlen(str) - 1] == '\'')
 		return (true);
 	return (false);
@@ -53,8 +49,6 @@ bool	is_encased_sq(char *str)
  */
 bool	is_encased_parentheses(char *str)
 {
-	if (str[0] == '\0')
-		return (false);
 	if (str[0] == '(' && str[ft_strlen(str) - 1] == ')')
 		return (true);
 	return (false);
