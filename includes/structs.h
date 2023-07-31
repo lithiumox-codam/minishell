@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 11:15:16 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/07/21 04:24:55 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/31 20:08:18 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,14 @@ typedef struct s_signal
 	bool		inte;
 	bool		pipe;
 }				t_signal;
+
+typedef struct s_exec
+{
+	char		**cmd;
+	pid_t		pd;
+	int			right_pipe[2];
+	int			left_pipe[2];
+}				t_exec;
 
 /**
  * @brief The global struct
