@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 13:41:35 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/24 10:28:29 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/07/31 17:26:44 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,7 @@ bool	create_string(char *str, size_t *i, t_vector *vec)
 	x.left = x.right;
 	if (x.left > 0)
 		x.left--;
-	if (x.left != 0)
-		build_string(str, vec, x);
+	build_string(str, vec, x);
 	while (str[*i] == ' ' && str[*i])
 		(*i)++;
 	return (true);
