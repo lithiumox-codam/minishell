@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 11:15:16 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/07/31 20:08:18 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/02 19:32:58 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,6 @@
  *
  * @param type The type of token
  * @param value The value of the token
- * @param prev The previous token
- * @param next The next token
- *
  * @note The value is malloced
  */
 typedef struct s_token
@@ -76,6 +73,7 @@ typedef struct s_global
 {
 	t_vector	tokens;
 	t_vector	env;
+	t_vector	exec;
 	t_signal	signal;
 	char		*exit_status;
 

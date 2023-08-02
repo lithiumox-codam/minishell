@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 20:09:52 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/27 17:26:16 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/02 20:46:02 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ bool	init(char **env)
 	if (!ft_vec_init(&g_data.tokens, 3, sizeof(t_token), clear_token))
 		return (false);
 	if (!ft_vec_init(&g_data.env, 50, sizeof(t_env), clear_env))
+		return (false);
+	if (!ft_vec_init(&g_data.exec, 3, sizeof(t_exec), clear_exec))
 		return (false);
 	g_data.exit_status = ft_strdup("0");
 	if (!g_data.exit_status)

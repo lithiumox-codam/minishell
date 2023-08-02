@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/13 17:41:00 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/21 18:23:49 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/02 20:08:56 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
  * @param SINGLE_QUOTE (')
  * @param PIPE (|)
  * @param PARENTHESES (())
- * @param SEMICOLON (;)
+ * @param SEMICOLON (;) // semicolon weghalen?
  * @param OR (||)
  * @param AND (&&)
  * @param ENV ($)
@@ -40,7 +40,7 @@ typedef enum e_types
 	SINGLE_QUOTE,
 	PARENTHESES,
 	PIPE,
-	SEMICOLON,
+	SEMICOLON, // remove semi?
 	OR,
 	AND,
 	ENV,

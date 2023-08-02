@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/07/21 19:58:27 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/02 20:55:18 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ t_token	*create_token(char *value, t_types type);
 void	clear_token(void *data);
 t_env	*create_env(char *key, char *value);
 void	clear_env(void *data);
+t_exec	*create_exec(char **cmd);
+void	clear_exec(void *data);
 
 /* utils */
 void	err(char *err, char *cmd, int exit_code);
@@ -59,6 +61,10 @@ bool	is_l_hd(char *str);
 bool	contains_env_var(char *str);
 bool	is_or(char *str);
 bool	is_and(char *str);
+
+/* executor */
+bool	group_tokens(t_vector *token, t_vector *exec);
+
 /* debug */
 void	print_vector(t_vector *vec, void (*printer)(void *, size_t));
 void	print_token(void *data, size_t i);
@@ -67,4 +73,5 @@ void	print_env(void *data, size_t i);
 
 /* global */
 void	free_global(bool exit);
+
 #endif

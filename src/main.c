@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/31 18:56:38 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/02 19:31:07 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,19 +67,19 @@ static void	loop(t_vector *vec)
 	}
 }
 
-static bool	find_strings(void *data)
-{
-	t_token	*token;
+// static bool	find_strings(void *data)
+// {
+// 	t_token	*token;
 
-	token = (t_token *)data;
-	if (token->type == STRING)
-		return (true);
-	return (false);
-}
+// 	token = (t_token *)data;
+// 	if (token->type == STRING)
+// 		return (true);
+// 	return (false);
+// }
 
 int	main(int ac, char **av, char **env)
 {
-	t_found	**found;
+	// t_found	**found;
 
 	if (DEBUG)
 		debug();
@@ -93,27 +93,28 @@ int	main(int ac, char **av, char **env)
 		printf("Parsed!\n");
 		if (!operator_split(&g_data.tokens))
 			return (free_global(true), 1);
-		found = g_data.tokens.find(&g_data.tokens, find_strings);
-		if (!found)
-		{
-			printf("%zu counted\n", g_data.tokens.count(&g_data.tokens,
-						find_strings));
-			printf("No matches found\n");
-		}
-		else
-		{
-			printf("Printing matches:\n");
-			while (*found)
-			{
-				print_token((*found)->item, (*found)->index);
-				free(*found);
-				found++;
-			}
-			free(found);
-		}
-		print_vector(&g_data.tokens, print_token);
+		group_tokens(&g_data.tokens, &g_data.exec);
+		// found = g_data.tokens.find(&g_data.tokens, find_strings);
+		// if (!found)
+		// {
+		// 	printf("%zu counted\n", g_data.tokens.count(&g_data.tokens,
+		// 				find_strings));
+		// 	printf("No matches found\n");
+		// }
+		// else
+		// {
+		// 	printf("Printing matches:\n");
+		// 	while (*found)
+		// 	{
+		// 		print_token((*found)->item, (*found)->index);
+		// 		free(*found);
+		// 		found++;
+		// 	}
+		// 	free(found);
+		// }
 		// if (DEBUG)
-		// 	print_vector(&g_data.env, print_env);
+		print_vector(&g_data.tokens, print_token);
+		//print_vector(&g_data.env, print_env);
 		free_global(false);
 		return (0);
 	}
