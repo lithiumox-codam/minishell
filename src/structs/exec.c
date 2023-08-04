@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 20:42:59 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/02 20:55:02 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/04 05:28:20 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_exec	*create_exec(char **cmd)
 		return (NULL);
 	exec->cmd = cmd;
 	exec->pd = -2;
+	exec->locate = 0;
 	exec->left_pipe[0] = -1;
 	exec->left_pipe[1] = -1;
 	exec->right_pipe[0] = -1;
@@ -37,7 +38,7 @@ t_exec	*create_exec(char **cmd)
 
 /**
  * @brief clears data of t_exec
-*/
+ */
 void	clear_exec(void *data)
 {
 	t_exec	*exec;

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 14:50:46 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/24 20:48:05 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/04 04:14:11 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ bool	is_l_redirect(char *str)
  * @return true The string contains a HEREDOC
  * @return false The string does not contain a HEREDOC
  */
-bool	is_r_hd(char *str)
+bool	is_a_redirect(char *str)
 {
 	if (ft_strcmp(str, ">>") == 0)
 		return (true);
@@ -75,7 +75,7 @@ bool	is_r_hd(char *str)
  * @return true The string contains a HEREDOC
  * @return false The string does not contain a HEREDOC
  */
-bool	is_l_hd(char *str)
+bool	is_heredoc(char *str)
 {
 	if (ft_strcmp(str, "<<") == 0)
 		return (true);

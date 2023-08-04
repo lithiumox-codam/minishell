@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/08/02 20:55:18 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/04 04:14:01 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ bool	is_encased_parentheses(char *str);
 bool	is_pipe(char *str);
 bool	is_r_redirect(char *str);
 bool	is_l_redirect(char *str);
-bool	is_r_hd(char *str);
-bool	is_l_hd(char *str);
+bool	is_a_redirect(char *str);
+bool	is_heredoc(char *str);
 bool	contains_env_var(char *str);
 bool	is_or(char *str);
 bool	is_and(char *str);

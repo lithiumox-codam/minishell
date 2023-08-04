@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 11:15:16 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/08/02 19:32:58 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/04 05:28:01 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,19 @@ typedef struct s_signal
 	bool		pipe;
 }				t_signal;
 
+/**
+ * @param locate 1 == left_process
+ * @param locate 2 == middle_process
+ * @param locate 3 == right_process
+ */
 typedef struct s_exec
 {
 	char		**cmd;
 	pid_t		pd;
+	int			locate;
 	int			right_pipe[2];
 	int			left_pipe[2];
-}				t_exec;
+} t_exec; //
 
 /**
  * @brief The global struct
