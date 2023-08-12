@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:05 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/12 20:25:43 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/12 21:19:32 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,12 +115,21 @@ bool	create_group(t_vector *token_vec, t_vector *exec_vec, int *i,
 
 /**
  *step by step:
- * 1. check if there is a redirect at the start or end of the token_vec
+ * 1. check if there is a redirect at the start
+ *
+ *
+ * 	if there is a heredoc or redirect at the start
 
-	* 2. If there is a redirect at the start or end of the token_vec store it in t_exec and remove the associated tokens from the token_vec
- * 3. Check if there is a heredoc in the token_vec
+		* 	create a token for this with the value relating to the type and the value being the stopword/fi;e
+ * 	the relating tokens are then removed from the main vector
+ *
+ * if there is a redirect at the end (heredoc doesnt matter
+	- should be handled by verify)
+ * 	store the redirect as token,
+		the value is the filename and then token is the type of redirect
+ * 	then remove the corresponding tokens from the main vector
 
-	* 4. If there is a heredoc in the token_vec store it in t_exec and remove the associated tokens from the token_vec
+		store this heredoc stopword as t_token with value set to the stopword
  * 5. read through the token_vec and check if there is a pipe,
 	if there is store the tokens before the pipe in t_pipe
  * 6. if there is no pipes store all of the remaining tokens in t_pipe

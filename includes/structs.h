@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 11:15:16 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/08/11 12:24:08 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/12 21:20:51 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,15 @@ typedef struct s_signal
  * @brief The struct for the execution
  *
  * @param pipes The vector of pipes
- * @param here_doc The here_doc stop-word token
- * @param input_redirect The input_redirect file to read from
- * @param output_redirect The output_redirect file to write to
+ * @param start_redirect can be any type of redirect or HEREDOC,
+	value is filename or stopword
+ * @param end_redirect can be any type of redirect, the value is the filename
  */
 typedef struct s_exec
 {
 	t_vector	pipes;
-	t_token		here_doc;
-	t_token		input_redirect;
-	t_token		output_redirect;
+	t_token		start_redirect;
+	t_token		end_redirect;
 }				t_exec;
 
 /**
@@ -80,11 +79,11 @@ typedef struct s_exec
 typedef struct s_pipe
 {
 	char		**cmd;
-	pid_t		pd;
 	int			locate;
-	int			right_pipe[2];
+	pid_t		pd;
 	int			left_pipe[2];
-} t_pipe; //
+	int			right_pipe[2];
+}				t_pipe;
 
 /**
  * @brief The global struct
