@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:05 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/04 05:00:22 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/12 20:25:43 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ wc = right_process --> function
 
 redirects not on the outside should be handled by childprocesses
 
-I_Heredocs should always be handled in the main process ( before forking )
+HEREDOCs should always be handled in the main process ( before forking )
 all redirect should be handled before the child process is forked if on the outside
 	otherwise it should be handled by the child process
 
@@ -89,17 +89,22 @@ the left process can be checked if it is NULL or not
 	size_t						right;
 }								t_local;
 
-static t_local	group_range(t_vector *token_vec, int i)
-{
-	t_token	*token;
-	t_local	range;
+// static t_local	group_range(t_vector *token_vec, int i)
+// {
+// 	t_token	*token;
+// 	t_local	range;
 
-	range.left = i;
-	token = (t_token *)ft_vec_get(token_vec, i);
-	if (token->type == I_REDIRECT) // && i == 0;
-		range.right = 2;
-	return (range);
-}
+// 	range.left = i;
+// 	token = (t_token *)ft_vec_get(token_vec, i);
+// 	while (token->type != PIPE && token->type != I_REDIRECT
+// 		&& token->type != O_REDIRECT && token->type != A_REDIRECT
+// 		&& i < token_vec->lenght)
+// 	{
+// 		i++;
+// 		token = (t_token *)ft_vec_get(token_vec, i);
+// 	}
+// 	return (range);
+// }
 
 bool	create_group(t_vector *token_vec, t_vector *exec_vec, int *i,
 		t_local range)
@@ -109,6 +114,20 @@ bool	create_group(t_vector *token_vec, t_vector *exec_vec, int *i,
 }
 
 /**
+ *step by step:
+ * 1. check if there is a redirect at the start or end of the token_vec
+
+	* 2. If there is a redirect at the start or end of the token_vec store it in t_exec and remove the associated tokens from the token_vec
+ * 3. Check if there is a heredoc in the token_vec
+
+	* 4. If there is a heredoc in the token_vec store it in t_exec and remove the associated tokens from the token_vec
+ * 5. read through the token_vec and check if there is a pipe,
+	if there is store the tokens before the pipe in t_pipe
+ * 6. if there is no pipes store all of the remaining tokens in t_pipe
+ * 7. if there is a pipe check if its a left_pipe,
+	middle_pipe or right_pipe and store it in t_pipe correctly
+ * 8. once all is complete call the exector
+ *
  *
  */
 bool	group_tokens(t_vector *token_vec, t_vector *exec_vec)
@@ -123,31 +142,20 @@ bool	group_tokens(t_vector *token_vec, t_vector *exec_vec)
 	while (i < token_vec->lenght)
 	{
 		token = (t_token *)ft_vec_get(token_vec, i);
-		if (token->type != STRING) // or double quote / single quote
-			/ parentheses
-			{
-				printf("found non string--%zu\n", i);
-				range = group_range(token_vec, i);
-				// create_group(t_vector *token_vec, t_vector *exec_vec, int *i)
-				cmd = malloc(sizeof(char *) * (range.right + 1));
-				if (!cmd)
-					return (false);
-				while (i < i + range.left + range.right)
-				{
-					token = (t_token *)ft_vec_get(token_vec, i);
-					cmd[i - range.left] = ft_strdup(token->value);
-					if (!exec->cmd[i - range.left])
-						return (false);
-					exec = create_exec(cmd);
-					exec_vec->push(exec_vec, (t_exec *)exec);
-					i++;
-				}
-			}
-		else
-			i++;
+		if (i == 0 && (token->type == I_REDIRECT))
+			redirect_token(token_vec, &i);
+		if (i == token->vec->length - 1 || i == token->vec->length - 2)
+			&& token->type == O_REDIRECT || token->type == A_REDIRECT))
+			redirect_token(token_vec, &i);
 	}
-	if (exec)
-		return (true);
-	// pos = &cat -> &vec->data
 	return (true);
 }
+
+/*
+ < infile cat -e
+
+ <infile == redirect
+ cat
+	- e is a main process executor? or can i just always create a new process for each command?
+
+*/

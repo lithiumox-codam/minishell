@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:50 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/04 05:26:51 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/11 12:12:25 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,8 @@ for each struct in commands t_exec{
 }
 
 
-
+make the entire executor happen in a childprocess, that way for example setting
+the redirects in main process wont affect the nexg call
 
 */
 

@@ -13,6 +13,8 @@
 		},
 	},
 	"files.associations": {
-		"sstream": "c"
+		"sstream": "c",
+		"__locale": "c",
+		"__string": "c"
 	}
 }

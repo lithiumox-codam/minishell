@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 11:15:16 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/08/04 05:28:01 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/11 12:24:08 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,18 +56,35 @@ typedef struct s_signal
 }				t_signal;
 
 /**
+ * @brief The struct for the execution
+ *
+ * @param pipes The vector of pipes
+ * @param here_doc The here_doc stop-word token
+ * @param input_redirect The input_redirect file to read from
+ * @param output_redirect The output_redirect file to write to
+ */
+typedef struct s_exec
+{
+	t_vector	pipes;
+	t_token		here_doc;
+	t_token		input_redirect;
+	t_token		output_redirect;
+}				t_exec;
+
+/**
+ * @param locate 0 == no pipe
  * @param locate 1 == left_process
  * @param locate 2 == middle_process
  * @param locate 3 == right_process
  */
-typedef struct s_exec
+typedef struct s_pipe
 {
 	char		**cmd;
 	pid_t		pd;
 	int			locate;
 	int			right_pipe[2];
 	int			left_pipe[2];
-} t_exec; //
+} t_pipe; //
 
 /**
  * @brief The global struct
@@ -79,7 +96,7 @@ typedef struct s_global
 {
 	t_vector	tokens;
 	t_vector	env;
-	t_vector	exec;
+	t_pipe		exec;
 	t_signal	signal;
 	char		*exit_status;
 

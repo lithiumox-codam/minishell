@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 11:12:20 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/08/04 04:14:29 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/12 20:25:03 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_func_map	*return_map(void)
 	func_map[6] = (t_func_map){is_r_redirect, O_REDIRECT};
 	func_map[7] = (t_func_map){is_l_redirect, I_REDIRECT};
 	func_map[8] = (t_func_map){is_a_redirect, A_REDIRECT};
-	func_map[9] = (t_func_map){is_heredoc, I_HEREDOC};
+	func_map[9] = (t_func_map){is_heredoc, HEREDOC};
 	func_map[10] = (t_func_map){NULL, STRING};
 	return (func_map);
 }

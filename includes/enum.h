@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/13 17:41:00 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/04 04:19:03 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/12 20:25:03 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
  * @param O_REDIRECT (>)
  * @param I_REDIRECT (<)
  * @param A_REDIRECT (>>)
- * @param I_HEREDOC (<<)
+ * @param HEREDOC (<<)
  */
 typedef enum e_types
 {
@@ -47,7 +47,7 @@ typedef enum e_types
 	O_REDIRECT,
 	I_REDIRECT,
 	A_REDIRECT,
-	I_HEREDOC
+	HEREDOC
 }	t_types;
 
 #endif

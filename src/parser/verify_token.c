@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 16:57:32 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/03 12:46:53 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/12 20:25:03 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ bool	verify_token(t_vector *vec)
 	if (vec->len == 0)
 		return (false);
 	token = vec->data[0];
-	if (token->type != I_REDIRECT && token->type != I_HEREDOC)
+	if (token->type != I_REDIRECT && token->type != HEREDOC)
 		return (false);
 	token = vec->data[vec->len - 1];
-	if (token->type != I_REDIRECT && token->type != I_HEREDOC)
+	if (token->type != I_REDIRECT && token->type != HEREDOC)
 		return (false);
 	i = 0;
 	while (i < vec->len - 1)
