@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 11:15:16 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/08/12 21:20:51 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/12 21:30:09 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,28 +58,31 @@ typedef struct s_signal
 /**
  * @brief The struct for the execution
  *
- * @param pipes The vector of pipes
+ * @param pipe_groups The vector of vectors, grouping seperate processes,
+	these vectors contain t_tokens
  * @param start_redirect can be any type of redirect or HEREDOC,
 	value is filename or stopword
  * @param end_redirect can be any type of redirect, the value is the filename
  */
 typedef struct s_exec
 {
-	t_vector	pipes;
+	t_vector	pipe_groups;
 	t_token		start_redirect;
 	t_token		end_redirect;
 }				t_exec;
 
 /**
- * @param locate 0 == no pipe
- * @param locate 1 == left_process
- * @param locate 2 == middle_process
- * @param locate 3 == right_process
+ *	@param group	a vector of t_tokens,
+			all of the tokens belonging to 1 child_process
+	@param cmd an array of commands containing the commands and parameters to be send to the executing function
+	@param pd the pd of this specific process
+	@param left_pipe the pipe related to the process happening on the left
+	@param right_pipe the pipe related to the process happening on the right of this one
  */
 typedef struct s_pipe
 {
+	t_vector	group;
 	char		**cmd;
-	int			locate;
 	pid_t		pd;
 	int			left_pipe[2];
 	int			right_pipe[2];
