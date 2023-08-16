@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/02 19:31:07 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/16 13:48:52 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	main(int ac, char **av, char **env)
 		printf("Parsed!\n");
 		if (!operator_split(&g_data.tokens))
 			return (free_global(true), 1);
-		group_tokens(&g_data.tokens, &g_data.exec);
+		// group_tokens(&g_data.tokens, &g_data.exec);
 		// found = g_data.tokens.find(&g_data.tokens, find_strings);
 		// if (!found)
 		// {

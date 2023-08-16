@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/08/04 04:14:01 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/16 16:21:36 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_token	*create_token(char *value, t_types type);
 void	clear_token(void *data);
 t_env	*create_env(char *key, char *value);
 void	clear_env(void *data);
-t_exec	*create_exec(char **cmd);
+t_exec	*create_exec(void);
 void	clear_exec(void *data);
 
 /* utils */

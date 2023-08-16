@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:05 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/12 21:19:32 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/16 17:25:28 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,19 +117,27 @@ bool	create_group(t_vector *token_vec, t_vector *exec_vec, int *i,
  *step by step:
  * 1. check if there is a redirect at the start
  *
- *
- * 	if there is a heredoc or redirect at the start
-
+ * 
+ * 	if there is a  redirect at the start / end
 		* 	create a token for this with the value relating to the type and the value being the stopword/fi;e
- * 	the relating tokens are then removed from the main vector
+ * 	
+ * the relating tokens are then removed from the main vector
  *
- * if there is a redirect at the end (heredoc doesnt matter
-	- should be handled by verify)
- * 	store the redirect as token,
-		the value is the filename and then token is the type of redirect
- * 	then remove the corresponding tokens from the main vector
 
-		store this heredoc stopword as t_token with value set to the stopword
+
+heredocs call the function heredoc and are stored in each related t_process
+heredocs are called before anything else
+the heredoc token will contain the filename which needs to be destroyed
+
+
+ls | cat <<stop | echo <<end | wc
+
+group1: ls
+group2: str:cat heredoc:heredocfilename
+group4: str:echo heredoc:end
+			dus basically verwijder heredoc + following string, vervang ze door een token type:heredoc, value = filename
+group3: wc
+
  * 5. read through the token_vec and check if there is a pipe,
 	if there is store the tokens before the pipe in t_pipe
  * 6. if there is no pipes store all of the remaining tokens in t_pipe

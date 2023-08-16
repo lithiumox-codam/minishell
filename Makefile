@@ -1,5 +1,5 @@
 NAME = minishell
-SRC = main check_input utils/error structs/token structs/exec parser/index parser/tokens2 parser/quotes parser/tokens debug/print_vector lexer/index lexer/string lexer/token utils/init structs/env utils/global exec/group parser/verify_token
+SRC = main check_input utils/error structs/token structs/exec parser/index parser/tokens2 parser/quotes parser/tokens debug/print_vector lexer/index lexer/string lexer/token utils/init structs/env utils/global exec/group exec/heredoc parser/verify_token
 SRCS = $(addsuffix .c, $(addprefix src/, $(SRC)))
 OBJS = $(patsubst src/%.c, build/%.o, $(SRCS))
 LIBFT = libft/libft.a
