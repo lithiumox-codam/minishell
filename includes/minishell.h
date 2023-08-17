@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/08/17 16:18:01 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/17 19:44:33 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ bool	is_or(char *str);
 bool	is_and(char *str);
 
 /* executor */
-t_vector	*group_tokens(t_vector *token);
+t_vector	*group_tokens(t_vector *token_vec);
 
 /* debug */
 void	print_vector(t_vector *vec, void (*printer)(void *, size_t));

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/16 12:15:45 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/17 13:18:01 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/17 18:42:23 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 /*
 
 
-int	ft_heredoc(char *stop, t_process, int quotes)
+int	ft_heredoc(char *filename, char *stop, t_type quotes)
+
+
+if t_type quotes == NULL
 
 Create newfile with open(); 0_CREATE
 

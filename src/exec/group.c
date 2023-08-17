@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:05 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/17 16:13:03 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/17 19:43:22 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,23 +100,75 @@ the left process can be checked if it is NULL or not
 // 	return (range);
 // }
 
+static char	*rm_quotes(t_token *token)
+{
+	if (token->type == STRING)
+		return (token->value);
+	if (token->type == SINGLE_QUOTE)
+		return (ft_strtrim(token->value, "\'"));
+	if (token->type == DOUBLE_QUOTE)
+		return (ft_strtrim(token->value, "\""));
+}
+
 /**
  * @param	token_vec the token vector
  * @param	group the group to add the new tokens to
  * @param	i to step over the heredoc and the quotes / filenames
  * @param
 */
-bool	hdoc_found(t_vector *token_vec, t_group group, int *i)
+bool	hdoc_found(t_vector *token_vec, t_group *group, int *i)
 {
 	t_token	*token;
+	t_token *token_next;
 	t_exec	*exec;
+	char	*end;
 	char	*filename;
 	t_global	g;
 
-	filename = ft_heredoc(t_types, stopword);
-
-
+	filename = ft_strjoin("./src/.heredoc/", ft_itoa((int *)(*i)));
+	if (!filename)
+		return (false); // strerror malloc + set exitstatus?
+	(*i) =+ 1;
+	token = ft_vec_get(token_vec, (*i));
+	if ((token->type == SINGLE_QUOTE || token->type == DOUBLE_QUOTE) &&  ft_strlen(token->value) == 2)
+	{
+		token_next = ft_vec_get(token_vec, (*i) + 1);
+		if (token_next->type == STRING || token->type == SINGLE_QUOTE || token->type == DOUBLE_QUOTE)
+		{
+			end = rm_quotes(token);
+			if (!end)
+				return (free(filename), false); // sterror malloc + set exitstatus
+			if (heredoc(filename, end, token->type))
+				return (false); // // strerror hdoc + set exitstatus?
+			free(end);
+			token = create_token(filename, STRING);
+			ft_vec_push(&group->input, (void *)token);
+			(*i) =+ 2;
+			return (true);
+		}
+		else
+		{
+			if (heredoc(filename, "\n", STRING))
+				return (false); /// strerror hdoc + set exitstatus?
+			token = create_token(filename, STRING);
+			ft_vec_push(&group->input, (void *)token);
+			(*i) =+ 1;
+			return (true);
+		}
+	}
+	else
+	{
+		if (heredoc(filename, token->value, token->type))
+			return (false);
+		token = create_token(filename, STRING);
+		ft_vec_push(&group->input, (void *)token);
+		(*i) =+ 1;
+		return (true);
+	}
 }
+
+
+
 
 /**
 
