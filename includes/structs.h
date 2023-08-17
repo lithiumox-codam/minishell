@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 11:15:16 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/08/16 17:22:54 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/17 13:28:21 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,36 +56,35 @@ typedef struct s_signal
 }				t_signal;
 
 /**
- * @brief The struct for the execution
- *
- * @param groups A vevctor containing each of the child processes;
- * @param start_redirect can be any type of redirect, value is filename
- * @param end_redirect can be any type of redirect, value is the filename
- */
+ * @param	group_vec vec of all of groups to be executed
+ * @param	fname_vec vec of all of the hererdoc filenames
+ * @note	heredoc files are to be deleted after execution is completed
+*/
 typedef struct s_exec
 {
-	t_vector	process;
-	t_token		*start_redirect;
-	t_token		*end_redirect;
+	t_vector	group_vec;
+	t_vector	fname_vec;
 }				t_exec;
 
 /**
- *	@param input	a vector of t_tokens,
-			all of the tokens belonging to 1 child_process
-	@param cmd an array of commands containing the commands and parameters to be send to the executing function
+ * @brief a group to be individually executed.
+ * 
+ *	@param input	a vector of t_tokens belonging to 1 child_process
+	@param cmd an array containing the commands and parameters to be executed
+	@param hdoc_vec vector with heredoc filedescriptors
 	@param pd the pd of this specific process
 	@param left_pipe the pipe related to the process happening on the left
 	@param right_pipe the pipe related to the process happening on the right of this one
+	@warning the heredoc file is to be deleted after usage
  */
-typedef struct s_process
+typedef struct s_group
 {
 	t_vector	input;
-	int			hdoc_fd;
 	char		**cmd;
 	pid_t		pd;
 	int			left_pipe[2];
 	int			right_pipe[2];
-}				t_process;
+}				t_group;
 
 /**
  * @brief The global struct

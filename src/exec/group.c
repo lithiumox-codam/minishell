@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:05 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/16 17:25:28 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/17 16:13:03 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,6 @@ the left process can be checked if it is NULL or not
 * /
 #include <minishell.h>
 
-	typedef struct s_local
-{
-	size_t						left;
-	size_t						right;
-}								t_local;
-
 // static t_local	group_range(t_vector *token_vec, int i)
 // {
 // 	t_token	*token;
@@ -106,29 +100,25 @@ the left process can be checked if it is NULL or not
 // 	return (range);
 // }
 
-bool	create_group(t_vector *token_vec, t_vector *exec_vec, int *i,
-		t_local range)
+/**
+ * @param	token_vec the token vector
+ * @param	group the group to add the new tokens to
+ * @param	i to step over the heredoc and the quotes / filenames
+ * @param
+*/
+bool	hdoc_found(t_vector *token_vec, t_group group, int *i)
 {
 	t_token	*token;
 	t_exec	*exec;
+	char	*filename;
+	t_global	g;
+
+	filename = ft_heredoc(t_types, stopword);
+
+
 }
 
 /**
- *step by step:
- * 1. check if there is a redirect at the start
- *
- * 
- * 	if there is a  redirect at the start / end
-		* 	create a token for this with the value relating to the type and the value being the stopword/fi;e
- * 	
- * the relating tokens are then removed from the main vector
- *
-
-
-heredocs call the function heredoc and are stored in each related t_process
-heredocs are called before anything else
-the heredoc token will contain the filename which needs to be destroyed
-
 
 ls | cat <<stop | echo <<end | wc
 
@@ -147,32 +137,39 @@ group3: wc
  *
  *
  */
-bool	group_tokens(t_vector *token_vec, t_vector *exec_vec)
+t_exec	*group_tokens(t_vector *token_vec)
 {
-	size_t	i;
-	t_token	*token;
-	t_exec	*exec;
-	t_local	range;
-	char	**cmd;
+	size_t		i;
+	t_exec		*exec;
+	t_vector	group_vec;
+	t_group		*group;
+	t_token		*token;
 
+	exec = create_exec();
+	if (!exec)
+		return (NULL);
 	i = 0;
 	while (i < token_vec->lenght)
 	{
+		group = create_group();
+		if (!group)
+			return (ft_vec_free(&group_vec), NULL);
 		token = (t_token *)ft_vec_get(token_vec, i);
-		if (i == 0 && (token->type == I_REDIRECT))
-			redirect_token(token_vec, &i);
-		if (i == token->vec->length - 1 || i == token->vec->length - 2)
-			&& token->type == O_REDIRECT || token->type == A_REDIRECT))
-			redirect_token(token_vec, &i);
+		while (token->type != PIPE)
+		{
+			if (token->type == HEREDOC)
+				hdoc_found(token_vec, group, &i);
+			else
+				ft_vec_push(&group->input, (void *)dup_token(&token_vec, token));
+			if (i >= token_vec->lenght )
+				break ;
+			i++;
+			token = (t_token *)ft_vec_get(token_vec, i);
+		}
+		ft_vec_push(&group_vec, group); // push the created group
+		if (i >= token_vec->lenght )
+				break ;
+		i++;
 	}
-	return (true);
+	return (exec);
 }
-
-/*
- < infile cat -e
-
- <infile == redirect
- cat
-	- e is a main process executor? or can i just always create a new process for each command?
-
-*/
