@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/17 13:29:31 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/18 14:36:43 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,9 @@ static void	loop(t_vector *vec)
 
 int	main(int ac, char **av, char **env)
 {
-	// t_found	**found;
 	t_exec	*exec;
 
+	// t_found	**found;
 	if (DEBUG)
 		debug();
 	if (!init(env))
@@ -95,6 +95,10 @@ int	main(int ac, char **av, char **env)
 		if (!operator_split(&g_data.tokens))
 			return (free_global(true), 1);
 		exec = datagroup_tokens(&g_data.tokens);
+		if (!exec)
+			return (free_global(true), 1);
+		executor(exec);
+		clear_exec(exec);
 		// found = g_data.tokens.find(&g_data.tokens, find_strings);
 		// if (!found)
 		// {
@@ -115,7 +119,7 @@ int	main(int ac, char **av, char **env)
 		// }
 		// if (DEBUG)
 		print_vector(&g_data.tokens, print_token);
-		//print_vector(&g_data.env, print_env);
+		// print_vector(&g_data.env, print_env);
 		free_global(false);
 		return (0);
 	}
