@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/16 12:15:45 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/18 16:25:35 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/18 18:33:27 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@ remove the file? --> or remove later in child_process;
 
 */
 
+/**
+ * 
+*/
 bool	heredoc(char *filename, char *stop, t_type type)
 {
 	int		heredoc_fd;
