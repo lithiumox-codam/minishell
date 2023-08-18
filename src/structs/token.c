@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/19 22:36:40 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/21 17:44:48 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/18 16:33:25 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  *
  * @param value A string containing the value of the token
  * @param type The type of the token
- * @return t_token* The created token
+ * @return t_token* The created token, NULL if malloc error
  */
 t_token	*create_token(char *value, t_types type)
 {

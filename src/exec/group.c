@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:05 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/18 14:11:12 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/18 17:00:19 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ the left process can be checked if it is NULL or not
 
 */
 
-* /
+
 #include <minishell.h>
 
 	// static t_local	group_range(t_vector *token_vec, int i)
@@ -116,39 +116,46 @@ the left process can be checked if it is NULL or not
  * @param	i to step over the heredoc and the quotes / filenames
  * @param
  */
-bool	hdoc_found(t_vector *token_vec, t_group *group, int *i)
+bool	hdoc_found(t_vector token_vec, t_group *group, int *i, t_vector fname_vec)
 {
 	t_token		*token;
 	t_exec		*exec;
 	char		*stop;
 	char		*filename;
-	t_global	g;
+	char		*fname;
 
 	filename = ft_strjoin("./src/.heredoc/", ft_itoa((int *)(*i)));
 	if (!filename)
 		return (false); // strerror malloc + set exitstatus?
 	(*i) = +1;
-	token = ft_vec_get(token_vec, (*i));
+	token = ft_vec_get(&token_vec, (*i));
 	if ((token->type == SINGLE_QUOTE || token->type == DOUBLE_QUOTE)
 		&& ft_strlen(token->value) == 2)
 	{
 		if (heredoc(filename, "", token->type))
-			return (false); // strerror hdoc + set exitstatus?
-		token = create_token(filename, STRING);
-		ft_vec_push(&group->input, (void *)token);
-		(*i) += 1;
-		return (true);
+			return (false); // hdoc error -> error code written in hdoc
 	}
 	else
 	{
 		stop = rm_quotes(token);
+		if (!stop)
+			return (false); // malloc error
 		if (heredoc(filename, stop, token->type))
-			return (false);
+			return (false); // hdoc error -> error code written in hdoc
+		free(stop);
+	}
+		fname = strdup(filename);
+		if (!fname)
+			return (false); //malloc serror
 		token = create_token(filename, STRING);
-		ft_vec_push(&group->input, (void *)token);
+		if (!token)
+			return (false); // malloc error
+		if (!ft_vec_push(&group->input, (void *)token))
+			return (false); // malloc error
+		if (!ft_vec_push(&fname_vec, fname))
+			return (false); // malloc error
 		(*i) += 1;
 		return (true);
-	}
 }
 
 /**
@@ -192,7 +199,7 @@ t_exec	*group_tokens(t_vector *token_vec)
 		while (token->type != PIPE)
 		{
 			if (token->type == HEREDOC)
-				hdoc_found(token_vec, group, &i);
+				hdoc_found(*token_vec, group, &i, exec->fname_vec);
 			else
 				ft_vec_push(&group->input, (void *)dup_token(&token_vec,
 						token));
