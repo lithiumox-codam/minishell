@@ -6,13 +6,14 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/08/18 14:25:55 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/19 17:26:56 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <errno.h>
 # include <libft.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -48,7 +49,9 @@ t_exec	*create_exec(void);
 void	clear_exec(t_exec *exec);
 
 /* utils */
-void	err(char *err, char *cmd, int exit_code);
+void	exit_mini(char *str, int exit_code);
+void	err(t_exit type, char *name, t_exec *exec);
+char	*rm_quotes(t_token *token);
 
 /* parser */
 void	parser(t_vector *vec);
@@ -65,9 +68,14 @@ bool	contains_env_var(char *str);
 bool	is_or(char *str);
 bool	is_and(char *str);
 
+t_exec	*group_tokens(t_vector *token_vec, char **envp);
+
 /* executor */
-t_vector	*group_tokens(t_vector *token_vec);
-bool		exec(t_exec *exec);
+
+bool	executor(t_exec *exec);
+bool	create_processes(t_exec *exec);
+void	exec_process(t_process type, t_group *group, char **envp);
+void	redirect_input(t_group *group, size_t i);
 
 /* debug */
 void	print_vector(t_vector *vec, void (*printer)(void *, size_t));

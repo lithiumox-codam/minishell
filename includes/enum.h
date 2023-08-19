@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/13 17:41:00 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/12 20:25:03 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/19 17:23:57 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,38 @@ typedef enum e_types
 	A_REDIRECT,
 	HEREDOC
 }	t_types;
+
+/**
+ * @brief The enum for the different types of errors
+ *
+ * @param PERROR A perror
+ * @param NOT_FOUND A not found error
+ * @param PERMISSION A permission error
+ * @param SYNTAX A syntax error
+ * @param SYNTAX_MINI A syntax error for the minishell
+ * @param SIGNAL_C A signal interrupt
+ *
+ */
+typedef enum e_exit
+{
+	PERROR,
+	MALLOC,
+	NOT_FOUND,
+	PERMISSION,
+	SYNTAX,
+	SYNTAX_MINI,
+	SIGNAL_C
+}	t_exit;
+
+/**
+ * @brief defines which process is being executed
+ */
+typedef enum e_process
+{
+	SINGLE,
+	LEFT,
+	RIGHT,
+	MIDDLE,
+}	t_process;
 
 #endif

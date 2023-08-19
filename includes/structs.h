@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 11:15:16 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/08/17 13:28:21 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/19 16:43:50 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,17 @@ typedef struct s_signal
  * @param	group_vec vec of all of groups to be executed
  * @param	fname_vec vec of all of the hererdoc filenames
  * @note	heredoc files are to be deleted after execution is completed
-*/
+ */
 typedef struct s_exec
 {
 	t_vector	group_vec;
 	t_vector	fname_vec;
+	char		**envp;
 }				t_exec;
 
 /**
  * @brief a group to be individually executed.
- * 
+ *
  *	@param input	a vector of t_tokens belonging to 1 child_process
 	@param cmd an array containing the commands and parameters to be executed
 	@param hdoc_vec vector with heredoc filedescriptors

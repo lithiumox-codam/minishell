@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/18 16:26:55 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/19 16:44:40 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ static void	loop(t_vector *vec)
 int	main(int ac, char **av, char **env)
 {
 	t_exec	*exec;
+	pid_t	pid;
+	int		status;
 
 	// t_found	**found;
 	if (DEBUG)
@@ -88,17 +90,27 @@ int	main(int ac, char **av, char **env)
 		return (1);
 	if (ac == 2)
 	{
-		if (!lexer(av[1], &g_data.tokens))
-			return (free_global(true), 1);
-		parser(&g_data.tokens);
-		printf("Parsed!\n");
-		if (!operator_split(&g_data.tokens))
-			return (free_global(true), 1);
-		exec = datagroup_tokens(&g_data.tokens);
-		if (!exec)
-			return (free_global(true), 1);
-		executor(exec);
-		clear_exec(exec);
+		pid = fork();
+		if (pid == -1)
+			exit_mini("initial fork failed", errno);
+		if (pid == 0)
+		{
+			if (!lexer(av[1], &g_data.tokens))
+				mini_exit("lexer failed", 1);
+			parser(&g_data.tokens);
+			printf("Parsed!\n");
+			if (!operator_split(&g_data.tokens))
+				mini_exit("operator split failed", 1);
+			// verify token order -> no pipes start/end,
+			// no double pipes / redirects
+			exec = group_tokens(&g_data.tokens, env);
+			if (!exec)
+				exit_mini("malloc error");
+			exit(executor(exec));
+		}
+		if (waitpid(pid, &status, 0) == -1)
+			exit_mini("waitpid failed", errno);
+		g_data.exit_status = WEXITSTATUS(status);
 		// found = g_data.tokens.find(&g_data.tokens, find_strings);
 		// if (!found)
 		// {
