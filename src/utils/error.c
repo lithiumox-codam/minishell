@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/19 21:42:24 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/19 16:38:45 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/19 19:33:03 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	err(t_exit type, char *name, t_exec *exec)
 	int	status;
 
 	if (exec)
-		clear_exec(exec); // free function for example: clear_exec();
+		clear_exec(exec); // free exec maybe replace with general free function
 	if (type == PERROR)
 	{
 		perror("minishell:");

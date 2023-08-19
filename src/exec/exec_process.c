@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 16:08:08 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/19 17:54:16 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/19 18:01:27 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ void	exec_process(t_process type, t_group *group, char **envp)
 	str = rm_quotes(token->value);
 	if (!str)
 		err("malloc error", 1, NULL);
-	check_cmd(str);
 	dup_fd(type, group);
 	built_in(str, group->cmd, &g_data.env);
+	check_cmd(str);
 	execve(str, group->cmd, envp);
 }
 
