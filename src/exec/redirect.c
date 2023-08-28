@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 16:32:48 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/19 17:07:40 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/28 11:25:54 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void handle_redirects(t_vector *group)
 	t_token	*token;
 
 	i = 0;
-	while (i < (&group->input)->lenght)
+	while (i < (&group->input)->length)
 	{
 		token = ft_vector_get(&group->input, i);
 		if (token->type == I_REDIRECT || token->type == O_REDIRECT

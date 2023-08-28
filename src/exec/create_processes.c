@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 12:40:07 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/19 17:30:39 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/28 11:25:54 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ bool	create_processes(t_exec *exec)
 	t_group		*group;
 
 	group_vec = &exec->group_vec;
-	process_count = group_vec->lenght;
+	process_count = group_vec->length;
 	if (process_count == 1)
 	{
 		group = ft_vector_get(group_vec, 0);

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/21 13:06:18 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/24 19:52:11 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/28 11:25:54 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ static char	**split(t_token *token)
 	return (array);
 }
 
-size_t	array_lenght(char **array)
+size_t	array_length(char **array)
 {
 	size_t	i;
 
@@ -155,7 +155,7 @@ bool	operator_split(t_vector *vec)
 	char	**array;
 
 	i = 0;
-	while (i < vec->lenght)
+	while (i < vec->length)
 	{
 		token = (t_token *)vec->get(vec, i);
 		if (token->type == STRING && find_operator(token))

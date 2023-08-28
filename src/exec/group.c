@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:05 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/19 16:52:22 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/28 11:25:54 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ bool	hdoc_found(t_vector token_vec, t_group *group, int *i,
 	fname = ft_strdup(filename);
 	if (!fname)
 		return (false); // malloc serror
-	if ((&group->input)->lenght == 0)
+	if ((&group->input)->length == 0)
 		token = create_token(filename, I_REDIRECT);
 	else
 		token = create_token(filename, STRING);
@@ -83,7 +83,7 @@ t_exec	*group_tokens(t_vector *token_vec, char **envp)
 	if (!exec)
 		return (NULL);
 	i = 0;
-	while (i < token_vec->lenght)
+	while (i < token_vec->length)
 	{
 		group = create_group();
 		if (!group)
@@ -96,13 +96,13 @@ t_exec	*group_tokens(t_vector *token_vec, char **envp)
 			else
 				ft_vec_push(&group->input, (void *)dup_token(&token_vec,
 						token));
-			if (i >= token_vec->lenght)
+			if (i >= token_vec->length)
 				break ;
 			i++;
 			token = (t_token *)ft_vec_get(token_vec, i);
 		}
 		ft_vec_push(&group_vec, group); // push the created group
-		if (i >= token_vec->lenght)
+		if (i >= token_vec->length)
 			break ;
 		i++;
 	}
