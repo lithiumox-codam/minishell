@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/21 13:06:18 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/28 11:25:54 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/08/28 11:33:48 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ bool	operator_split(t_vector *vec)
 	i = 0;
 	while (i < vec->length)
 	{
-		token = (t_token *)vec->get(vec, i);
+		token = (t_token *)vec_get(vec, i);
 		if (token->type == STRING && find_operator(token))
 		{
 			array = split(token);

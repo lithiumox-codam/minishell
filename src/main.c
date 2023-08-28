@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/28 11:32:46 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/08/28 11:34:13 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	loop(t_vector *vec)
 		}
 		free(input);
 		free_global(false);
-		ft_vec_init(vec, 5, sizeof(t_token), clear_token);
+		vec_init(vec, 5, sizeof(t_token), clear_token);
 	}
 }
 

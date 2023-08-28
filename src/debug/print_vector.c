@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 13:51:45 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/28 11:25:54 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/08/28 11:33:48 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	print_vector(t_vector *vec, void (*printer)(void *, size_t))
 	i = 0;
 	while (i < vec->length)
 	{
-		printer(vec->get(vec, i), i);
+		printer(vec_get(vec, i), i);
 		i++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 11:12:20 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/08/28 11:25:54 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/08/28 11:33:16 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	parse_loop(t_vector *vec, t_func_map *func_map)
 	j = 0;
 	while (i < vec->length)
 	{
-		token = (t_token *)vec->get(vec, i);
+		token = (t_token *)vec_get(vec, i);
 		if (token->type == UNKNOWN)
 		{
 			j = 0;

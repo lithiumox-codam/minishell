@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 20:09:52 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/28 11:29:57 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/08/28 11:34:44 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	init_env(char **env)
 		value = ft_strdup(ft_strchr(env[i], '=') + 1);
 		if (!key || !value)
 			exit(1); // !TODO: error message
-		if (!g_data.env.push(&g_data.env, create_env(key, value)))
+		if (!vec_push(&g_data.env, create_env(key, value)))
 			exit(1);
 		i++;
 	}
