@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 12:40:07 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/28 11:25:54 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/08/28 11:29:57 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ static bool	add_pipes(t_vector *group_vec, size_t process_count)
 	i = 0;
 	while (i < process_count - 1)
 	{
-		group = ft_vector_get(group_vec, i);
+		group = vector_get(group_vec, i);
 		if (pipe(group->right_pipe) != 0)
 			return (false);
-		next_group = ft_vector_get(group_vec, i + 1);
+		next_group = vector_get(group_vec, i + 1);
 		next_group->left_pipe[0] = group->right_pipe[0];
 		next_group->left_pipe[1] = group->right_pipe[1];
 		i++;
@@ -43,7 +43,7 @@ static bool	fork_processes(t_exec *exec, size_t process_count)
 	i = 0;
 	while (i < process_count)
 	{
-		group = ft_vector_get(group_vec, i);
+		group = vector_get(group_vec, i);
 		group->pd = fork();
 		if (group->pd == -1)
 			return (false);
@@ -71,7 +71,7 @@ bool	create_processes(t_exec *exec)
 	process_count = group_vec->length;
 	if (process_count == 1)
 	{
-		group = ft_vector_get(group_vec, 0);
+		group = vector_get(group_vec, 0);
 		group->pd = fork();
 		if (group->pd == -1)
 			return (false);

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 20:42:59 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/17 16:17:56 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/28 11:29:57 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	clear_group(void *data)
 	if (!data)
 		return ;
 	p = (t_group *)data;
-	ft_vec_free(&p->input);
+	vec_free(&p->input);
 	if (p->cmd)
 		ft_free(p->cmd);
 }
@@ -43,8 +43,8 @@ void	clear_exec(t_exec *exec)
 {
 	if (!exec)
 		return ;
-	ft_vec_free(&exec->group_vec);
-	ft_vec_free(&exec->fname_vec);
+	vec_free(&exec->group_vec);
+	vec_free(&exec->fname_vec);
 	free(exec);
 }
 
@@ -57,11 +57,11 @@ void	clear_exec(t_exec *exec)
 t_group	*create_group(void)
 {
 	t_group	*p;
-	
+
 	p = malloc(sizeof(t_group));
 	if (!p)
 		return (NULL);
-	if (!ft_vec_init(&p->input, 2, sizeof(t_token), clear_token))
+	if (!vec_init(&p->input, 2, sizeof(t_token), clear_token))
 		return (free(p), NULL);
 	p->cmd = NULL;
 	p->pd = -2;
@@ -83,9 +83,9 @@ t_exec *create_exec(void)
 	exec = malloc(sizeof(t_exec));
 	if (!exec)
 		return (NULL);
-	if (!ft_vec_init(&group_vec, 2, sizeof(t_group), clear_group))
+	if (!vec_init(&group_vec, 2, sizeof(t_group), clear_group))
 		return (free(exec), NULL);
-	if (!ft_vec_init(&fname_vec, 1, sizeof(char *), clear_fname))
+	if (!vec_init(&fname_vec, 1, sizeof(char *), clear_fname))
 		return (free(exec), NULL);
 	exec->group_vec = group_vec;
 	exec->fname_vec = fname_vec;

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 16:08:08 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/19 18:01:27 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/28 11:29:57 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	exec_process(t_process type, t_group *group, char **envp)
 	t_token	*token;
 
 	close_start(type, group);
-	token = ft_vector_get(&group->input, 0);
+	token = vector_get(&group->input, 0);
 	handle_redirects(group);
 	group->cmd = combine_tokens(&group->input);
 	if (!group->cmd)

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:05 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/28 11:25:54 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/08/28 11:29:57 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ bool	hdoc_found(t_vector token_vec, t_group *group, int *i,
 	if (!filename)
 		return (false); // strerror malloc + set exitstatus?
 	(*i) = +1;
-	token = ft_vec_get(&token_vec, (*i));
+	token = vec_get(&token_vec, (*i));
 	if ((token->type == SINGLE_QUOTE || token->type == DOUBLE_QUOTE)
 		&& ft_strlen(token->value) == 2)
 	{
@@ -57,9 +57,9 @@ bool	hdoc_found(t_vector token_vec, t_group *group, int *i,
 		token = create_token(filename, STRING);
 	if (!token)
 		return (false); // malloc error
-	if (!ft_vec_push(&group->input, (void *)token))
+	if (!vec_push(&group->input, (void *)token))
 		return (false); // malloc error
-	if (!ft_vec_push(&fname_vec, fname))
+	if (!vec_push(&fname_vec, fname))
 		return (false); // malloc error
 	(*i) += 1;
 	return (true);
@@ -87,21 +87,21 @@ t_exec	*group_tokens(t_vector *token_vec, char **envp)
 	{
 		group = create_group();
 		if (!group)
-			return (ft_vec_free(&group_vec), NULL);
-		token = (t_token *)ft_vec_get(token_vec, i);
+			return (vec_free(&group_vec), NULL);
+		token = (t_token *)vec_get(token_vec, i);
 		while (token->type != PIPE)
 		{
 			if (token->type == HEREDOC)
 				hdoc_found(*token_vec, group, &i, exec->fname_vec);
 			else
-				ft_vec_push(&group->input, (void *)dup_token(&token_vec,
+				vec_push(&group->input, (void *)dup_token(&token_vec,
 						token));
 			if (i >= token_vec->length)
 				break ;
 			i++;
-			token = (t_token *)ft_vec_get(token_vec, i);
+			token = (t_token *)vec_get(token_vec, i);
 		}
-		ft_vec_push(&group_vec, group); // push the created group
+		vec_push(&group_vec, group); // push the created group
 		if (i >= token_vec->length)
 			break ;
 		i++;

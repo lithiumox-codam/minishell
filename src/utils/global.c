@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/21 04:17:23 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/21 12:51:05 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/28 11:29:57 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ extern t_global	g_data;
  */
 void	free_global(bool exit)
 {
-	ft_vec_free(&g_data.tokens);
+	vec_free(&g_data.tokens);
 	if (exit)
 	{
-		ft_vec_free(&g_data.env);
+		vec_free(&g_data.env);
 		free(g_data.exit_status);
 	}
 }

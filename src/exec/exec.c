@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:50 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/28 11:25:54 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/08/28 11:29:56 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ bool	close_pipes(t_vector *group_vec)
 	status = true;
 	while (i < group_vec->length)
 	{
-		group = ft_vector_get(group_vec, i);
+		group = vector_get(group_vec, i);
 		if (group->left_pipe[0] >= 0)
 			if (close(group->left_pipe[0]) == -1)
 				status = false;
@@ -51,7 +51,7 @@ static int	wait_processes(t_vector *group_vec)
 	status = 0;
 	while (i < group_vec->length)
 	{
-		group = ft_vector_get(group_vec, i);
+		group = vector_get(group_vec, i);
 		if (group->pd >= 0)
 			if (waitpid(group->pd, &temp, 0) == -1)
 				status = -1;

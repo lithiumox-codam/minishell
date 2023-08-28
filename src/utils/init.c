@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 20:09:52 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/19 16:53:26 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/28 11:29:57 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ static t_signal	create_signal_struct(void)
 bool	init(char **env)
 {
 	g_data.signal = create_signal_struct();
-	if (!ft_vec_init(&g_data.tokens, 3, sizeof(t_token), clear_token))
+	if (!vec_init(&g_data.tokens, 3, sizeof(t_token), clear_token))
 		return (false);
-	if (!ft_vec_init(&g_data.env, 50, sizeof(t_env), clear_env))
+	if (!vec_init(&g_data.env, 50, sizeof(t_env), clear_env))
 		return (false);
 	g_data.exit_status = ft_strdup("0");
 	if (!g_data.exit_status)
