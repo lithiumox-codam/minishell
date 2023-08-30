@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:50 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/28 11:29:56 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/08/31 00:37:39 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,16 +71,16 @@ bool	executor(t_exec *exec)
 	{
 		close_pipes(&exec->group_vec);
 		wait_process(&exec->group_vec);
-		err(PERROR, NULL, exec);
+		err(PERROR, NULL, clear_exec, exec);
 	}
 	if (!close_pipes(&exec->group_vec))
 	{
 		wait_processes(&exec->group_vec);
-		err(PERROR, NULL, exec);
+		err(PERROR, NULL, clear_exec, exec);
 	}
 	status = wait_processes(&exec->group_vec);
 	if (!status)
-		err(PERROR, NULL, exec);
+		err(PERROR, NULL, clear_exec, exec);
 	clear_exec(exec);
 	exit(status);
 }
