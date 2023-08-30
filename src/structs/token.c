@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/19 22:36:40 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/18 16:33:25 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/30 21:44:06 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,23 @@ void	clear_token(void *data)
 
 	token = (t_token *)data;
 	free(token->value);
+}
+
+t_token	*dup_token(t_token *input)
+{
+	t_token	*dup;
+
+	dup = malloc(sizeof(t_token));
+	if (!dup)
+		return (NULL);
+	if (!input->value)
+		dup->value = NULL;
+	else
+	{
+		dup->value = ft_strdup(input->value);
+		if (!dup->value)
+			return (free(dup), NULL);
+	}
+	dup->type = input->type;
+	return (dup);
 }

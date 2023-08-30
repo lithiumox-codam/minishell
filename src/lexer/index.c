@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/19 13:32:55 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/07/21 18:16:06 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/30 22:02:44 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,20 +137,20 @@ bool	lexer(char *input, t_vector *vec)
 		if (checkchar(input[i], "\"\'()") == 1)
 		{
 			if (!check_delimiters(&input[i]))
-				return (err("bad quote(s) or parantheses", NULL, 1), false);
+				return (err(SYNTAX, "bad quote(s) or parantheses", NULL, NULL), false);
 			if (!make_string(input, &i, vec))
-				return (err("malloc", NULL, 1), false);
+				return (err(MALLOC, "malloc", NULL, NULL), false);
 		}
 		else if (input[i] == ' ')
 		{
 			if (!create_string(input, &i, vec))
-				return (err("malloc", NULL, 1), false);
+				return (err(MALLOC, "malloc", NULL, NULL), false);
 		}
 		else
 			i++;
 	}
 	if (i > 0 && checkchar(input[i - 1], "\"\') ") == 0)
 		if (!create_string(input, &i, vec))
-			return (err("malloc", NULL, 1), false);
+			return (err(MALLOC, "malloc", NULL, NULL), false);
 	return (true);
 }

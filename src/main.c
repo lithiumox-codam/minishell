@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/28 11:34:13 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/08/30 21:08:41 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,6 @@ int	main(int ac, char **av, char **env)
 			// verify token order -> no pipes start/end,
 			// no double pipes / redirects
 			exec = group_tokens(&g_data.tokens, env);
-			if (!exec)
-				exit_mini("malloc error");
 			exit(executor(exec));
 		}
 		if (waitpid(pid, &status, 0) == -1)

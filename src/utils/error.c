@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/19 21:42:24 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/19 19:33:03 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/30 23:18:33 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,17 @@ void	exit_mini(char *str, int exit_code)
  *
  * @param type The type of error
  * @param name The name of the file that caused the error
- * @param func The function to call before exiting
+ * @param func function to be called before exiting
+ * @param data data to be passed to func
+ * @warning func is executed with data regardless of data is NULL or not
+ * @note	free global.tokens before returning?
  */
-void	err(t_exit type, char *name, t_exec *exec)
+void	err(t_exit type, char *name, void (*func)(void *), void *data)
 {
 	int	status;
 
-	if (exec)
-		clear_exec(exec); // free exec maybe replace with general free function
+	if (func)
+		func(data);
 	if (type == PERROR)
 	{
 		perror("minishell:");
@@ -70,7 +73,9 @@ void	err(t_exit type, char *name, t_exec *exec)
 	}
 	if (type == MALLOC)
 	{
-		write(STDERR_FILENO, "minishell: malloc error\n", 25);
+		write(STDERR_FILENO, "minishell: malloc error in : ", 28);
+		write(STDERR_FILENO, name, ft_strlen(name));
+		write(STDERR_FILENO, "\n", 1);
 		status = 1;
 	}
 	if (type == NOT_FOUND)
@@ -89,14 +94,17 @@ void	err(t_exit type, char *name, t_exec *exec)
 	}
 	if (type == SYNTAX)
 	{
-		write(STDERR_FILENO, "minishell: syntax error near unexpected token : ",
-			48);
+		write(STDERR_FILENO, "minishell: syntax error near unexpected token `",
+			47);
 		write(STDERR_FILENO, name, ft_strlen(name));
+		write(STDERR_FILENO, "'\n", 2);
 		status = 258;
 	}
 	if (type == SYNTAX_MINI)
 	{
-		write(STDERR_FILENO, "minishell: unfinished operator", 48);
+		write(STDERR_FILENO, "minishell: unfinished operator : `", 34);
+		write(STDERR_FILENO, name, ft_strlen(name));
+		write(STDERR_FILENO, "'\n", 2);
 		status = 2;
 	}
 	if (type == SIGNAL_C)

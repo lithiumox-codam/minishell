@@ -6,49 +6,72 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 16:57:32 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/12 20:25:03 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/30 23:46:39 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-/*
-check for double operators
-check for starting with anything other token than redirects / heredoc
-
-geen I_INDIRECT aan het einde
-
-Na een operator mag je alleen STRING/DOUBLE_QUOTE/SINGLE_QUOTE
-
-na een pipe mag je wel < > << >>
-
-bash-3.2$ <|hello
-bash: syntax error near unexpected token `|'
-bash-3.2$ cat infile |< bruh
-bash: bruh: No such file or directory
-
+/**
+ * @brief loop cause it didnt fit in verify_token xd
 */
-bool	verify_token(t_vector *vec)
+static void	loop(t_vector *token_vec)
+{
+	int		i;
+	t_token	*token;
+	t_token	*next;
+
+	i = 0;
+	while (i < token_vec->length)
+	{
+		token = vec_get(&token_vec, i);
+		if (token->type == O_REDIRECT || token->type == I_REDIRECT || token->type == A_REDIRECT || token->type == HEREDOC) // check redirect/HERERDOC
+			check_redirect(token_vec, i);
+		else if (i == token_vec->length - 1) // check if last token is not a pipe
+		{
+			if (token->type == PIPE)
+				err(SYNTAX_MINI, token->value, NULL, NULL);
+		}
+		else if (i + 1 >= token_vec->length) // checking if there isnt two PIPES
+		{
+			next = vec_get(&token_vec, i + 1);
+			if (token->type  == PIPE && next->type == PIPE)
+				err(SYNTAX, next->value, NULL, NULL);
+		}
+		if (i + 1 < token_vec->length)
+			i++;
+	}
+}
+
+/**
+ * @brief checks if redirect is followed by STRING/D_QUOTE/S_QUOTE 
+*/
+static void	check_redirect(t_vector *token_vec, int i)
+{
+	t_token	*token;
+	t_token *next;
+
+	token = vec_get(&token_vec, i);
+	if (i + 1 >= token_vec->length)
+		err(SYNTAX, "`newline'", NULL, NULL);
+	next = vec_get(&token_vec, i + 1);
+	if (next->type != STRING || next->type != DOUBLE_QUOTE || next->type != SINGLE_QUOTE)
+		err(SYNTAX, next->value, NULL, NULL);
+}
+
+/**
+ * @brief verifies that the input doesnt start with a pipe, checks for double pipes
+ * @brief checks if redirects/heredocs are followe by a string/quoted string
+ * @param	vec the vector of t_tokens
+*/
+void	verify_token(t_vector *token_vec)
 {
 	int		i;
 	t_token	*token;
 
-	if (vec->len == 0)
-		return (false);
-	token = vec->data[0];
-	if (token->type != I_REDIRECT && token->type != HEREDOC)
-		return (false);
-	token = vec->data[vec->len - 1];
-	if (token->type != I_REDIRECT && token->type != HEREDOC)
-		return (false);
 	i = 0;
-	while (i < vec->len - 1)
-	{
-		token = vec->data[i];
-		if (token->type == I_PIPE && ((t_token *)vec->data[i
-				+ 1])->type == I_PIPE)
-			return (false);
-		i++;
-	}
-	return (true);
+	token = vec_get(&token_vec, i);
+	if (token->type == PIPE)
+		err(SYNTAX, token->value, NULL, NULL);
+	loop(token_vec);
 }

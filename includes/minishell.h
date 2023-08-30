@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/08/19 17:26:56 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/30 21:44:28 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ bool	operator_split(t_vector *vec);
 /* structs */
 t_token	*create_token(char *value, t_types type);
 void	clear_token(void *data);
+t_token	*dup_token(t_token *input);
 t_env	*create_env(char *key, char *value);
 void	clear_env(void *data);
 t_group	*create_group(void);
@@ -50,7 +51,7 @@ void	clear_exec(t_exec *exec);
 
 /* utils */
 void	exit_mini(char *str, int exit_code);
-void	err(t_exit type, char *name, t_exec *exec);
+void	err(t_exit type, char *name, void (*func)(void *), void *data);
 char	*rm_quotes(t_token *token);
 
 /* parser */

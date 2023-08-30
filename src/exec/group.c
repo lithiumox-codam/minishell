@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:05 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/28 11:29:57 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/08/30 23:47:46 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,41 +28,63 @@ bool	hdoc_found(t_vector token_vec, t_group *group, int *i,
 	char	*filename;
 	char	*fname;
 
-	filename = ft_strjoin("./src/.heredoc/", ft_itoa((int *)(*i)));
+	filename = ft_strjoin("./src/.heredoc/", ft_itoa((*i)));
 	if (!filename)
 		return (false); // strerror malloc + set exitstatus?
 	(*i) = +1;
 	token = vec_get(&token_vec, (*i));
 	if ((token->type == SINGLE_QUOTE || token->type == DOUBLE_QUOTE)
 		&& ft_strlen(token->value) == 2)
-	{
-		if (heredoc(filename, "", token->type))
-			return (false); // hdoc error -> error code written in hdoc
-	}
+		heredoc(filename, "", token->type);
 	else
 	{
 		stop = rm_quotes(token);
 		if (!stop)
 			return (false); // malloc error
-		if (heredoc(filename, stop, token->type))
-			return (false); // hdoc error -> error code written in hdoc
+		heredoc(filename, stop, token->type);	
 		free(stop);
 	}
 	fname = ft_strdup(filename);
 	if (!fname)
 		return (false); // malloc serror
-	if ((&group->input)->length == 0)
-		token = create_token(filename, I_REDIRECT);
-	else
-		token = create_token(filename, STRING);
+	token = create_token(filename, HEREDOC);
 	if (!token)
 		return (false); // malloc error
 	if (!vec_push(&group->input, (void *)token))
 		return (false); // malloc error
-	if (!vec_push(&fname_vec, fname))
+	if (!vec_push(&fname_vec, (void *)fname))
 		return (false); // malloc error
 	(*i) += 1;
 	return (true);
+}
+
+t_group *make_group(t_vector *token_vec, int *i, t_exec *exec)
+{
+	t_token		*dup;
+	t_group		*group;
+	t_token		*token;
+
+	group = create_group();
+	if (!group)
+		err(MALLOC, NULL, clear_exec, exec);
+	token = (t_token *)vec_get(token_vec, (*i));
+	while (token->type != PIPE)
+	{
+		if (token->type == HEREDOC)
+			hdoc_found(*token_vec, group, i, exec->fname_vec);
+		else
+		{
+			dup = dup_token(token);
+			if (!dup)
+				err(MALLOC, NULL, clear_exec, exec);
+			vec_push(&group->input, (void *)dup);
+		}
+		if ((*i) >= token_vec->length)
+			break ;
+		(*i)++;
+			token = (t_token *)vec_get(token_vec, (*i));
+	}
+	return (group);
 }
 
 /**
@@ -77,36 +99,17 @@ t_exec	*group_tokens(t_vector *token_vec, char **envp)
 	t_exec		*exec;
 	t_vector	group_vec;
 	t_group		*group;
-	t_token		*token;
 
 	exec = create_exec();
 	if (!exec)
-		return (NULL);
+		err(MALLOC, 0, 0, 0);
 	i = 0;
 	while (i < token_vec->length)
 	{
-		group = create_group();
-		if (!group)
-			return (vec_free(&group_vec), NULL);
-		token = (t_token *)vec_get(token_vec, i);
-		while (token->type != PIPE)
-		{
-			if (token->type == HEREDOC)
-				hdoc_found(*token_vec, group, &i, exec->fname_vec);
-			else
-				vec_push(&group->input, (void *)dup_token(&token_vec,
-						token));
-			if (i >= token_vec->length)
-				break ;
-			i++;
-			token = (t_token *)vec_get(token_vec, i);
-		}
-		vec_push(&group_vec, group); // push the created group
-		if (i >= token_vec->length)
-			break ;
+		group = make_group(token_vec, &i, exec);
+		vec_push(&group_vec, group);
 		i++;
 	}
 	exec->envp = envp;
-	// verify that groups only have redirects / heredocs at ends
 	return (exec);
 }
