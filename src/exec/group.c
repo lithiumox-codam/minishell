@@ -6,11 +6,28 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:05 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/30 23:47:46 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/08/31 00:56:33 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+static void	push_hdoc(char *filename, t_group *group, t_exec *exec)
+{
+	char	*fname;
+	t_token	*token;
+
+	fname = ft_strdup(filename);
+	if (!fname)
+		err(MALLOC, "push_hdoc", clear_exec, exec);
+	token = create_token(filename, HEREDOC);
+	if (!token)
+		err(MALLOC, "push_hdoc", clear_exec, exec);
+	if (!vec_push(&group->input, (void *)token))
+		err(MALLOC, "push_hdoc", clear_exec, exec);
+	if (!vec_push(&exec->fname_vec, (void *)fname))
+		err(MALLOC, "push_hdoc", clear_exec, exec);
+}
 
 /**
  * @brief Creates a token for the hdoc file, and adds the filename to the f_name
@@ -19,18 +36,15 @@
  * @param	i to step over the heredoc and the quotes / filenames
  * @param
  */
-bool	hdoc_found(t_vector token_vec, t_group *group, int *i,
-		t_vector fname_vec)
+static void	hdoc_found(t_vector token_vec, t_group *group, int *i, t_exec *exec)
 {
 	t_token	*token;
-	t_exec	*exec;
 	char	*stop;
 	char	*filename;
-	char	*fname;
 
 	filename = ft_strjoin("./src/.heredoc/", ft_itoa((*i)));
 	if (!filename)
-		return (false); // strerror malloc + set exitstatus?
+		err(MALLOC, "hdoc_found", clear_exec, exec);
 	(*i) = +1;
 	token = vec_get(&token_vec, (*i));
 	if ((token->type == SINGLE_QUOTE || token->type == DOUBLE_QUOTE)
@@ -40,49 +54,39 @@ bool	hdoc_found(t_vector token_vec, t_group *group, int *i,
 	{
 		stop = rm_quotes(token);
 		if (!stop)
-			return (false); // malloc error
-		heredoc(filename, stop, token->type);	
+			err(MALLOC, "hdoc_found", clear_exec, exec);
+		heredoc(filename, stop, token->type);
 		free(stop);
 	}
-	fname = ft_strdup(filename);
-	if (!fname)
-		return (false); // malloc serror
-	token = create_token(filename, HEREDOC);
-	if (!token)
-		return (false); // malloc error
-	if (!vec_push(&group->input, (void *)token))
-		return (false); // malloc error
-	if (!vec_push(&fname_vec, (void *)fname))
-		return (false); // malloc error
+	push_hdoc(filename, group, exec);
 	(*i) += 1;
-	return (true);
 }
 
-t_group *make_group(t_vector *token_vec, int *i, t_exec *exec)
+t_group	*make_group(t_vector *token_vec, int *i, t_exec *exec)
 {
-	t_token		*dup;
-	t_group		*group;
-	t_token		*token;
+	t_token	*dup;
+	t_group	*group;
+	t_token	*token;
 
 	group = create_group();
 	if (!group)
-		err(MALLOC, NULL, clear_exec, exec);
+		err(MALLOC, "make_group", clear_exec, exec);
 	token = (t_token *)vec_get(token_vec, (*i));
 	while (token->type != PIPE)
 	{
 		if (token->type == HEREDOC)
-			hdoc_found(*token_vec, group, i, exec->fname_vec);
+			hdoc_found(*token_vec, group, i, exec);
 		else
 		{
 			dup = dup_token(token);
 			if (!dup)
-				err(MALLOC, NULL, clear_exec, exec);
+				err(MALLOC, "make_group", clear_exec, exec);
 			vec_push(&group->input, (void *)dup);
 		}
 		if ((*i) >= token_vec->length)
 			break ;
 		(*i)++;
-			token = (t_token *)vec_get(token_vec, (*i));
+		token = (t_token *)vec_get(token_vec, (*i));
 	}
 	return (group);
 }
@@ -95,19 +99,18 @@ t_group *make_group(t_vector *token_vec, int *i, t_exec *exec)
  */
 t_exec	*group_tokens(t_vector *token_vec, char **envp)
 {
-	size_t		i;
-	t_exec		*exec;
-	t_vector	group_vec;
-	t_group		*group;
+	size_t	i;
+	t_exec	*exec;
+	t_group	*group;
 
 	exec = create_exec();
 	if (!exec)
-		err(MALLOC, 0, 0, 0);
+		err(MALLOC, "group_tokens", NULL, NULL);
 	i = 0;
 	while (i < token_vec->length)
 	{
 		group = make_group(token_vec, &i, exec);
-		vec_push(&group_vec, group);
+		vec_push(&exec->group_vec, group);
 		i++;
 	}
 	exec->envp = envp;
