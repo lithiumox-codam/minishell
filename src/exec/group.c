@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:05 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/31 00:56:33 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/01 20:49:26 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,21 @@
 static void	push_hdoc(char *filename, t_group *group, t_exec *exec)
 {
 	char	*fname;
-	t_token	*token;
+	t_token	*red_token;
+	t_token	*fname_token;
 
 	fname = ft_strdup(filename);
 	if (!fname)
 		err(MALLOC, "push_hdoc", clear_exec, exec);
-	token = create_token(filename, HEREDOC);
-	if (!token)
+	fname_token = create_token(filename, STRING);
+	if (!fname_token)
 		err(MALLOC, "push_hdoc", clear_exec, exec);
-	if (!vec_push(&group->input, (void *)token))
+	red_token = create_token("<", I_REDIRECT);
+	if (!red_token)
+		err(MALLOC, "push_hdoc", clear_exec, exec);
+	if (!vec_push(&group->input, (void *)red_token))
+		err(MALLOC, "push_hdoc", clear_exec, exec);
+	if (!vec_push(&group->input, (void *)fname_token))
 		err(MALLOC, "push_hdoc", clear_exec, exec);
 	if (!vec_push(&exec->fname_vec, (void *)fname))
 		err(MALLOC, "push_hdoc", clear_exec, exec);
@@ -49,13 +55,13 @@ static void	hdoc_found(t_vector token_vec, t_group *group, int *i, t_exec *exec)
 	token = vec_get(&token_vec, (*i));
 	if ((token->type == SINGLE_QUOTE || token->type == DOUBLE_QUOTE)
 		&& ft_strlen(token->value) == 2)
-		heredoc(filename, "", token->type);
+		heredoc(filename, "", token->type, exec);
 	else
 	{
 		stop = rm_quotes(token);
 		if (!stop)
 			err(MALLOC, "hdoc_found", clear_exec, exec);
-		heredoc(filename, stop, token->type);
+		heredoc(filename, stop, token->type, exec);
 		free(stop);
 	}
 	push_hdoc(filename, group, exec);
@@ -113,6 +119,5 @@ t_exec	*group_tokens(t_vector *token_vec, char **envp)
 		vec_push(&exec->group_vec, group);
 		i++;
 	}
-	exec->envp = envp;
 	return (exec);
 }

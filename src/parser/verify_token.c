@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 16:57:32 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/31 00:43:21 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/01 15:32:01 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static void	check_redirect(t_vector *token_vec, int i)
  * @brief checks if redirects/heredocs are followe by a string/quoted string
  * @param	vec the vector of t_tokens
  */
-void	verify_token(t_vector *token_vec)
+void	verify_tokens(t_vector *token_vec)
 {
 	int		i;
 	t_token	*token;

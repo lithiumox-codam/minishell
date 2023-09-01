@@ -6,13 +6,13 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:50 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/31 00:37:39 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/01 16:53:31 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-bool	close_pipes(t_vector *group_vec)
+static bool	close_pipes(t_vector *group_vec)
 {
 	size_t	i;
 	t_group	*group;
@@ -62,7 +62,12 @@ static int	wait_processes(t_vector *group_vec)
 	return (status);
 }
 
-bool	executor(t_exec *exec)
+/**
+ * @brief	creates pipes and starts processes, closes pipes and waits for child_processes
+ * @return	return value is the EXITSTATUS of the last childprocess to complete
+ * @note if all testing is succesful make it a void function and exit status instead of returning it
+*/
+int	executor(t_exec *exec)
 {
 	int	temp;
 	int	status;
@@ -79,8 +84,8 @@ bool	executor(t_exec *exec)
 		err(PERROR, NULL, clear_exec, exec);
 	}
 	status = wait_processes(&exec->group_vec);
-	if (!status)
+	if (status == -1)
 		err(PERROR, NULL, clear_exec, exec);
 	clear_exec(exec);
-	exit(status);
+	return (status);
 }

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 12:40:07 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/28 11:29:57 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/09/01 19:47:27 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ static bool	fork_processes(t_exec *exec, size_t process_count)
 		if (group->pd == 0)
 		{
 			if (i == 0)
-				exec_process(LEFT, group, exec->envp);
+				exec_process(LEFT, group);
 			else if (i == process_count - 1)
-				exec_process(RIGHT, group, exec->envp);
+				exec_process(RIGHT, group);
 			else
-				exec_process(MIDDLE, group, exec->envp);
+				exec_process(MIDDLE, group);
 		}
 		i++;
 	}
@@ -75,7 +75,7 @@ bool	create_processes(t_exec *exec)
 		group->pd = fork();
 		if (group->pd == -1)
 			return (false);
-		exec_process(SINGLE, group, exec->envp);
+		exec_process(SINGLE, group);
 	}
 	else
 	{

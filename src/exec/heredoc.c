@@ -6,54 +6,17 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/16 12:15:45 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/18 18:33:27 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/01 17:24:09 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-/*
 
-Expansion na heredoc
-bash-3.2$ cat << $USER
-> hello
-> juliusdebaaij
-> $USER
-hello
-juliusdebaaij
-bash-3.2$ cat $USER
-cat: juliusdebaaij: No such file or directory
-
-*/
-/*
-
-
-int	ft_heredoc(char *filename, char *stop, t_type quotes)
-
-
-if t_type quotes == NULL
-
-Create newfile with open(); 0_CREATE
-
-use readline --> interpet based on quotes
-write(heredoc_fd)
-close(herredoc_fd);
-remove the file? --> or remove later in child_process;
-
-*/
-
-/**
- * 
-*/
-bool	heredoc(char *filename, char *stop, t_type type)
+static void	loop(int heredoc_fd, char *stop, t_types type, t_exec *exec)
 {
-	int		heredoc_fd;
-	char	*filename_dup;
 	char	*line;
 
-	heredoc_fd = open(filename, O_CREAT | O_WRONLY, 0644);
-	if (heredoc_fd < 0)
-		return (false);
 	while (1)
 	{
 		line = readline(">");
@@ -63,13 +26,33 @@ bool	heredoc(char *filename, char *stop, t_type type)
 		{
 			line = expand_line(line);
 			if (!line)
-				return (false);
+			{
+				free(line);
+				err(MALLOC, "hdoc_loop", clear_exec, exec);
+			}
 		}
 		write(heredoc_fd, line, ft_strlen(line));
 		write(heredoc_fd, "\n", 1);
 		free(line);
 	}
+	free(line);
+}
+
+/**
+ * @param	filename the filename to be given to the new file
+ * @param	stop	the string to stop readline
+ * @param	type	string or quoted, if quoted there will be no expansion.
+ * @param	exec	to be freed when an error occurs
+*/
+void	heredoc(char *filename, char *stop, t_types type, t_exec *exec)
+{
+	int		heredoc_fd;
+
+	heredoc_fd = open(filename, O_CREAT | O_WRONLY, 0644);
+	if (heredoc_fd == -1)
+		err(PERROR, filename, clear_exec, exec);
+	if (heredoc_fd < 0)
+		return (false);
 	close(heredoc_fd);
-	filename_dup = ft_strdup(filename);
 	return (true);
 }

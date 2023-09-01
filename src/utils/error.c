@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/19 21:42:24 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/30 23:18:33 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/01 20:12:37 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,6 @@ void	err(t_exit type, char *name, void (*func)(void *), void *data)
 		write(STDERR_FILENO, "^C\n", 3);
 		status = 130;
 	}
+	free_global(true);
 	exit(status);
 }

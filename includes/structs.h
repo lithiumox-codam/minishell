@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 11:15:16 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/08/19 16:43:50 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/01 20:35:31 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ typedef struct s_exec
 {
 	t_vector	group_vec;
 	t_vector	fname_vec;
-	char		**envp;
 }				t_exec;
 
 /**

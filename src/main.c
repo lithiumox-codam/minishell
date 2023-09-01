@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/30 21:08:41 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/01 21:07:36 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,12 @@ int	main(int ac, char **av, char **env)
 			printf("Parsed!\n");
 			if (!operator_split(&g_data.tokens))
 				mini_exit("operator split failed", 1);
-			// verify token order -> no pipes start/end,
-			// no double pipes / redirects
+			
+			verify_tokens(&g_data.tokens);
 			exec = group_tokens(&g_data.tokens, env);
-			exit(executor(exec));
+			status = executor(exec);
+			printf("succes, status=%i\n", status);
+			exit(status);
 		}
 		if (waitpid(pid, &status, 0) == -1)
 			exit_mini("waitpid failed", errno);
@@ -130,7 +132,7 @@ int	main(int ac, char **av, char **env)
 		// if (DEBUG)
 		print_vector(&g_data.tokens, print_token);
 		// print_vector(&g_data.env, print_env);
-		free_global(false);
+		free_global(true);
 		return (0);
 	}
 	else if (ac == 1)

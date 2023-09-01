@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/08/30 21:44:28 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/01 19:56:19 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <stdlib.h>
 # include <structs.h>
 # include <unistd.h>
+# include <fcntl.h>
 
 # ifndef DEBUG
 #  define DEBUG 0
@@ -69,14 +70,23 @@ bool	contains_env_var(char *str);
 bool	is_or(char *str);
 bool	is_and(char *str);
 
-t_exec	*group_tokens(t_vector *token_vec, char **envp);
+void	verify_tokens(t_vector *token_vec);
+
 
 /* executor */
+t_exec	*group_tokens(t_vector *token_vec, char **envp);
+void	heredoc(char *filename, char *stop, t_types type, t_exec *exec);
 
-bool	executor(t_exec *exec);
+int		executor(t_exec *exec);
 bool	create_processes(t_exec *exec);
-void	exec_process(t_process type, t_group *group, char **envp);
+void	exec_process(t_group *group, t_process type);
 void	redirect_input(t_group *group, size_t i);
+
+//utils
+bool	is_built_in(char *str);
+char	**combine_env(t_vector *env_vec);
+char	**create_cmd(t_vector *input);
+
 
 /* debug */
 void	print_vector(t_vector *vec, void (*printer)(void *, size_t));
