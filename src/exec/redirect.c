@@ -6,12 +6,12 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 16:32:48 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/28 11:29:57 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/09/03 17:12:24 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
-	redirects need to remove the tokens related to the redirect
+	redirects need to remove the token_vec related to the redirect
 
 */
 

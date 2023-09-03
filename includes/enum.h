@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/13 17:41:00 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/19 17:23:57 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/03 17:12:24 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define ENUM_H
 
 /**
- * @brief The enum for the different types of tokens
+ * @brief The enum for the different types of token_vec
  *
  * @param DOUBLE_QUOTE (")
  * @param SINGLE_QUOTE (')

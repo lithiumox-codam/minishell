@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:05 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/01 20:49:26 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/03 17:12:24 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	push_hdoc(char *filename, t_group *group, t_exec *exec)
 /**
  * @brief Creates a token for the hdoc file, and adds the filename to the f_name
  * @param	token_vec the token vector
- * @param	group the group to add the new tokens to
+ * @param	group the group to add the new token_vec to
  * @param	i to step over the heredoc and the quotes / filenames
  * @param
  */
@@ -98,12 +98,12 @@ t_group	*make_group(t_vector *token_vec, int *i, t_exec *exec)
 }
 
 /**
- * @brief Group the tokens into groups
+ * @brief Group the token_vec into groups
  *
- * @param token_vec The vector containing the tokens
+ * @param token_vec The vector containing the token_vec
  * @return t_exec* The struct containing the groups
  */
-t_exec	*group_tokens(t_vector *token_vec, char **envp)
+t_exec	*group_token_vec(t_vector *token_vec, char **envp)
 {
 	size_t	i;
 	t_exec	*exec;
@@ -111,7 +111,7 @@ t_exec	*group_tokens(t_vector *token_vec, char **envp)
 
 	exec = create_exec();
 	if (!exec)
-		err(MALLOC, "group_tokens", NULL, NULL);
+		err(MALLOC, "group_token_vec", NULL, NULL);
 	i = 0;
 	while (i < token_vec->length)
 	{

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 11:15:16 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/09/01 20:35:31 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/03 18:53:43 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "enum.h"
 /**
- * @brief The struct for the tokens
+ * @brief The struct for the token_vec
  *
  * @param type The type of token
  * @param value The value of the token
@@ -69,7 +69,7 @@ typedef struct s_exec
 /**
  * @brief a group to be individually executed.
  *
- *	@param input	a vector of t_tokens belonging to 1 child_process
+ *	@param input	a vector of t_token_vec belonging to 1 child_process
 	@param cmd an array containing the commands and parameters to be executed
 	@param hdoc_vec vector with heredoc filedescriptors
 	@param pd the pd of this specific process
@@ -89,16 +89,18 @@ typedef struct s_group
 /**
  * @brief The global struct
  *
- * @param tokens The tokens vector from the lexer and parser
- * @param env The environment variables
+ * @param token_vec The token_vec vector from the lexer and parser;
+ * @param env The environment variables;
+ * @param data to be passed to the executor;
  */
-typedef struct s_global
+typedef struct s_shell
 {
-	t_vector	tokens;
+	t_vector	token_vec;
 	t_vector	env;
-	t_signal	signal;
+	t_exec		*exec;
 	int			exit_status;
-}				t_global;
+}				t_shell;
+
 
 /**
  * @brief The struct for the parser functions.

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/19 13:32:55 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/30 22:02:44 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/03 19:25:37 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,16 +118,12 @@ bool	make_string(char *str, size_t *i, t_vector *vec)
 }
 
 /**
- * @brief Splits a string into tokens
+ * @brief Splits a string into token_vec
  *
  * @param input	The string to split
- * @param vec The vector to store the tokens in
- * @return true The string was succesfully split
- * @return false The string could not be split
- *
- * @note The vector must be initialized before calling this function
+ * @param data	t_shell data, of which token_vec will be used
  */
-bool	lexer(char *input, t_vector *vec)
+void	lexer(char *input, t_shell *data)
 {
 	size_t	i;
 
@@ -137,20 +133,19 @@ bool	lexer(char *input, t_vector *vec)
 		if (checkchar(input[i], "\"\'()") == 1)
 		{
 			if (!check_delimiters(&input[i]))
-				return (err(SYNTAX, "bad quote(s) or parantheses", NULL, NULL), false);
-			if (!make_string(input, &i, vec))
-				return (err(MALLOC, "malloc", NULL, NULL), false);
+				err(SYNTAX_MINI, input[i], data, false);
+			if (!make_string(input, &i, &data->token_vec))
+				err(MALLOC, "malloc", data, false);
 		}
 		else if (input[i] == ' ')
 		{
-			if (!create_string(input, &i, vec))
-				return (err(MALLOC, "malloc", NULL, NULL), false);
+			if (!create_string(input, &i, &data->token_vec))
+				err(MALLOC, "malloc", data, false);
 		}
 		else
 			i++;
 	}
 	if (i > 0 && checkchar(input[i - 1], "\"\') ") == 0)
-		if (!create_string(input, &i, vec))
-			return (err(MALLOC, "malloc", NULL, NULL), false);
-	return (true);
+		if (!create_string(input, &i, &data->token_vec))
+			err(MALLOC, "malloc", data, false);
 }

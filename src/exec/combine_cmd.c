@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/01 18:02:02 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/01 22:29:30 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/03 17:12:24 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,14 @@ char	**combine_cmd(t_group *group)
 	if (!cmd)
 		err(MALLOC, "create_cmd", NULL, NULL);
 	cmd[count] = NULL;
-	cmd = assign_tokens(cmd, cmd_count(&group->input, true), &group->input);
+	cmd = assign_token_vec(cmd, cmd_count(&group->input, true), &group->input);
 	return (cmd);
 }
 
 /**
- * @brief assigns the tokens to the cmd;
+ * @brief assigns the token_vec to the cmd;
 */
-char	**assign_tokens(char **cmd, size_t start, t_vector *input)
+char	**assign_token_vec(char **cmd, size_t start, t_vector *input)
 {
 	t_token	*token;
 	size_t	i;
@@ -52,9 +52,9 @@ char	**assign_tokens(char **cmd, size_t start, t_vector *input)
 }
 
 /**
- * @brief counts the amount of tokens in the vector skipping redirects
+ * @brief counts the amount of token_vec in the vector skipping redirects
  * @param	start if true it will return the index after the starting redirects
- * @param 	start if false it will return the amount of non-redirect tokens
+ * @param 	start if false it will return the amount of non-redirect token_vec
 */
 static size_t	cmd_count(t_vector *input, bool start)
 {

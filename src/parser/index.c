@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 11:12:20 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/08/28 11:33:16 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/09/03 19:30:07 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ t_func_map	*return_map(void)
 }
 
 /**
- * @brief Loops over the tokens in the vector and parses them
+ * @brief Loops over the token_vec in the vector and parses them
  *
- * @param vec The vector containing the tokens
+ * @param vec The vector containing the token_vec
  * @param func_map The array of structs with function pointers and types
  */
 void	parse_loop(t_vector *vec, t_func_map *func_map)
@@ -74,20 +74,20 @@ void	parse_loop(t_vector *vec, t_func_map *func_map)
 }
 
 /**
- * @brief Parses the tokens in the vector
+ * @brief Parses the token_vec in the vector
  *
- * @note The parser will only parse tokens that have the type 0 so make sure
- * to set the type of the tokens to 0 before calling this function
- * @param vec The vector containing the tokens
+ * @note The parser will only parse token_vec that have the type 0 so make sure
+ * to set the type of the token_vec to 0 before calling this function
+ * @param vec The vector containing the token_vec
  */
-void	parser(t_vector *vec)
+void	parser(t_shell *data)
 {
 	t_func_map	*func_map;
 
 	func_map = return_map();
 	if (func_map == NULL)
-		return (err("Malloc failed", "parser", 1));
-	parse_loop(vec, func_map);
+		return (err(MALLOC, "parser", data, false));
+	parse_loop(&data->token_vec, func_map);
 	free(func_map);
 }
 

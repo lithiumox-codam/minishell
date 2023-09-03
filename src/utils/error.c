@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/19 21:42:24 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/01 20:12:37 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/03 19:01:37 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ void	err(char *err, char *cmd, int exit_code)
  * @brief called if there is an error in minihsell that should close the program
  *
  * @param str The error message
+ * @param int the exit code to be set
+ * @param data the t_shell data to freed
  */
 void	exit_mini(char *str, int exit_code)
 {
@@ -46,7 +48,6 @@ void	exit_mini(char *str, int exit_code)
 	}
 	else
 		write(STDERR_FILENO, "minishell: error\n", 16);
-	free_global(true);
 	exit(exit_code);
 }
 
@@ -55,17 +56,13 @@ void	exit_mini(char *str, int exit_code)
  *
  * @param type The type of error
  * @param name The name of the file that caused the error
- * @param func function to be called before exiting
- * @param data data to be passed to func
- * @warning func is executed with data regardless of data is NULL or not
- * @note	free global.tokens before returning?
+ * @param data t_shell data to be freed
+ * @param free_struct if t_shell should be freed including env
  */
-void	err(t_exit type, char *name, void (*func)(void *), void *data)
+void	err(t_exit type, char *name, t_shell *data, bool free_struct)
 {
 	int	status;
 
-	if (func)
-		func(data);
 	if (type == PERROR)
 	{
 		perror("minishell:");
@@ -112,6 +109,6 @@ void	err(t_exit type, char *name, void (*func)(void *), void *data)
 		write(STDERR_FILENO, "^C\n", 3);
 		status = 130;
 	}
-	free_global(true);
+	free_shell(data, free_struct);
 	exit(status);
 }
