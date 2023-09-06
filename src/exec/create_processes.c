@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 12:40:07 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/01 19:47:27 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/06 20:31:39 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ static bool	add_pipes(t_vector *group_vec, size_t process_count)
 	return (true);
 }
 
-static bool	fork_processes(t_exec *exec, size_t process_count)
+static bool	fork_processes(t_shell *data, size_t process_count)
 {
 	size_t		i;
 	t_group		*group;
 	t_group		*next_group;
 	t_vector	*group_vec;
 
-	group_vec = &exec->group_vec;
+	group_vec = &data->exec->group_vec;
 	i = 0;
 	while (i < process_count)
 	{
@@ -50,26 +50,24 @@ static bool	fork_processes(t_exec *exec, size_t process_count)
 		if (group->pd == 0)
 		{
 			if (i == 0)
-				exec_process(LEFT, group);
+				exec_process(LEFT, data);
 			else if (i == process_count - 1)
-				exec_process(RIGHT, group);
+				exec_process(RIGHT, data);
 			else
-				exec_process(MIDDLE, group);
+				exec_process(MIDDLE, data);
 		}
 		i++;
 	}
 	return (true);
 }
 
-bool	create_processes(t_exec *exec)
+bool	create_processes(t_shell *data)
 {
 	t_vector	*group_vec;
-	size_t		process_count;
 	t_group		*group;
 
-	group_vec = &exec->group_vec;
-	process_count = group_vec->length;
-	if (process_count == 1)
+	group_vec = &data->exec->group_vec;
+	if (group_vec->length == 1)
 	{
 		group = vector_get(group_vec, 0);
 		group->pd = fork();
@@ -79,9 +77,9 @@ bool	create_processes(t_exec *exec)
 	}
 	else
 	{
-		if (!add_pipes(group_vec, process_count))
+		if (!add_pipes(group_vec, group_vec->length))
 			return (false);
-		if (!fork_processes(group_vec, process_count))
+		if (!fork_processes(group_vec, group_vec->length))
 			return (false);
 	}
 	return (true);

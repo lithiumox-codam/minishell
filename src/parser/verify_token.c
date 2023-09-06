@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 16:57:32 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/03 20:23:18 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/06 20:36:35 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	loop(t_shell *data)
 		{
 			next = vec_get(&data->token_vec, i + 1);
 			if (token->type == next->type)
-				err(SYNTAX, next->value, data, false);
+				err(SYNTAX, next->value, data, true);
 		}
 		i++;
 	}
@@ -48,10 +48,10 @@ static void	check_redirect(t_shell *data, int i)
 	t_token	*next;
 
 	if (i + 1 >= (&data->token_vec)->length)
-		err(SYNTAX, "newline", data, false);
+		err(SYNTAX, "newline", data, true);
 	next = vec_get(&data->token_vec, i + 1);
 	if (!is_string_type(next))
-		err(SYNTAX, next->value, data, false);
+		err(SYNTAX, next->value, data, true);
 }
 
 /**
@@ -68,13 +68,13 @@ void	verify_token_vec(t_shell *data)
 	i = 0;
 	token = vec_get(&data->token_vec, i);
 	if (token->type == PIPE)
-		err(SYNTAX, token->value, data, false);
+		err(SYNTAX, token->value, data, true);
 	loop(data);
 	if ((&data->token_vec)->length > 1)
 	{
 		i = (&data->token_vec)->length - 1;
 		token = vec_get(&data->token_vec, i);
 		if (token->type == PIPE)
-			err(SYNTAX_MINI, token->value, data, false);
+			err(SYNTAX_MINI, token->value, data, true);
 	}
 }

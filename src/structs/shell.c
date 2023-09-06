@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/03 18:11:09 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/06 13:00:01 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/06 19:44:47 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ static void	init_env(char **env, t_vector *env_vec)
 		key = ft_substr(env[i], 0, ft_strchr(env[i], '=') - env[i]);
 		value = ft_strdup(ft_strchr(env[i], '=') + 1);
 		if (!key || !value)
-			exit(1); // !TODO: error message
+			exit_mini("init_env", 1);
 		if (!vec_push(env_vec, create_env(key, value)))
-			exit(1);
+			exit_mini("init_env", 1);
 		i++;
 	}
 }
@@ -66,6 +66,7 @@ void	create_signal_struct(void)
 	signal.inte = false;
 	signal.quit = false;
 	signal.pipe = false;
+	signal.exit_status = 0;
 }
 
 /**
@@ -91,7 +92,6 @@ t_shell	*init_shell(char **env, bool first_init)
 			exit_mini("failed to vec_init env", 1);
 		init_env(env, &data->env);
 		data->exec = NULL;
-		data->exit_status = 0;
 		create_signal_struct();
 	}
 	else

@@ -6,13 +6,13 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:50 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/01 16:53:31 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/06 20:49:39 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static bool	close_pipes(t_vector *group_vec)
+close_pipes(t_vector *group_vec)
 {
 	size_t	i;
 	t_group	*group;
@@ -62,30 +62,43 @@ static int	wait_processes(t_vector *group_vec)
 	return (status);
 }
 
+static void	check_for_exit(t_shell *data)
+{
+	printf("exit was called\n");
+	// int long long atoi
+	free_shell(data, true);
+	exit(10);
+}
+
 /**
- * @brief	creates pipes and starts processes, closes pipes and waits for child_processes
+ * @brief	creates pipes and starts processes,
+		closes pipes and waits for child_processes
  * @return	return value is the EXITSTATUS of the last childprocess to complete
- * @note if all testing is succesful make it a void function and exit status instead of returning it
-*/
-int	executor(t_exec *exec)
+
+	* @note if all testing is succesful make it a void function and exit status instead of returning it
+ */
+int	executor(t_shell *data)
 {
 	int	temp;
 	int	status;
 
-	if (!create_processes(exec))
+	if ((&data->exec->group_vec)->length == 1)
 	{
-		close_pipes(&exec->group_vec);
-		wait_process(&exec->group_vec);
-		err(PERROR, NULL, clear_exec, exec);
+		check_for_exit(data); // write function to exit()
 	}
-	if (!close_pipes(&exec->group_vec))
+	if (!create_processes(data))
 	{
-		wait_processes(&exec->group_vec);
-		err(PERROR, NULL, clear_exec, exec);
+		close_pipes(&data->exec->group_vec);
+		wait_process(&data->exec->group_vec);
+		err(PERROR, NULL, data, true);
 	}
-	status = wait_processes(&exec->group_vec);
+	if (!close_pipes(&data->exec->group_vec))
+	{
+		wait_processes(&data->exec->group_vec);
+		err(PERROR, NULL, data, true);
+	}
+	status = wait_processes(&data->exec->group_vec);
 	if (status == -1)
-		err(PERROR, NULL, clear_exec, exec);
-	clear_exec(exec);
+		err(PERROR, NULL, data, true);
 	return (status);
 }

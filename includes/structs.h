@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 11:15:16 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/09/03 18:53:43 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/06 15:56:16 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_signal
 	bool		quit;
 	bool		inte;
 	bool		pipe;
+	int			exit_status;
 }				t_signal;
 
 /**
@@ -98,9 +99,7 @@ typedef struct s_shell
 	t_vector	token_vec;
 	t_vector	env;
 	t_exec		*exec;
-	int			exit_status;
 }				t_shell;
-
 
 /**
  * @brief The struct for the parser functions.

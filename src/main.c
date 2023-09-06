@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/03 20:06:47 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/06 20:50:26 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,49 +39,39 @@ static void	debug(void)
  *
  * @param vec The vector to store the token_vec in
  */
-static void	loop(t_vector *vec)
-{
-	char	*input;
-
-	while (1)
-	{
-		input = readline("\n\033[1;32mminishell$ \033[0m");
-		if (!input)
-		{
-			free(input);
-			break ;
-		}
-		add_history(input);
-		if (!ft_strcmp(input, "exit"))
-			return (free(input), free_global(true));
-		else
-		{
-			if (!lexer(input, vec))
-				return (free(input), free_global(true));
-			parser(vec);
-			print_vector(vec, print_token);
-		}
-		free(input);
-		free_global(false);
-		vec_init(vec, 5, sizeof(t_token), clear_token);
-	}
-}
-
-// static bool	find_strings(void *data)
+// static void	loop(t_vector *vec)
 // {
-// 	t_token	*token;
+// 	char	*input;
 
-// 	token = (t_token *)data;
-// 	if (token->type == STRING)
-// 		return (true);
-// 	return (false);
+// 	while (1)
+// 	{
+// 		input = readline("\n\033[1;32mminishell$ \033[0m");
+// 		if (!input)
+// 		{
+// 			free(input);
+// 			break ;
+// 		}
+// 		add_history(input);
+// 		if (!ft_strcmp(input, "exit"))
+// 			return (free(input), free_global(true));
+// 		else
+// 		{
+// 			if (!lexer(input, vec))
+// 				return (free(input), free_global(true));
+// 			parser(vec);
+// 			print_vector(vec, print_token);
+// 		}
+// 		free(input);
+// 		free_global(false);
+// 		vec_init(vec, 5, sizeof(t_token), clear_token);
+// 	}
 // }
 
 int	main(int ac, char **av, char **env)
 {
-	t_shell	*data;
-	pid_t	pid;
-	int		status;
+	t_shell *data;
+	pid_t pid;
+	int status;
 
 	// t_found	**found;
 	if (DEBUG)
@@ -94,51 +84,58 @@ int	main(int ac, char **av, char **env)
 			exit_mini("initial fork failed", errno);
 		if (pid == 0)
 		{
-			lexer(av[1], data);
-			//lexer retester
+			if (!lexer(av[1], data))
+				err();
+			// lexer retester
 			parser(data);
-			//parser retesting
+			// parser retesting
 			operator_split(data);
 			// operator split retesting
-			verify_token_vec(&data->token_vec);
+			verify_token_vec(data);
 			// check if it really catches all doubles
-			data->exec = group_token_vec(&data->token_vec, env);
+			group_token_vec(data);
+			// check if all groups are properly cerated
 			status = executor(data->exec);
+			free_shell(data, true);
 			exit(status);
 		}
 		if (waitpid(pid, &status, 0) == -1)
 			exit_mini("waitpid failed", errno);
-		data->exit_status = WEXITSTATUS(status);
-		// found = g_data.token_vec.find(&g_data.token_vec, find_strings);
-		// if (!found)
-		// {
-		// 	printf("%zu counted\n", g_data.token_vec.count(&g_data.token_vec,
-		// 				find_strings));
-		// 	printf("No matches found\n");
-		// }
-		// else
-		// {
-		// 	printf("Printing matches:\n");
-		// 	while (*found)
-		// 	{
-		// 		print_token((*found)->item, (*found)->index);
-		// 		free(*found);
-		// 		found++;
-		// 	}
-		// 	free(found);
-		// }
-		// if (DEBUG)
-		print_vector(&g_data.token_vec, print_token);
-		// print_vector(&g_data.env, print_env);
-		free_global(true);
+		if (WEXITSTATUS(status) == 10)
+		{
+			return (10); // pipe workaround
+			signal.exit_status = WEXITSTATUS(status);
+			// found = g_data.token_vec.find(&g_data.token_vec, find_strings);
+			// if (!found)
+			// {
+			// 	printf("%zu counted\n",
+					g_data.token_vec.count(&g_data.token_vec,
+			// 				find_strings));
+			// 	printf("No matches found\n");
+			// }
+			// else
+			// {
+			// 	printf("Printing matches:\n");
+			// 	while (*found)
+			// 	{
+			// 		print_token((*found)->item, (*found)->index);
+			// 		free(*found);
+			// 		found++;
+			// 	}
+			// 	free(found);
+			// }
+			// if (DEBUG)
+			print_vector(&data->token_vec, print_token);
+			// print_vector(&g_data.env, print_env);
+			free_shell(data, true);
+			return (0);
+		}
+		// else if (ac == 1)
+		// 	loop(data);
+		else
+		{
+			printf("Too many arguments");
+			free_shell(data, true);
+		}
 		return (0);
 	}
-	else if (ac == 1)
-		loop(&g_data.token_vec);
-	else
-	{
-		printf("Too many arguments");
-		free_global(true);
-	}
-	return (0);
-}

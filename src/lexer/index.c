@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/19 13:32:55 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/03 19:25:37 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/06 20:36:35 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,19 +133,19 @@ void	lexer(char *input, t_shell *data)
 		if (checkchar(input[i], "\"\'()") == 1)
 		{
 			if (!check_delimiters(&input[i]))
-				err(SYNTAX_MINI, input[i], data, false);
+				err(SYNTAX_MINI, input[i], data, true);
 			if (!make_string(input, &i, &data->token_vec))
-				err(MALLOC, "malloc", data, false);
+				err(MALLOC, "malloc", data, true);
 		}
 		else if (input[i] == ' ')
 		{
 			if (!create_string(input, &i, &data->token_vec))
-				err(MALLOC, "malloc", data, false);
+				err(MALLOC, "malloc", data, true);
 		}
 		else
 			i++;
 	}
 	if (i > 0 && checkchar(input[i - 1], "\"\') ") == 0)
 		if (!create_string(input, &i, &data->token_vec))
-			err(MALLOC, "malloc", data, false);
+			err(MALLOC, "malloc", data, true);
 }

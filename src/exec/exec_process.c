@@ -6,13 +6,11 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 16:08:08 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/01 22:26:59 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/06 17:20:33 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-extern t_global	g_data;
 
 void	exec_process(t_group *group, t_process type)
 {
@@ -31,8 +29,6 @@ void	exec_process(t_group *group, t_process type)
 	env = combine_env(&g_data.env);
 	execve(str, group->cmd, env);
 }
-
-
 
 static void	close_start(t_process type, t_group *group)
 {
@@ -82,8 +78,8 @@ static void	exec_built_in(t_group *group, t_process type, t_vector *env)
 {
 	handle_redirects(group);
 	dup_fd(type, group);
-	if (ft_strcmp(group->cmd[0], "exit") == 0)
-		ft_exec_exit(group->cmd, type); //@note create built in for exit
+	if (ft_strcmp(group->cmd[0], "exit"))
+		ft_exec_exit(group->cmd, type);
 	if (ft_strcmp(group->cmd[0], "echo") == 0)
 		ft_echo(group->cmd, env);
 	else if (ft_strcmp(group->cmd[0], "cd") == 0)

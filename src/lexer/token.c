@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/21 13:06:18 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/03 20:06:17 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/06 20:36:35 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static bool	find_operator(t_token *token)
 	return (true);
 }
 
-static void insert_array(t_shell *data, char **array, int i)
+static void	insert_array(t_shell *data, char **array, int i)
 {
 	int		j;
 	t_token	*token;
@@ -36,7 +36,7 @@ static void insert_array(t_shell *data, char **array, int i)
 		if (!token || !vec_insert(&data->token_vec, i + j, token))
 		{
 			ft_free(array);
-			err(MALLOC, "malloc", data, false);
+			err(MALLOC, "malloc", data, true);
 		}
 		j++;
 	}
@@ -59,7 +59,7 @@ void	operator_split(t_shell *data)
 			if (!array || !vec_remove(&data->token_vec, i))
 			{
 				ft_free(array);
-				err(MALLOC, "malloc", data, false);
+				err(MALLOC, "malloc", data, true);
 			}
 			insert_array(data, array, i);
 		}
