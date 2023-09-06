@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/03 18:11:09 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/03 18:59:20 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/06 13:00:01 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,13 @@
 
 extern t_signal	signal;
 
-
 /**
  * @brief	frees the main data struct
  * @param	data t_shell data
  * @param	close_shell true to free env and the struct
  * 						false to keep data and env
- * 			
-*/
+ *
+ */
 void	free_shell(t_shell *data, bool close_shell)
 {
 	vec_free(&data->token_vec);
@@ -100,6 +99,5 @@ t_shell	*init_shell(char **env, bool first_init)
 		if (!vec_init(&data->token_vec, 3, sizeof(t_token), clear_token))
 			exit_mini("failed to vec_init env", 1);
 		data->exec = NULL;
-		data->exit_status = 0;
 	}
 }
