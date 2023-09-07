@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/19 13:32:55 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/06 20:36:35 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/07 14:55:59 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,27 +93,29 @@ static bool	check_delimiters(char *str)
 	return (true);
 }
 
-/**
- * @brief Creates a string from another string
- *
- * @param str The string to create a string from
- * @param i The index of the string to create
- * @param vec The vector to store the string in
- * @return true The string was succesfully stored
- * @return false The string could not be stored
- */
-bool	make_string(char *str, size_t *i, t_vector *vec)
+bool	lexer_check_char(char *input, int *i, t_shell *data)
 {
-	if (str[*i] == '\"' || str[*i] == '\'')
+	char	temp[2];
+
+	temp[0] = '\0';
+	temp[1] = '\0';
+	if (checkchar(input[*i], "\"\'()") == 1)
 	{
-		if (!create_quote_string(str, i, vec))
-			return (false);
+		if (!check_delimiters(&input[*i]))
+		{
+			temp[0] = input[*i];
+			return (set_err(SYNTAX_MINI, temp, data));
+		}
+		if (!make_string(input, i, &data->token_vec))
+			return (set_err(MALLOC, "lexer", data));
 	}
-	else if (str[*i] == '(')
+	else if (input[*i] == ' ')
 	{
-		if (!create_paran_string(str, i, vec))
-			return (false);
+		if (!create_string(input, i, &data->token_vec))
+			return (set_err(MALLOC, "lexer", data));
 	}
+	else
+		(*i)++;
 	return (true);
 }
 
@@ -123,29 +125,18 @@ bool	make_string(char *str, size_t *i, t_vector *vec)
  * @param input	The string to split
  * @param data	t_shell data, of which token_vec will be used
  */
-void	lexer(char *input, t_shell *data)
+bool	lexer(char *input, t_shell *data)
 {
 	size_t	i;
 
 	i = 0;
 	while (input[i])
 	{
-		if (checkchar(input[i], "\"\'()") == 1)
-		{
-			if (!check_delimiters(&input[i]))
-				err(SYNTAX_MINI, input[i], data, true);
-			if (!make_string(input, &i, &data->token_vec))
-				err(MALLOC, "malloc", data, true);
-		}
-		else if (input[i] == ' ')
-		{
-			if (!create_string(input, &i, &data->token_vec))
-				err(MALLOC, "malloc", data, true);
-		}
-		else
-			i++;
+		if (!lexer_check_char(input, &i, data))
+			return (false);
 	}
 	if (i > 0 && checkchar(input[i - 1], "\"\') ") == 0)
 		if (!create_string(input, &i, &data->token_vec))
-			err(MALLOC, "malloc", data, true);
+			return (set_err(MALLOC, "lexer", data));
+	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 13:41:35 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/08/30 22:00:47 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/07 14:50:40 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,5 +141,29 @@ bool	create_paran_string(char *str, size_t *i, t_vector *vec)
 	*i = occur_right;
 	while (str[*i] == ' ' && str[*i])
 		(*i)++;
+	return (true);
+}
+
+/**
+ * @brief Creates a string from another string
+ *
+ * @param str The string to create a string from
+ * @param i The index of the string to create
+ * @param vec The vector to store the string in
+ * @return true The string was succesfully stored
+ * @return false The string could not be stored
+ */
+bool	make_string(char *str, size_t *i, t_vector *vec)
+{
+	if (str[*i] == '\"' || str[*i] == '\'')
+	{
+		if (!create_quote_string(str, i, vec))
+			return (false);
+	}
+	else if (str[*i] == '(')
+	{
+		if (!create_paran_string(str, i, vec))
+			return (false);
+	}
 	return (true);
 }
