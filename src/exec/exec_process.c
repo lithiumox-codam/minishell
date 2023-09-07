@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 16:08:08 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/06 17:20:33 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/07 02:38:25 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ static void	dup_fd(t_process type, t_group *group)
 
 static void	exec_built_in(t_group *group, t_process type, t_vector *env)
 {
-	handle_redirects(group);
-	dup_fd(type, group);
+	dup_fd(type, group);//@note check if it should maybe only be done for outfiles?
+	// for the calls of the builtins just pass the entire group as paramater so they can read their own indirects
 	if (ft_strcmp(group->cmd[0], "exit"))
 		ft_exec_exit(group->cmd, type);
 	if (ft_strcmp(group->cmd[0], "echo") == 0)

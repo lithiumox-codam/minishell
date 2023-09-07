@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/06 20:50:26 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/07 02:36:16 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ int	main(int ac, char **av, char **env)
 			// operator split retesting
 			verify_token_vec(data);
 			// check if it really catches all doubles
+			// build function that combines a redirects into 1 singular token
 			group_token_vec(data);
 			// check if all groups are properly cerated
 			status = executor(data->exec);

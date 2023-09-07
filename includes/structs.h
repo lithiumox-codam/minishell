@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 11:15:16 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/09/06 15:56:16 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/07 02:33:46 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ typedef struct s_exec
 typedef struct s_group
 {
 	t_vector	input;
+	t_vector 	in_red;
+	t_vector	out_red;
 	char		**cmd;
 	pid_t		pd;
 	int			left_pipe[2];

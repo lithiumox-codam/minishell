@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:50 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/06 20:49:39 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/07 02:39:16 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ int	executor(t_shell *data)
 
 	if ((&data->exec->group_vec)->length == 1)
 	{
-		check_for_exit(data); // write function to exit()
+		check_for_exit(data); // check for cd / exit / unset
+								// export; in which case dont pipe
 	}
 	if (!create_processes(data))
 	{

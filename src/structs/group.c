@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 20:42:59 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/06 18:49:48 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/07 02:34:50 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	clear_group(void *data)
 		return ;
 	p = (t_group *)data;
 	vec_free(&p->input);
+	vec_free(&p->in_red);
+	vec_free(&p->out_red);
 	if (p->cmd)
 		ft_free(p->cmd);
 	p = NULL;
@@ -66,6 +68,10 @@ t_group	*create_group(void)
 		return (NULL);
 	if (!vec_init(&p->input, 2, sizeof(t_token), clear_token))
 		return (free(p), NULL);
+	if (!vec_init(&p->in_red, 2, sizeof(t_token), clear_token))
+		return (vec_free(&p->input), free(p), NULL);
+	if (!vec_init(&p->out_red, 2, sizeof(t_token), clear_token))
+		return (vec_free(&p->input), vec_free(&p->in_red), free(p), NULL);
 	p->cmd = NULL;
 	p->pd = -2;
 	p->left_pipe[0] = -1;
