@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 11:15:16 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/09/07 02:33:46 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/07 03:48:26 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,10 @@ typedef struct s_exec
  */
 typedef struct s_group
 {
-	t_vector	input;
-	t_vector 	in_red;
+	char		*cmd;
+	char		**args;
+	t_vector	in_red;
 	t_vector	out_red;
-	char		**cmd;
 	pid_t		pd;
 	int			left_pipe[2];
 	int			right_pipe[2];
@@ -95,12 +95,17 @@ typedef struct s_group
  * @param token_vec The token_vec vector from the lexer and parser;
  * @param env The environment variables;
  * @param data to be passed to the executor;
+ * @param exit_type The type of exit;
+ * @param exit_msg The message to be printed as part of err()
+ * @warning exit_msg will not be freed by err()
  */
 typedef struct s_shell
 {
 	t_vector	token_vec;
 	t_vector	env;
 	t_exec		*exec;
+	t_exit		exit_type;
+	char		*exit_msg;
 }				t_shell;
 
 /**

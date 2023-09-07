@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/13 17:41:00 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/03 17:12:24 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/07 03:46:17 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef enum e_types
  */
 typedef enum e_exit
 {
+	GOOD,
 	PERROR,
 	MALLOC,
 	NOT_FOUND,
