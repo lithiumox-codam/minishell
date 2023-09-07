@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/03 18:11:09 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/06 19:44:47 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/07 13:17:21 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ t_shell	*init_shell(char **env, bool first_init)
 			exit_mini("failed to vec_init env", 1);
 		init_env(env, &data->env);
 		data->exec = NULL;
+		data->exit_type = GOOD;
+		data->exit_msg = NULL;
 		create_signal_struct();
 	}
 	else
@@ -99,5 +101,7 @@ t_shell	*init_shell(char **env, bool first_init)
 		if (!vec_init(&data->token_vec, 3, sizeof(t_token), clear_token))
 			exit_mini("failed to vec_init env", 1);
 		data->exec = NULL;
+		data->exit_type = GOOD;
+		data->exit_msg = NULL;
 	}
 }
