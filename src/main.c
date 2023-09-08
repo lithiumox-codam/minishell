@@ -6,13 +6,13 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/07 14:40:28 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/08 15:48:12 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-t_signal	signal;
+t_signal	g_signal;
 
 static void	check_leaks(void)
 {
@@ -85,10 +85,9 @@ int	main(int ac, char **av, char **env)
 		parser(data);
 		// parser retesting
 		operator_split(data);
-		// operator split retesting
-		verify_token_vec(data);
-		// check if it really catches all doubles
-		// build function that combines a redirects+heredocs into 1 singular token
+		// combine redirects+heredoc
+		verify_token_vec(data); // + // rewrite
+		// expansion based on env vector
 		group_token_vec(data);
 		// check if all groups are properly cerated
 		status = executor(data->exec);

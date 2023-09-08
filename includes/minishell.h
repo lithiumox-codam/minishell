@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/09/06 20:29:47 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/07 14:56:02 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ t_shell	*init_shell(char **env, bool first_init);
 void	free_shell(t_shell *data, bool close_shell);
 
 /* lexer */
-void	lexer(char *input, t_shell *data);
+bool	lexer(char *input, t_shell *data);
+bool	make_string(char *str, size_t *i, t_vector *vec);
 bool	check_quotes_parantheses(char *input);
 bool	create_string(char *str, size_t *i, t_vector *vec);
 bool	create_quote_string(char *str, size_t *i, t_vector *vec);
@@ -88,7 +89,8 @@ void	clear_exec(t_exec *exec);
 
 /* general utils */
 void	exit_mini(char *str, int exit_code);
-void	err(t_exit type, char *name, t_shell *data, bool free_struct);
+bool	set_err(t_exit type, char *msg, t_shell *data);
+void	write_err(t_shell *data);
 char	*rm_quotes(t_token *token);
 
 /* debug */

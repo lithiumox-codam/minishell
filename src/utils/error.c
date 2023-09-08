@@ -6,13 +6,13 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/19 21:42:24 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/07 13:16:30 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/08 15:40:44 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-extern t_signal	signal;
+extern t_signal	g_signal;
 
 /**
  * @brief called if there is an error in minihsell that should close the program
@@ -57,28 +57,28 @@ void	write_err(t_shell *data)
 	if (data->exit_type == PERROR)
 	{
 		perror("minishell:");
-		signal.exit_status = errno;
+		g_signal.exit_status = errno;
 	}
 	if (data->exit_type == MALLOC)
 	{
 		write(STDERR_FILENO, "minishell: malloc error in : ", 28);
 		write(STDERR_FILENO, data->exit_msg, ft_strlen(data->exit_msg));
 		write(STDERR_FILENO, "\n", 1);
-		signal.exit_status = 1;
+		g_signal.exit_status = 1;
 	}
 	if (data->exit_type == NOT_FOUND)
 	{
 		write(STDERR_FILENO, "minishell: ", 11);
 		write(STDERR_FILENO, data->exit_msg, ft_strlen(data->exit_msg));
 		write(STDERR_FILENO, ": No such file or directory\n", 28);
-		signal.exit_status = 127;
+		g_signal.exit_status = 127;
 	}
 	if (data->exit_type == PERMISSION)
 	{
 		write(STDERR_FILENO, "minishell: ", 11);
 		write(STDERR_FILENO, data->exit_msg, ft_strlen(data->exit_msg));
 		write(STDERR_FILENO, ": Permission denied\n", 20);
-		signal.exit_status = 126;
+		g_signal.exit_status = 126;
 	}
 	if (data->exit_type == SYNTAX)
 	{
@@ -86,19 +86,19 @@ void	write_err(t_shell *data)
 			47);
 		write(STDERR_FILENO, data->exit_msg, ft_strlen(data->exit_msg));
 		write(STDERR_FILENO, "'\n", 2);
-		signal.exit_status = 258;
+		g_signal.exit_status = 258;
 	}
 	if (data->exit_type == SYNTAX_MINI)
 	{
 		write(STDERR_FILENO, "minishell: unfinished operator : `", 34);
 		write(STDERR_FILENO, data->exit_msg, ft_strlen(data->exit_msg));
 		write(STDERR_FILENO, "'\n", 2);
-		signal.exit_status = 2;
+		g_signal.exit_status = 2;
 	}
 	if (data->exit_type == SIGNAL_C)
 	{
 		write(STDERR_FILENO, "^C\n", 3);
-		signal.exit_status = 130;
+		g_signal.exit_status = 130;
 	}
 	free_shell(data, false);
 }
