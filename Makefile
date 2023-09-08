@@ -1,16 +1,17 @@
 NAME = minishell
-SRC = main \
-	check_input
+SRC = main check_input utils/error structs/token structs/group parser/index parser/token_vec2 parser/quotes parser/token_vec debug/print_vector lexer/index lexer/string lexer/token lexer/op_split structs/env structs/shell group/group group/heredoc parser/verify_token exec/exec exec/create_processes exec/redirect exec/exec_process utils/miscellaneous exec/utils
 SRCS = $(addsuffix .c, $(addprefix src/, $(SRC)))
 OBJS = $(patsubst src/%.c, build/%.o, $(SRCS))
 LIBFT = libft/libft.a
 READLINE = readline/libreadline.a
 
+DEBUG ?= 0
+DEBUG_FLAGS = -g
 G_FLAGS = -DREADLINE_LIBRARY
 CODAM_FLAGS = -Wall -Wextra -Werror
 LIBS = libft/libft.a readline/libreadline.a readline/libhistory.a
 LINKER = -lncurses
-INCLUDES = -I $(CURDIR)/includes -I $(CURDIR)/libft -I $(CURDER)/readline
+INCLUDES = -I $(CURDIR)/includes -I $(CURDIR)/libft/includes -I $(CURDER)/readline
 
 COLOR_INFO = \033[1;36m
 COLOR_SUCCESS = \033[1;32m
@@ -23,19 +24,19 @@ EMOJI_RUN = 🚀
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(READLINE) $(OBJS)
+$(NAME): $(LIBFT) $(OBJS)
 	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Compiling $(NAME)...$(COLOR_RESET)\t"
-	@cc $(OBJS) $(CODAM_FLAGS) $(LINKER) $(INCLUDES) $(LIBS) -o $@
+	@cc $(OBJS) $(CODAM_FLAGS) $(if DEBUG, $(DEBUG_FLAGS)) -DDEBUG=$(DEBUG) $(LINKER) $(INCLUDES) $(LIBS) -o $@
 	@sleep 0.25
 	@printf "✅\n"
 
-build/%.o: src/%.c includes/minishell.h
+build/%.o: src/%.c includes/minishell.h includes/structs.h includes/enum.h
 	@mkdir -p $(@D)
-	@cc $(INCLUDES) $(CODAM_FLAGS) -c $< -o $@
+	@cc $(INCLUDES) $(CODAM_FLAGS) $(if DEBUG, $(DEBUG_FLAGS)) -DDEBUG=$(DEBUG) -c $< -o $@
 
 $(LIBFT):
 	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Initializing submodules...$(COLOR_RESET)\t"
-	@git submodule update --init --recursive > /dev/null
+# @git submodule update --init --recursive > /dev/null
 	@sleep 0.25
 	@printf "✅\n"
 	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Building Libft...$(COLOR_RESET)\t\t"
@@ -61,7 +62,7 @@ clean:
 fclean: clean
 	@printf "$(COLOR_INFO)$(EMOJI_CLEAN)  Removing executable...$(COLOR_RESET)\t"
 	@$(MAKE) -C libft fclean > /dev/null
-	@rm -f $(LIBS)
+	@rm -f libft/libft.a
 	@rm -f $(NAME)
 	@sleep 0.25
 	@printf "✅\n"
@@ -76,6 +77,8 @@ norm:
 re: fclean $(NAME)
 
 bonus: all
+
+readline: $(READLINE)
 
 module-update:
 	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Updating submodules...$(COLOR_RESET)\t"

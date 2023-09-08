@@ -2,16 +2,29 @@
     "configurations": [
         {
             "name": "Mac",
+            "os": "mac",
             "includePath": [
-                "${workspaceFolder}/includes",
-                "${workspaceFolder}/../libft",
-                "../libft"
+                "${workspaceFolder}/includes/**",
+                "${workspaceFolder}/libft/includes/**"
             ],
             "macFrameworkPath": [
                 "/Library/Frameworks"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "configurationProvider": "ms-vscode.makefile-tools"
+        },
+        {
+            "name": "Ubuntu",
+            "os": "linux",
+            "includePath": [
+                "${workspaceFolder}/includes/**",
+                "${workspaceFolder}//libft/includes/**"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
             "cStandard": "c17",
             "cppStandard": "c++17",
             "configurationProvider": "ms-vscode.makefile-tools"
