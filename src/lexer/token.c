@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/21 13:06:18 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/06 20:36:35 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/08 16:38:34 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	insert_array(t_shell *data, char **array, int i)
 	}
 }
 
-void	operator_split(t_shell *data)
+bool	operator_split(t_shell *data)
 {
 	size_t	i;
 	size_t	j;
@@ -59,14 +59,14 @@ void	operator_split(t_shell *data)
 			if (!array || !vec_remove(&data->token_vec, i))
 			{
 				ft_free(array);
-				err(MALLOC, "malloc", data, true);
+				return (set_err(MALLOC, "op_split", data));
 			}
 			insert_array(data, array, i);
 		}
 		else
 			i++;
 	}
-	parser(&data->token_vec);
 	if (array)
 		free(array);
+	return (true);
 }

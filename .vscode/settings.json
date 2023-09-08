@@ -22,6 +22,7 @@
 		"string_view": "c",
 		"vector": "c",
 		"minishell.h": "c",
-		"random": "c"
+		"random": "c",
+		"__tuple": "c"
 	}
 }

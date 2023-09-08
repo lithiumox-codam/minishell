@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/08 15:55:26 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/08 19:25:21 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,14 +81,19 @@ int	main(int ac, char **av, char **env)
 	{
 		if (!lexer(av[1], data))
 			write_err(data);
-		// lexer retester
-		parser(data);
-		// parser retesting
-		operator_split(data);
+		if (!parser(data))
+			write_err(data);
+		if (!operator_split(data))
+			write_err(data);
+		// might need to test op_split
+		if (!parser(data))
+			write_err(data);
+		// expansion based on env vector
 		// combine redirects+heredoc into 1 token + verify_token_vec combined
 		// verify_token_vec(data);
-		// expansion based on env vector
-		group_token_vec(data);
+		if (!group_token_vec(data))
+			write_err(data);
+		// alles tot hier zou moeten werken, exec doe ik zondag
 		// check if all groups are properly cerated
 		status = executor(data->exec);
 		free_shell(data, true);

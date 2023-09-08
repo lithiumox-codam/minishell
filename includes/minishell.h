@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/09/07 14:56:02 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/08 19:14:33 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,11 @@ bool	check_quotes_parantheses(char *input);
 bool	create_string(char *str, size_t *i, t_vector *vec);
 bool	create_quote_string(char *str, size_t *i, t_vector *vec);
 bool	create_paran_string(char *str, size_t *i, t_vector *vec);
-void	operator_split(t_shell *data);
+bool	operator_split(t_shell *data);
 char	**split(t_token *token);
 
 /* parser */
-void	parser(t_shell *data);
-void	parse_one(t_token *token);
+bool	parser(t_shell *data);
 bool	is_encased_dq(char *str);
 bool	is_encased_sq(char *str);
 bool	is_encased_parentheses(char *str);
@@ -59,8 +58,9 @@ bool	is_and(char *str);
 void	verify_token_vec(t_shell *data);
 
 /* group */
-void	group_token_vec(t_shell *data);
-void	heredoc(char *filename, char *stop, t_types type, t_shell *data);
+bool	group_token_vec(t_shell *data);
+bool	hdoc_found(t_group *group, int i, t_shell *data);
+bool	heredoc(char *filename, char *stop, bool is_encased, t_shell *data);
 
 /* executor */
 int		executor(t_shell *data);
@@ -91,7 +91,7 @@ void	clear_exec(t_exec *exec);
 void	exit_mini(char *str, int exit_code);
 bool	set_err(t_exit type, char *msg, t_shell *data);
 void	write_err(t_shell *data);
-char	*rm_quotes(t_token *token);
+t_token	*rm_quotes(t_token *token, bool set_string);
 
 /* debug */
 void	print_vector(t_vector *vec, void (*printer)(void *, size_t));
