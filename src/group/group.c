@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:05 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/08 17:56:34 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/09 12:24:52 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static bool	group_tokens(t_group *group, int *i, t_shell *data)
 		}
 		i++;
 	}
-	return (group);
+	return (true);
 }
 
 static bool	set_cmd(t_group *group, int i, t_shell *data)
