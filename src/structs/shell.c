@@ -6,13 +6,13 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/03 18:11:09 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/07 13:17:21 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/08 16:27:49 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-extern t_signal	signal;
+extern t_signal	g_signal;
 
 /**
  * @brief	frees the main data struct
@@ -57,16 +57,16 @@ static void	init_env(char **env, t_vector *env_vec)
 }
 
 /**
- * @brief Create a signal struct object
+ * @brief Create a g_signal struct object
  *
- * @return t_signal The created signal struct
+ * @return t_signal The created g_signal struct
  */
 void	create_signal_struct(void)
 {
-	signal.inte = false;
-	signal.quit = false;
-	signal.pipe = false;
-	signal.exit_status = 0;
+	g_signal.inte = false;
+	g_signal.quit = false;
+	g_signal.pipe = false;
+	g_signal.exit_status = 0;
 }
 
 /**

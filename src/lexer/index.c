@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/19 13:32:55 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/07 14:55:59 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/08 16:50:32 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ static bool	check_delimiters(char *str)
 	return (true);
 }
 
-bool	lexer_check_char(char *input, int *i, t_shell *data)
+bool	lexer_check_char(char *input, size_t *i, t_shell *data)
 {
 	char	temp[2];
 

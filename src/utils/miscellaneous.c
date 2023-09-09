@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 16:53:28 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/08 15:53:31 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/08 16:26:58 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_token	*rm_quotes(t_token *token)
 
 	if (token->type == SINGLE_QUOTE || token->type == DOUBLE_QUOTE)
 	{
-		if (strlen(token->value) == 2)
+		if (ft_strlen(token->value) == 2)
 		{
 			free(token->value);
 			token->value = ft_strdup("");

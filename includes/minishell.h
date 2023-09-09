@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/09/07 14:56:02 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/08 16:54:33 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	clear_exec(t_exec *exec);
 void	exit_mini(char *str, int exit_code);
 bool	set_err(t_exit type, char *msg, t_shell *data);
 void	write_err(t_shell *data);
-char	*rm_quotes(t_token *token);
+t_token	*rm_quotes(t_token *token);
 
 /* debug */
 void	print_vector(t_vector *vec, void (*printer)(void *, size_t));
