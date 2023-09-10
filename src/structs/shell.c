@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/03 18:11:09 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/08 16:27:49 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/09 12:17:46 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ extern t_signal	g_signal;
 void	free_shell(t_shell *data, bool close_shell)
 {
 	vec_free(&data->token_vec);
-	clear_exec(data->exec);
+	// clear_exec(data->exec);
 	if (close_shell)
 	{
 		vec_free(&data->env);
@@ -81,6 +81,7 @@ t_shell	*init_shell(char **env, bool first_init)
 {
 	t_shell	*data;
 
+	data = NULL;
 	if (first_init)
 	{
 		data = malloc(sizeof(t_shell));
@@ -104,4 +105,5 @@ t_shell	*init_shell(char **env, bool first_init)
 		data->exit_type = GOOD;
 		data->exit_msg = NULL;
 	}
+	return (data);
 }

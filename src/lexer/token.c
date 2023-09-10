@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/21 13:06:18 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/09 12:06:23 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/09 12:32:58 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,6 @@ void	operator_split(t_shell *data)
 			i++;
 	}
 	parser(data);
-	if (array)
-		free(array);
+	// if (array)
+	// 	free(array);
 }

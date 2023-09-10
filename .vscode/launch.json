@@ -11,7 +11,7 @@
 			"program": "${workspaceFolder}/./minishell",
 			"preLaunchTask": "build",
 			"args": [
-				"\"(city \"test\" 'test' > < >> << || | && () )\""
+				"city |||test|heyhello<<>>hello \"helloworld\""
 			],
 			"cwd": "${workspaceFolder}"
 		}

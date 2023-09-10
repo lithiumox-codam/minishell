@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/09/08 16:54:33 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/09 12:27:56 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ bool	contains_env_var(char *str);
 bool	is_or(char *str);
 bool	is_and(char *str);
 void	verify_token_vec(t_shell *data);
-
+bool	check_tokens(t_shell *data);
 /* group */
 void	group_token_vec(t_shell *data);
 void	heredoc(char *filename, char *stop, t_types type, t_shell *data);

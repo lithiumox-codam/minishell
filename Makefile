@@ -13,6 +13,8 @@ SRC = main \
     lexer/string \
     lexer/token \
     lexer/op_split \
+    structs/shell \
+    parser/verify_token \
     debug/print_vector
     # exec/exec \
     # exec/create_processes \
@@ -20,8 +22,6 @@ SRC = main \
     # exec/exec_process \
     # exec/utils \
     # group/heredoc \
-    # parser/verify_token \
-    # structs/shell \
     # structs/group \
     # group/group
 SRCS = $(addsuffix .c, $(addprefix src/, $(SRC)))

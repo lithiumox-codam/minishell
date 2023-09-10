@@ -6,75 +6,71 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 16:57:32 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/06 20:36:35 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/09 12:42:49 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-/**
- * @brief loop cause it didnt fit in verify_token xd
- */
-static void	loop(t_shell *data)
+static bool	filter_operators(void *token)
 {
-	int		i;
-	t_token	*token;
-	t_token	*next;
+	t_token	*t;
 
-	i = 0;
-	while (i < (&data->token_vec)->length)
-	{
-		token = vec_get(&data->token_vec, i);
-		if (is_redirect(token))
-		{
-			check_redirect(&data->token_vec, i);
-			i++;
-		}
-		else if (i + 1 < (&data->token_vec)->length)
-		{
-			next = vec_get(&data->token_vec, i + 1);
-			if (token->type == next->type)
-				err(SYNTAX, next->value, data, true);
-		}
-		i++;
-	}
+	t = (t_token *)token;
+	return (t->type == PIPE || t->type == AND || t->type == OR
+		|| t->type == I_REDIRECT || t->type == O_REDIRECT
+		|| t->type == A_REDIRECT || t->type == HEREDOC);
 }
 
-/**
- * @brief checks if redirect is followed by STRING/D_QUOTE/S_QUOTE
- */
-static void	check_redirect(t_shell *data, int i)
+static bool	check_double_ops(t_found **found)
 {
-	t_token	*next;
-
-	if (i + 1 >= (&data->token_vec)->length)
-		err(SYNTAX, "newline", data, true);
-	next = vec_get(&data->token_vec, i + 1);
-	if (!is_string_type(next))
-		err(SYNTAX, next->value, data, true);
-}
-
-/**
- * @brief verifies that the input doesnt start with a pipe,
-	checks for double pipes
- * @brief checks if redirects/heredocs are followe by a string/quoted string
- * @param	vec the vector of t_token_vec
- */
-void	verify_token_vec(t_shell *data)
-{
-	int		i;
 	t_token	*token;
 
-	i = 0;
-	token = vec_get(&data->token_vec, i);
-	if (token->type == PIPE)
-		err(SYNTAX, token->value, data, true);
-	loop(data);
-	if ((&data->token_vec)->length > 1)
+	token = (*found)->item;
+	if (token->type == ((t_token *)(((t_found *)(*(found + 1)))->item))->type)
 	{
-		i = (&data->token_vec)->length - 1;
-		token = vec_get(&data->token_vec, i);
 		if (token->type == PIPE)
-			err(SYNTAX_MINI, token->value, data, true);
+			set_err(SYNTAX, "syntax error near unexpected token `||'", NULL);
+		else if (token->type == AND)
+			set_err(SYNTAX, "syntax error near unexpected token `&&'", NULL);
+		else if (token->type == O_REDIRECT)
+			set_err(SYNTAX, "syntax error near unexpected token `>>'", NULL);
+		else if (token->type == I_REDIRECT)
+			set_err(SYNTAX, "syntax error near unexpected token `<<'", NULL);
+		else if (token->type == A_REDIRECT)
+			set_err(SYNTAX, "syntax error near unexpected token `<<'", NULL);
+		else if (token->type == HEREDOC)
+			set_err(SYNTAX, "syntax error near unexpected token `<<'", NULL);
+		return (false);
 	}
+	return (true);
+}
+
+bool	check_tokens(t_shell *data)
+{
+	t_found	**found;
+	t_token	*token;
+
+	found = vec_find(&data->token_vec, filter_operators);
+	if (found == NULL)
+	{
+		set_err(SYNTAX, "syntax error near unexpected token", data);
+		return (false);
+	}
+	while (*found != NULL)
+	{
+		token = (*found)->item;
+		if (token->type == PIPE || token->type == AND || token->type == OR)
+		{
+			if (!check_double_ops(found))
+				return (false);
+		}
+		found++;
+	}
+	while (*found != NULL)
+	{
+		free(*found);
+		found++;
+	}
+	return (true);
 }
