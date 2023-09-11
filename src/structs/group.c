@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 20:42:59 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/11 12:30:21 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/11 20:12:01 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	clear_fname(void *data)
 		return ;
 	filename = (char *)data;
 	if (-1 == unlink(filename))
-		perror("minishell:");
+		PERR("minishell:");
 	free(filename);
 	filename = NULL;
 }

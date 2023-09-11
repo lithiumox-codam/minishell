@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/16 12:15:45 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/08 19:24:52 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/11 20:12:01 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,14 @@ bool	heredoc(char *filename, char *stop, bool is_encased, t_shell *data)
 
 	heredoc_fd = open(filename, O_CREAT | O_WRONLY, 0644);
 	if (heredoc_fd == -1)
-		return (set_err(PERROR, filename, data));
+		return (set_err(PERR, filename, data));
 	if (!loop(heredoc_fd, stop, is_encased, data))
 	{
 		close(heredoc_fd);
 		return (false);
 	}
 	if (!close(heredoc_fd))
-		return (set_err(PERROR, filename, data));
+		return (set_err(PERR, filename, data));
 	return (true);
 }
 

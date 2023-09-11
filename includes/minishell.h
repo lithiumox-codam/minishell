@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/09/11 12:32:01 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/11 14:08:16 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,9 @@ bool	heredoc(char *filename, char *stop, bool is_encased, t_shell *data);
 bool	executor(t_shell *data);
 bool	create_processes(t_shell *data);
 void	exec_process(t_group *group, t_process type);
+void	check_cmd(t_group *group);
+void	exec_built_in(t_group *group, t_process type);
+void	exec_absolut_path(t_group *group);
 void	redirect_input(t_group *group, size_t i);
 
 /* exec_utils */
@@ -90,6 +93,7 @@ void	clear_exec(t_exec *exec);
 /* general utils */
 void	exit_mini(char *str, int exit_code);
 bool	set_err(t_exit type, char *msg, t_shell *data);
+void	exec_err(t_group *group, t_exit type);
 void	write_err(t_shell *data);
 t_token	*rm_quotes(t_token *token, bool set_string);
 
