@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:05 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/09 12:24:52 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/11 12:29:56 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ bool	group_token_vec(t_shell *data)
 	i = 0;
 	while (i < (&data->token_vec)->length)
 	{
-		group = create_group();
+		group = create_group(t_shell *data);
 		if (!group)
 			return (set_err(MALLOC, "group_token_v", data));
 		if (!set_cmd(group, i, data))

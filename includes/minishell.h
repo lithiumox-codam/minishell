@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/09/08 19:14:33 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/11 12:32:01 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ bool	hdoc_found(t_group *group, int i, t_shell *data);
 bool	heredoc(char *filename, char *stop, bool is_encased, t_shell *data);
 
 /* executor */
-int		executor(t_shell *data);
+bool	executor(t_shell *data);
 bool	create_processes(t_shell *data);
 void	exec_process(t_group *group, t_process type);
 void	redirect_input(t_group *group, size_t i);
@@ -81,7 +81,7 @@ void	clear_token(void *data);
 t_token	*dup_token(t_token *input);
 t_env	*create_env(char *key, char *value);
 void	clear_env(void *data);
-t_group	*create_group(void);
+t_group	*create_group(t_shell *data);
 void	clear_group(void *data);
 void	clear_fname(void *data);
 t_exec	*create_exec(void);

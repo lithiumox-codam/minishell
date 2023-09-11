@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/03 18:11:09 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/07 13:17:21 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/11 11:18:56 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ t_shell	*init_shell(char **env, bool first_init)
 		data->exec = NULL;
 		data->exit_type = GOOD;
 		data->exit_msg = NULL;
+		data->exit_shell = false;
 		create_signal_struct();
 	}
 	else

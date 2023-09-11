@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 16:08:08 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/07 02:38:25 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/11 12:58:40 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,15 @@
 void	exec_process(t_group *group, t_process type)
 {
 	size_t	i;
-	char	*str;
 	char	**env;
 
 	close_start(type, group);
-	group->cmd = combine_cmd(group); //@note for first command remove quotes
-	if (is_built_in(group->cmd[0]))
-		exec_built_in(group, type, &g_data.env);
-	check_cmd(group->cmd[0], &g_data.env);
+	if (is_built_in(group->cmd))
+		exec_built_in(group, type);
+	check_cmd(cmd, (&group->data)->env);
 	handle_redirects(group);
 	dup_fd(type, group);
-	exec_built_in(str, group->cmd, &g_data.env);
+	exec_built_in(group);
 	env = combine_env(&g_data.env);
 	execve(str, group->cmd, env);
 }
@@ -76,20 +74,15 @@ static void	dup_fd(t_process type, t_group *group)
 
 static void	exec_built_in(t_group *group, t_process type, t_vector *env)
 {
-	dup_fd(type, group);//@note check if it should maybe only be done for outfiles?
+	dup_fd(type, group);
+	//@note check if it should maybe only be done for outfiles?
 	// for the calls of the builtins just pass the entire group as paramater so they can read their own indirects
-	if (ft_strcmp(group->cmd[0], "exit"))
-		ft_exec_exit(group->cmd, type);
-	if (ft_strcmp(group->cmd[0], "echo") == 0)
+	if (is_special_built_in(group))
+		ghost_exec(group);
+	else if (ft_strcmp(group->cmd[0], "echo") == 0)
 		ft_echo(group->cmd, env);
-	else if (ft_strcmp(group->cmd[0], "cd") == 0)
-		ft_cd(group->cmd[0], group->cmd, env);
 	else if (ft_strcmp(group->cmd[0], "pwd") == 0)
 		ft_pwd(group->cmd, env);
-	else if (ft_strcmp(group->cmd[0], "export") == 0)
-		ft_export(group->cmd, env);
-	else if (ft_strcmp(group->cmd[0], "unset") == 0)
-		ft_unset(group->cmd, env);
 	else if (ft_strcmp(group->cmd[0], "env") == 0)
 		ft_env(group->cmd, env);
 	else if (ft_strcmp(group->cmd[0], "exit") == 0)

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/08 19:25:21 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/11 11:21:07 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,6 @@ static void	debug(void)
 int	main(int ac, char **av, char **env)
 {
 	t_shell	*data;
-	pid_t	pid;
-	int		status;
 
 	// t_found	**found;
 	if (DEBUG)
@@ -95,8 +93,14 @@ int	main(int ac, char **av, char **env)
 			write_err(data);
 		// alles tot hier zou moeten werken, exec doe ik zondag
 		// check if all groups are properly cerated
-		status = executor(data->exec);
-		free_shell(data, true);
+		if (!executor(data->exec))
+			write_err(data);
+		// if (data->exit_shell)
+		// {
+		return (free_shell(data, true), g_signal.exit_status);
+		// }
+		// else
+		// 	free_shell(data, false);
 		return (0); // change this to return built_in_exit
 	}
 	// else if (ac == 1)
