@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 13:51:45 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/09 12:07:42 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/13 17:27:02 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	print_vector(t_vector *vec, void (*printer)(void *, size_t))
 	size_t	i;
 
 	i = 0;
+	printf("vec address: %p\n", vec);
+	printf("vec capacity: %zu\n", vec->capacity);
 	while (i < vec->length)
 	{
 		printer(vec_get(vec, i), i);
@@ -72,4 +74,42 @@ char	*print_type(t_types type)
 	if (extra_types(type)[0] != '\0')
 		return (extra_types(type));
 	return ("UNKNOWN");
+}
+
+static char	*extra_types_short(t_types type)
+{
+	if (type == AND)
+		return ("&&");
+	if (type == ENV)
+		return ("$");
+	if (type == DQ_ENV)
+		return ("$DQ");
+	if (type == STRING)
+		return ("STR");
+	if (type == O_REDIRECT)
+		return (">");
+	if (type == I_REDIRECT)
+		return ("<");
+	if (type == HEREDOC)
+		return ("<<");
+	return ("");
+}
+
+char	*type_symbol(t_types type)
+{
+	if (type == DOUBLE_QUOTE)
+		return ("DQ");
+	if (type == SINGLE_QUOTE)
+		return ("SQ");
+	if (type == PIPE)
+		return ("|");
+	if (type == PARENTHESES)
+		return ("()");
+	if (type == OR)
+		return ("||");
+	if (type == ENV_QUESTION)
+		return ("$?");
+	if (extra_types(type)[0] != '\0')
+		return (extra_types_short(type));
+	return ("UNK");
 }

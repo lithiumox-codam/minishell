@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/01 18:02:02 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/03 17:12:24 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/13 16:24:31 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static size_t	cmd_count(t_vector *input, bool start)
 {
 	char	**cmd;
 	t_token	*token;
-	size_t		i;
+	size_t	i;
 	size_t	count;
 
 	i = 0;

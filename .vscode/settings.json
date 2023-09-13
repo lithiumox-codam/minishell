@@ -23,5 +23,6 @@
 		"vector": "c",
 		"minishell.h": "c",
 		"random": "c"
-	}
+	},
+	"C_Cpp.default.compilerPath": "/usr/bin/cc"
 }

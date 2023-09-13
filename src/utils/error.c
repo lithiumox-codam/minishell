@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/19 21:42:24 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/08 15:40:44 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/12 14:17:58 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	write_err(t_shell *data)
 	if (data->exit_type == SYNTAX)
 	{
 		write(STDERR_FILENO, "minishell: syntax error near unexpected token `",
-			47);
+				47);
 		write(STDERR_FILENO, data->exit_msg, ft_strlen(data->exit_msg));
 		write(STDERR_FILENO, "'\n", 2);
 		g_signal.exit_status = 258;
@@ -92,7 +92,7 @@ void	write_err(t_shell *data)
 	{
 		write(STDERR_FILENO, "minishell: unfinished operator : `", 34);
 		write(STDERR_FILENO, data->exit_msg, ft_strlen(data->exit_msg));
-		write(STDERR_FILENO, "'\n", 2);
+		write(STDERR_FILENO, "`\n", 2);
 		g_signal.exit_status = 2;
 	}
 	if (data->exit_type == SIGNAL_C)

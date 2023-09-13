@@ -14,7 +14,8 @@ SRC = main \
     lexer/token \
     lexer/op_split \
     structs/shell \
-    parser/verify_token \
+    checker/index \
+	checker/helpers \
     debug/print_vector
     # exec/exec \
     # exec/create_processes \
@@ -30,12 +31,12 @@ LIBFT = libft/libft.a
 READLINE = readline/libreadline.a
 
 DEBUG ?= 0
-DEBUG_FLAGS = -g
+DEBUG_FLAGS = -g -fsanitize=address
 G_FLAGS = -DREADLINE_LIBRARY
 CODAM_FLAGS = -Wall -Wextra -Werror
 LIBS = libft/libft.a readline/libreadline.a readline/libhistory.a
 LINKER = -lncurses
-INCLUDES = -I $(CURDIR)/includes -I $(CURDIR)/libft/includes -I $(CURDER)/readline
+INCLUDES = -I $(CURDIR)/includes -I $(CURDIR)/libft/includes -I $(CURDIR)/readline
 
 COLOR_INFO = \033[1;36m
 COLOR_SUCCESS = \033[1;32m
@@ -63,7 +64,7 @@ $(LIBFT):
 	@sleep 0.25
 	@printf "✅\n"
 	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Building Libft...$(COLOR_RESET)\t\t"
-	@$(MAKE) -C libft > /dev/null
+	@$(MAKE) -C libft DEBUG=$(DEBUG) > /dev/null
 	@sleep 0.25
 	@printf "✅\n"
 
@@ -77,14 +78,14 @@ $(READLINE):
 
 clean:
 	@printf "$(COLOR_INFO)$(EMOJI_CLEAN)  Cleaning up...$(COLOR_RESET)\t\t"
-	# @$(MAKE) -C libft clean > /dev/null
+	@$(MAKE) -C libft clean > /dev/null
 	@rm -rf build
 	@sleep 0.25
 	@printf "✅\n"
 
 fclean: clean
 	@printf "$(COLOR_INFO)$(EMOJI_CLEAN)  Removing executable...$(COLOR_RESET)\t"
-	# @$(MAKE) -C libft fclean > /dev/null
+	@$(MAKE) -C libft fclean > /dev/null
 	@rm -f libft/libft.a
 	@rm -f $(NAME)
 	@sleep 0.25
