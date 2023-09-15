@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/03 19:55:34 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/13 18:46:20 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/13 21:41:49 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ char	**split(t_token *token)
 
 	split = split_size(token->value);
 	array = malloc(sizeof(char *) * (split + 2));
-	printf("%zu\n", (split + 1));
 	if (!array)
 		return (NULL);
 	array[split + 1] = NULL;

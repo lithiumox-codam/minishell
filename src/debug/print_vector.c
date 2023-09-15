@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 13:51:45 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/13 17:27:02 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/13 22:09:41 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	print_vector(t_vector *vec, void (*printer)(void *, size_t))
 	size_t	i;
 
 	i = 0;
-	printf("vec address: %p\n", vec);
-	printf("vec capacity: %zu\n", vec->capacity);
+	if (!DEBUG)
+		return ;
 	while (i < vec->length)
 	{
 		printer(vec_get(vec, i), i);
