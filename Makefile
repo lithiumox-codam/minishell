@@ -1,5 +1,31 @@
 NAME = minishell
-SRC = main check_input utils/error structs/token structs/group parser/index parser/token_vec2 parser/quotes parser/token_vec debug/print_vector lexer/index lexer/string lexer/token lexer/op_split structs/env structs/shell group/group group/heredoc parser/verify_token exec/exec exec/create_processes exec/redirect exec/exec_process utils/miscellaneous exec/utils
+SRC = main \
+    check_input \
+    utils/error \
+    utils/miscellaneous \
+    structs/token \
+    structs/env \
+    parser/index \
+    parser/quotes \
+    parser/tokens \
+	parser/tokens2 \
+    lexer/index \
+    lexer/string \
+    lexer/token \
+    lexer/op_split \
+    structs/shell \
+    checker/index \
+	checker/helpers \
+	checker/heredoc \
+    debug/print_vector
+    # exec/exec \
+    # exec/create_processes \
+    # exec/redirect \
+    # exec/exec_process \
+    # exec/utils \
+    # group/heredoc \
+    # structs/group \
+    # group/group
 SRCS = $(addsuffix .c, $(addprefix src/, $(SRC)))
 OBJS = $(patsubst src/%.c, build/%.o, $(SRCS))
 LIBFT = libft/libft.a
@@ -11,7 +37,7 @@ G_FLAGS = -DREADLINE_LIBRARY
 CODAM_FLAGS = -Wall -Wextra -Werror
 LIBS = libft/libft.a readline/libreadline.a readline/libhistory.a
 LINKER = -lncurses
-INCLUDES = -I $(CURDIR)/includes -I $(CURDIR)/libft/includes -I $(CURDER)/readline
+INCLUDES = -I $(CURDIR)/includes -I $(CURDIR)/libft/includes -I $(CURDIR)/readline
 
 COLOR_INFO = \033[1;36m
 COLOR_SUCCESS = \033[1;32m
@@ -36,11 +62,10 @@ build/%.o: src/%.c includes/minishell.h includes/structs.h includes/enum.h
 
 $(LIBFT):
 	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Initializing submodules...$(COLOR_RESET)\t"
-# @git submodule update --init --recursive > /dev/null
 	@sleep 0.25
 	@printf "✅\n"
 	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Building Libft...$(COLOR_RESET)\t\t"
-	@$(MAKE) -C libft > /dev/null
+	@$(MAKE) -C libft DEBUG=$(DEBUG) > /dev/null
 	@sleep 0.25
 	@printf "✅\n"
 
@@ -74,7 +99,9 @@ run: $(NAME)
 norm:
 	@norminette $(SRCS) includes libft
 
-re: fclean $(NAME)
+re:
+	@$(MAKE) fclean
+	@$(MAKE) $(NAME)
 
 bonus: all
 
@@ -87,3 +114,4 @@ module-update:
 	@printf "✅\n"
 
 .PHONY: all clean fclean run re module-update
+

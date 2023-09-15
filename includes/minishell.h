@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/09/06 20:29:47 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/13 21:39:16 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <libft.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <stdarg.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -33,7 +34,8 @@ t_shell	*init_shell(char **env, bool first_init);
 void	free_shell(t_shell *data, bool close_shell);
 
 /* lexer */
-void	lexer(char *input, t_shell *data);
+bool	lexer(char *input, t_shell *data);
+bool	make_string(char *str, size_t *i, t_vector *vec);
 bool	check_quotes_parantheses(char *input);
 bool	create_string(char *str, size_t *i, t_vector *vec);
 bool	create_quote_string(char *str, size_t *i, t_vector *vec);
@@ -56,7 +58,7 @@ bool	contains_env_var(char *str);
 bool	is_or(char *str);
 bool	is_and(char *str);
 void	verify_token_vec(t_shell *data);
-
+bool	check_tokens(t_shell *data);
 /* group */
 void	group_token_vec(t_shell *data);
 void	heredoc(char *filename, char *stop, t_types type, t_shell *data);
@@ -88,13 +90,16 @@ void	clear_exec(t_exec *exec);
 
 /* general utils */
 void	exit_mini(char *str, int exit_code);
-void	err(t_exit type, char *name, t_shell *data, bool free_struct);
-char	*rm_quotes(t_token *token);
+bool	set_err(t_exit type, char *msg, t_shell *data);
+void	write_err(t_shell *data);
+t_token	*rm_quotes(t_token *token);
+bool	type_compare(size_t num_args, t_types type, ...);
 
 /* debug */
 void	print_vector(t_vector *vec, void (*printer)(void *, size_t));
 void	print_token(void *data, size_t i);
 char	*print_type(t_types type);
+char	*type_symbol(t_types type);
 void	print_env(void *data, size_t i);
 
 #endif

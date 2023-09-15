@@ -6,13 +6,13 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/07 14:40:28 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/12 21:01:00 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-t_signal	signal;
+t_signal	g_signal;
 
 static void	check_leaks(void)
 {
@@ -70,9 +70,9 @@ static void	debug(void)
 int	main(int ac, char **av, char **env)
 {
 	t_shell	*data;
-	pid_t	pid;
-	int		status;
 
+	// pid_t	pid;
+	// int		status;
 	// t_found	**found;
 	if (DEBUG)
 		debug();
@@ -85,13 +85,18 @@ int	main(int ac, char **av, char **env)
 		parser(data);
 		// parser retesting
 		operator_split(data);
-		// operator split retesting
-		verify_token_vec(data);
-		// check if it really catches all doubles
-		// build function that combines a redirects+heredocs into 1 singular token
-		group_token_vec(data);
-		// check if all groups are properly cerated
-		status = executor(data->exec);
+		// print sizeof t_found
+		// printf("%zu\n", sizeof(t_shell));
+		print_vector(&data->token_vec, print_token);
+		if (!check_tokens(data))
+			return (write_err(data), free_shell(data, true), 1);
+		print_vector(&data->token_vec, print_token);
+		// combine redirects+heredoc into 1 token + verify_token_vec combined
+		// verify_token_vec(data);
+		// expansion based on env vector
+		// group_token_vec(data);
+		// // check if all groups are properly cerated
+		// status = executor(data->exec);
 		free_shell(data, true);
 		return (0); // change this to return built_in_exit
 	}

@@ -6,28 +6,38 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 16:53:28 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/07 03:42:54 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/08 16:26:58 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-char	*rm_quotes(t_token *token)
+t_token	*rm_quotes(t_token *token)
 {
-	if (token->type == STRING)
-		return (ft_strdup(token->value));
+	char	*temp;
+
+	if (token->type == SINGLE_QUOTE || token->type == DOUBLE_QUOTE)
+	{
+		if (ft_strlen(token->value) == 2)
+		{
+			free(token->value);
+			token->value = ft_strdup("");
+		}
+	}
 	if (token->type == SINGLE_QUOTE)
 	{
-		if (strlen(token->value) == 2)
-			return ("");
-		return (ft_strtrim(token->value, "\'"));
+		temp = ft_strtrim(token->value, "\'");
+		free(token->value);
+		token->value = temp;
 	}
 	if (token->type == DOUBLE_QUOTE)
 	{
-		if (strlen(token->value) == 2)
-			return ("");
-		return (ft_strtrim(token->value, "\""));
+		temp = ft_strtrim(token->value, "\"");
+		free(token->value);
+		token->value = temp;
 	}
+	token->type = STRING;
+	return (token);
 }
 
 /**
