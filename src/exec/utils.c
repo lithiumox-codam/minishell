@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/01 19:44:05 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/06 17:07:42 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/11 20:13:47 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,24 @@
 
 bool	is_built_in(char *str)
 {
-	if (ft_strcmp(str, "exit") == 0 || ft_strcmp(str, "cd") == 0)
+	if (ft_strcmp(str, "exit") == 0 || ft_strcmp(str, "cd") == 0
+		|| ft_strcmp(str, "ls") == 0 || ft_strcmp(str, "env") == 0
+		|| ft_strcmp(str, "cat") == 0 || ft_strcmp(str, "export") == 0
+		|| ft_strcmp(str, "unset") == 0 || ft_strcmp(str, "pwd") == 0
+		|| ft_strcmp(str, "echo") == 0)
 		return (true);
+	return (false);
+}
+
+bool	is_special_builtin(char *str)
+{
+	if (ft_strcmp(str, "exit") == 0 || ft_strcmp(str, "unset") == 0
+		|| ft_strcmp(str, "export") == 0 || ft_strcmp(str, "cd") == 0)
+		return (true);
+	return (false);
 }
 
 char	**combine_env(t_vector *env_vec)
 {
+	
 }

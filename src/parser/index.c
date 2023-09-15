@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 11:12:20 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/09/13 22:12:27 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/15 17:05:08 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	parse_loop(t_vector *vec, t_func_map *func_map)
  * to set the type of the token_vec to 0 before calling this function
  * @param vec The vector containing the token_vec
  */
-void	parser(t_shell *data)
+bool	parser(t_shell *data)
 {
 	t_func_map	*func_map;
 

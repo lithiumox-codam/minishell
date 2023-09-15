@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/19 21:42:24 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/12 14:17:58 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/15 17:04:26 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	write_err(t_shell *data)
 {
 	if (data->exit_type == GOOD)
 		return ;
-	if (data->exit_type == PERROR)
+	if (data->exit_type == PERR)
 	{
 		perror("minishell:");
 		g_signal.exit_status = errno;
@@ -65,20 +65,6 @@ void	write_err(t_shell *data)
 		write(STDERR_FILENO, data->exit_msg, ft_strlen(data->exit_msg));
 		write(STDERR_FILENO, "\n", 1);
 		g_signal.exit_status = 1;
-	}
-	if (data->exit_type == NOT_FOUND)
-	{
-		write(STDERR_FILENO, "minishell: ", 11);
-		write(STDERR_FILENO, data->exit_msg, ft_strlen(data->exit_msg));
-		write(STDERR_FILENO, ": No such file or directory\n", 28);
-		g_signal.exit_status = 127;
-	}
-	if (data->exit_type == PERMISSION)
-	{
-		write(STDERR_FILENO, "minishell: ", 11);
-		write(STDERR_FILENO, data->exit_msg, ft_strlen(data->exit_msg));
-		write(STDERR_FILENO, ": Permission denied\n", 20);
-		g_signal.exit_status = 126;
 	}
 	if (data->exit_type == SYNTAX)
 	{
@@ -101,4 +87,44 @@ void	write_err(t_shell *data)
 		g_signal.exit_status = 130;
 	}
 	free_shell(data, false);
+}
+
+/**
+ * @brief errors for inside the executable, end with exit();
+ */
+void	exec_err(char *str, t_exit type)
+{
+	if (type == PERR)
+	{
+		perror("minishell:");
+		exit(errno);
+	}
+	if (type == MALLOC)
+	{
+		write(STDERR_FILENO, "minishell: malloc error in : ", 28);
+		write(STDERR_FILENO, str, ft_strlen(str));
+		write(STDERR_FILENO, "\n", 1);
+		exit(1);
+	}
+	if (type == NOT_FOUND)
+	{
+		write(STDERR_FILENO, "minishell: ", 11);
+		write(STDERR_FILENO, str, ft_strlen(str));
+		write(STDERR_FILENO, ": command not found\n", 20);
+		exit(127);
+	}
+	if (type == PERMISSION)
+	{
+		write(STDERR_FILENO, "minishell: ", 11);
+		write(STDERR_FILENO, str, ft_strlen(str));
+		write(STDERR_FILENO, ": Permission denied\n", 20);
+		exit(126);
+	}
+	if (type == NO_SUCH)
+	{
+		write(STDERR_FILENO, "minishell: ", 11);
+		write(STDERR_FILENO, str, ft_strlen(str));
+		write(STDERR_FILENO, ": No such file or directory\n", 28);
+		exit(1);
+	}
 }

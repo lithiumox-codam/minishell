@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/09/13 21:39:16 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/15 17:02:28 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,11 @@ bool	check_quotes_parantheses(char *input);
 bool	create_string(char *str, size_t *i, t_vector *vec);
 bool	create_quote_string(char *str, size_t *i, t_vector *vec);
 bool	create_paran_string(char *str, size_t *i, t_vector *vec);
-void	operator_split(t_shell *data);
+bool	operator_split(t_shell *data);
 char	**split(t_token *token);
 
 /* parser */
-void	parser(t_shell *data);
-void	parse_one(t_token *token);
+bool	parser(t_shell *data);
 bool	is_encased_dq(char *str);
 bool	is_encased_sq(char *str);
 bool	is_encased_parentheses(char *str);
@@ -60,13 +59,17 @@ bool	is_and(char *str);
 void	verify_token_vec(t_shell *data);
 bool	check_tokens(t_shell *data);
 /* group */
-void	group_token_vec(t_shell *data);
-void	heredoc(char *filename, char *stop, t_types type, t_shell *data);
+bool	group_token_vec(t_shell *data);
+bool	hdoc_found(t_group *group, int i, t_shell *data);
+bool	heredoc(char *filename, char *stop, bool is_encased, t_shell *data);
 
 /* executor */
-int		executor(t_shell *data);
+bool	executor(t_shell *data);
 bool	create_processes(t_shell *data);
 void	exec_process(t_group *group, t_process type);
+void	check_cmd(t_group *group);
+void	exec_built_in(t_group *group, t_process type);
+void	exec_absolut_path(t_group *group);
 void	redirect_input(t_group *group, size_t i);
 
 /* exec_utils */
@@ -82,7 +85,7 @@ void	clear_token(void *data);
 t_token	*dup_token(t_token *input);
 t_env	*create_env(char *key, char *value);
 void	clear_env(void *data);
-t_group	*create_group(void);
+t_group	*create_group(t_shell *data);
 void	clear_group(void *data);
 void	clear_fname(void *data);
 t_exec	*create_exec(void);
@@ -91,8 +94,9 @@ void	clear_exec(t_exec *exec);
 /* general utils */
 void	exit_mini(char *str, int exit_code);
 bool	set_err(t_exit type, char *msg, t_shell *data);
+void	exec_err(t_group *group, t_exit type);
 void	write_err(t_shell *data);
-t_token	*rm_quotes(t_token *token);
+t_token	*rm_quotes(t_token *token, bool set_string);
 bool	type_compare(size_t num_args, t_types type, ...);
 
 /* debug */

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/13 17:41:00 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/07 03:46:17 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/11 20:12:01 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,10 @@ typedef enum e_types
 /**
  * @brief The enum for the different types of errors
  *
- * @param PERROR A perror
+ * @param PERR A PERR
  * @param NOT_FOUND A not found error
  * @param PERMISSION A permission error
+ * @param NO_SUCH A No such file or dir error
  * @param SYNTAX A syntax error
  * @param SYNTAX_MINI A syntax error for the minishell
  * @param SIGNAL_C A signal interrupt
@@ -64,10 +65,11 @@ typedef enum e_types
 typedef enum e_exit
 {
 	GOOD,
-	PERROR,
+	PERR,
 	MALLOC,
 	NOT_FOUND,
 	PERMISSION,
+	NO_SUCH,
 	SYNTAX,
 	SYNTAX_MINI,
 	SIGNAL_C

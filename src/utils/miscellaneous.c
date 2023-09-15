@@ -6,23 +6,26 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 16:53:28 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/08 16:26:58 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/15 17:04:02 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-t_token	*rm_quotes(t_token *token)
+/**
+ * @brief	removes the quotes from a token
+ * @param	token the token to remove the quotes from
+ * @param	set_string if true, sets the token->type to STRING
+ */
+t_token	*rm_quotes(t_token *token, bool set_string)
 {
 	char	*temp;
 
-	if (token->type == SINGLE_QUOTE || token->type == DOUBLE_QUOTE)
+	if ((token->type == SINGLE_QUOTE || token->type == DOUBLE_QUOTE)
+		&& ft_strlen(token->value) == 2)
 	{
-		if (ft_strlen(token->value) == 2)
-		{
-			free(token->value);
-			token->value = ft_strdup("");
-		}
+		free(token->value);
+		token->value = ft_strdup("");
 	}
 	if (token->type == SINGLE_QUOTE)
 	{
@@ -36,7 +39,10 @@ t_token	*rm_quotes(t_token *token)
 		free(token->value);
 		token->value = temp;
 	}
-	token->type = STRING;
+	if (token->value == NULL)
+		return (NULL);
+	if (set_string)
+		token->type = STRING;
 	return (token);
 }
 

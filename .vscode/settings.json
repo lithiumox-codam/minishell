@@ -22,7 +22,7 @@
 		"string_view": "c",
 		"vector": "c",
 		"minishell.h": "c",
-		"random": "c"
-	},
-	"C_Cpp.default.compilerPath": "/usr/bin/cc"
+		"random": "c",
+		"__tuple": "c"
+	}
 }

@@ -6,11 +6,13 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:50 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/07 02:39:16 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/11 20:12:01 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+extern t_signal	g_signal;
 
 close_pipes(t_vector *group_vec)
 {
@@ -44,30 +46,25 @@ static int	wait_processes(t_vector *group_vec)
 {
 	size_t	i;
 	t_group	*group;
-	int		status;
+	bool	success;
 	int		temp;
 
 	i = 0;
-	status = 0;
+	success = true;
 	while (i < group_vec->length)
 	{
 		group = vector_get(group_vec, i);
 		if (group->pd >= 0)
 			if (waitpid(group->pd, &temp, 0) == -1)
-				status = -1;
+				success = false;
 		i++;
 	}
-	if (status == 0)
-		status = WEXITSTATUS(temp);
-	return (status);
-}
-
-static void	check_for_exit(t_shell *data)
-{
-	printf("exit was called\n");
-	// int long long atoi
-	free_shell(data, true);
-	exit(10);
+	if (success == true)
+	{
+		g_signal.exit_status = WEXITSTATUS(temp);
+		return (true);
+	}
+	return (success);
 }
 
 /**
@@ -77,29 +74,29 @@ static void	check_for_exit(t_shell *data)
 
 	* @note if all testing is succesful make it a void function and exit status instead of returning it
  */
-int	executor(t_shell *data)
+bool	executor(t_shell *data)
 {
-	int	temp;
-	int	status;
+	int		temp;
+	t_group	*group;
 
 	if ((&data->exec->group_vec)->length == 1)
 	{
-		check_for_exit(data); // check for cd / exit / unset
-								// export; in which case dont pipe
+		group = vector_get(&data->exec->group_vec, 0);
+		if (is_special_builtin(group->cmd))
+			return (call_special_builtin(group));
 	}
 	if (!create_processes(data))
 	{
 		close_pipes(&data->exec->group_vec);
 		wait_process(&data->exec->group_vec);
-		err(PERROR, NULL, data, true);
+		return (set_err(PERR, NULL, data));
 	}
 	if (!close_pipes(&data->exec->group_vec))
 	{
 		wait_processes(&data->exec->group_vec);
-		err(PERROR, NULL, data, true);
+		return (set_err(PERR, NULL, data));
 	}
-	status = wait_processes(&data->exec->group_vec);
-	if (status == -1)
-		err(PERROR, NULL, data, true);
-	return (status);
+	if (wait_processes(&data->exec->group_vec) == -1)
+		return (set_err(PERR, NULL, data));
+	return (true);
 }

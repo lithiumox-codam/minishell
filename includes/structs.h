@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 11:15:16 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/09/07 03:48:26 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/11 12:29:29 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,13 @@ typedef struct s_exec
 
 /**
  * @brief a group to be individually executed.
- *
- *	@param input	a vector of t_token_vec belonging to 1 child_process
-	@param cmd an array containing the commands and parameters to be executed
-	@param hdoc_vec vector with heredoc filedescriptors
-	@param pd the pd of this specific process
-	@param left_pipe the pipe related to the process happening on the left
-	@param right_pipe the pipe related to the process happening on the right of this one
-	@warning the heredoc file is to be deleted after usage
+ * @param cmd The command to be executed
+ * @param args The arguments to be passed to the execve
+ * @param in_red The input redirections
+ * @param out_red The output redirections
+ * @param pd The pid of the process
+ * @param left_pipe The pipe to the left
+ * @param right_pipe The pipe to the right
  */
 typedef struct s_group
 {
@@ -87,6 +86,7 @@ typedef struct s_group
 	pid_t		pd;
 	int			left_pipe[2];
 	int			right_pipe[2];
+	t_shell		*data;
 }				t_group;
 
 /**
@@ -106,6 +106,7 @@ typedef struct s_shell
 	t_exec		*exec;
 	t_exit		exit_type;
 	char		*exit_msg;
+	bool		exit_shell;
 }				t_shell;
 
 /**
