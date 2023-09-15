@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 11:12:20 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/09/08 16:38:01 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/15 17:05:08 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	parse_loop(t_vector *vec, t_func_map *func_map)
 					break ;
 			}
 			token->type = func_map[j].type;
+			print_token(token, j);
 		}
 		i++;
 	}
@@ -86,8 +87,7 @@ bool	parser(t_shell *data)
 
 	func_map = return_map();
 	if (func_map == NULL)
-		return (set_err(MALLOC, "parser", data));
+		return (set_err(MALLOC, "parser", data), free(func_map));
 	parse_loop(&data->token_vec, func_map);
 	free(func_map);
-	return (true);
 }

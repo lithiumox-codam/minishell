@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/11 11:21:07 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/15 17:01:39 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ int	main(int ac, char **av, char **env)
 {
 	t_shell	*data;
 
+	// pid_t	pid;
+	// int		status;
 	// t_found	**found;
 	if (DEBUG)
 		debug();
@@ -79,28 +81,23 @@ int	main(int ac, char **av, char **env)
 	{
 		if (!lexer(av[1], data))
 			write_err(data);
-		if (!parser(data))
-			write_err(data);
-		if (!operator_split(data))
-			write_err(data);
-		// might need to test op_split
-		if (!parser(data))
-			write_err(data);
-		// expansion based on env vector
+		// lexer retester
+		parser(data);
+		// parser retesting
+		operator_split(data);
+		// print sizeof t_found
+		// printf("%zu\n", sizeof(t_shell));
+		print_vector(&data->token_vec, print_token);
+		if (!check_tokens(data))
+			return (write_err(data), free_shell(data, true), 1);
+		print_vector(&data->token_vec, print_token);
 		// combine redirects+heredoc into 1 token + verify_token_vec combined
 		// verify_token_vec(data);
-		if (!group_token_vec(data))
-			write_err(data);
-		// alles tot hier zou moeten werken, exec doe ik zondag
-		// check if all groups are properly cerated
-		if (!executor(data->exec))
-			write_err(data);
-		// if (data->exit_shell)
-		// {
-		return (free_shell(data, true), g_signal.exit_status);
-		// }
-		// else
-		// 	free_shell(data, false);
+		// expansion based on env vector
+		// group_token_vec(data);
+		// // check if all groups are properly cerated
+		// status = executor(data->exec);
+		free_shell(data, true);
 		return (0); // change this to return built_in_exit
 	}
 	// else if (ac == 1)
