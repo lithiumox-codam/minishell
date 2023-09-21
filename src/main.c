@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/21 02:39:25 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/21 03:11:26 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,11 @@ int	main(int ac, char **av, char **env)
 		if (!lexer(av[1], data))
 			write_err(data);
 		parser(data);
+		// print_vector(&data->token_vec, print_token);
 		operator_split(data);
+		// print_vector(&data->token_vec, print_token);
 		// if (!check_tokens(data))
 		// 	return (write_err(data), free_shell(data, true), 1);
-		// print_vector(&data->token_vec, print_token);
 		// combine redirects+heredoc into 1 token + verify_token_vec combined
 		// verify_token_vec(data);
 		// expansion based on env vector

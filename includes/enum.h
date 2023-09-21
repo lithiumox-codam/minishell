@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/13 17:41:00 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/11 20:12:01 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/21 02:48:06 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ typedef enum e_exit
 	NO_SUCH,
 	SYNTAX,
 	SYNTAX_MINI,
-	SIGNAL_C
+	SIGNAL_C,
+	OUT_OF_SCOPE
 }	t_exit;
 
 /**
