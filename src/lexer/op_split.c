@@ -5,97 +5,83 @@
 /*                                                     +:+                    */
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/09/03 19:55:34 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/13 21:41:49 by mdekker/jde   ########   odam.nl         */
+/*   Created: 2023/07/21 13:06:18 by mdekker/jde   #+#    #+#                 */
+/*   Updated: 2023/09/21 02:29:27 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static size_t	split_size(char *str)
+static bool	find_operator(t_token *token)
 {
-	size_t	split;
-	size_t	i;
+	int	i;
 
-	split = 0;
 	i = 0;
-	while (str[i])
-	{
-		if (checkchar(str[i], "<>|&"))
-		{
-			split++;
-			if (i > 0 && str[i - 1] && !checkchar(str[i - 1], "<>|&"))
-				split++;
-			if (str[i] == str[i + 1] && str[i] != '&')
-				i++;
-		}
+	while (token->value[i] && !checkchar(token->value[i], "<>|&"))
 		i++;
-	}
-	return (split);
+	if (token->value[i] == '\0')
+		return (false);
+	return (true);
 }
 
-static bool	split_left(char *str, char **array, size_t i, size_t *split)
+static bool	insert_array(t_shell *data, char **array, size_t *i)
 {
-	size_t	left;
+	size_t	j;
+	t_token	*token;
 
-	left = i;
-	if (left > 0 && !checkchar(str[left - 1], "<>|&"))
+	j = 0;
+	while (array[j])
 	{
-		left--;
-		while (left > 0 && !checkchar(str[left], "<>|&"))
-			left--;
-		if (checkchar(str[left], "<>|&"))
-			left++;
-		array[(*split)] = ft_substr(str, left, i - left);
-		if (!array[(*split)])
-			return (false);
-		(*split)++;
+		token = create_token(array[j], UNKNOWN);
+		if (!token)
+		{
+			ft_free(array);
+			return (set_err(MALLOC, "insert_array", data));
+		}
+		if (!vec_insert(&data->token_vec, (*i) + j, token))
+		{
+			ft_free(array);
+			return (set_err(MALLOC, "insert_array", data));
+		}
+		j++;
 	}
+	(*i) += j;
 	return (true);
 }
 
-static bool	split_string(char *str, char **array, size_t *i, size_t *split)
+static bool	token_swap(t_shell *data, char **array, size_t *i)
 {
-	size_t	len;
-
-	if (!split_left(str, array, (*i), split))
+	if (!vec_remove(&data->token_vec, (*i)))
+	{
+		ft_free(array);
+		return (set_err(MALLOC, "token_swap", data));
+	}
+	if (!insert_array(data, array, i))
 		return (false);
-	len = 1;
-	if (str[(*i)] == str[(*i) + 1] && str[(*i)] != '&')
-		len++;
-	array[(*split)] = ft_substr(str, (*i), len);
-	if (!array[(*split)])
-		return (false);
-	(*split)++;
-	(*i) += len;
 	return (true);
 }
 
-char	**split(t_token *token)
+bool	operator_split(t_shell *data)
 {
 	size_t	i;
-	size_t	split;
+	t_token	*token;
 	char	**array;
 
-	split = split_size(token->value);
-	array = malloc(sizeof(char *) * (split + 2));
-	if (!array)
-		return (NULL);
-	array[split + 1] = NULL;
-	array[split] = NULL;
-	split = 0;
 	i = 0;
-	while (token->value[i])
+	while (i < (&data->token_vec)->length)
 	{
-		if (checkchar(token->value[i], "<>|&"))
+		token = (t_token *)vec_get(&data->token_vec, i);
+		if (token->type == STRING && find_operator(token))
 		{
-			if (!split_string(token->value, array, &i, &split))
-				return (ft_free(array), NULL);
+			array = split(token);
+			if (!array)
+				return (set_err(MALLOC, "split", data));
+			if (!token_swap(data, array, &i))
+				return (false);
+			free(array);
 		}
 		else
 			i++;
 	}
-	if (!split_left(token->value, array, i, &split))
-		return (ft_free(array), NULL);
-	return (array);
+	return (parser(data));
 }

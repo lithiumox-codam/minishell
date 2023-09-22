@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 16:57:32 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/15 16:50:23 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/21 02:38:59 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static bool	check_double_ops(t_vector *found, t_shell *data)
 		if (next_found->index - current_found->index == 1)
 			if (current_token->type == next_token->type)
 				return (set_err(SYNTAX, type_symbol(current_token->type), data),
-						false);
+					false);
 		i++;
 	}
 	return (true);
@@ -78,9 +78,7 @@ bool	check_tokens(t_shell *data)
 	token = (t_token *)found_item->item;
 	if (found_item->index == 0 && type_compare(1, token->type, PIPE))
 		return (set_err(SYNTAX, type_symbol(token->type), data),
-				vec_free(found),
-				free(found),
-				false);
+			vec_free(found), free(found), false);
 	else if (found && !check_double_ops(found, data))
 	{
 		vec_free(found);

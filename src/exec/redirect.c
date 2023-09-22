@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 16:32:48 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/11 20:29:09 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/21 02:42:41 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	out_redirect(t_group *group)
 	t_token	*red_out;
 
 	i = 0;
-	while (i < vec_len(&group->out_red))
+	while (i < (&group->out_red)->length)
 	{
 		red_out = vec_get(&group->out_red, i);
 		if (access(red_out->value, F_OK) == 0)
@@ -48,7 +48,7 @@ static void	in_redirect(t_group *group)
 	int		fd;
 
 	i = 0;
-	while (i < vec_len(&group->in_red))
+	while (i < (&group->in_red)->length)
 	{
 		red_in = vec_get(&group->in_red, i);
 		if (access(red_in->value, F_OK) == -1)

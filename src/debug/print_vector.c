@@ -6,11 +6,27 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 13:51:45 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/13 22:09:41 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/21 03:06:08 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <execinfo.h>
 #include <minishell.h>
+
+void	print_stack_trace(void)
+{
+	void	*array[10];
+	size_t	size;
+	char	**strings;
+	size_t	i;
+
+	size = backtrace(array, 10);
+	strings = backtrace_symbols(array, size);
+	printf("Obtained %zd stack frames.\n", size);
+	for (i = 0; i < size; i++)
+		printf("%s\n", strings[i]);
+	free(strings);
+}
 
 /**
  * @brief Prints data in a vector in a pretty way
@@ -22,6 +38,7 @@ void	print_vector(t_vector *vec, void (*printer)(void *, size_t))
 {
 	size_t	i;
 
+	// print_stack_trace();
 	i = 0;
 	if (!DEBUG)
 		return ;

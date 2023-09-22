@@ -29,15 +29,12 @@ SRC = main \
 SRCS = $(addsuffix .c, $(addprefix src/, $(SRC)))
 OBJS = $(patsubst src/%.c, build/%.o, $(SRCS))
 LIBFT = libft/libft.a
-READLINE = readline/libreadline.a
 
 DEBUG ?= 0
 DEBUG_FLAGS = -g
-G_FLAGS = -DREADLINE_LIBRARY
 CODAM_FLAGS = -Wall -Wextra -Werror
-LIBS = libft/libft.a readline/libreadline.a readline/libhistory.a
-LINKER = -lncurses
-INCLUDES = -I $(CURDIR)/includes -I $(CURDIR)/libft/includes -I $(CURDIR)/readline
+LINKER = -lreadline
+INCLUDES = -I $(CURDIR)/includes -I $(CURDIR)/libft/includes
 
 COLOR_INFO = \033[1;36m
 COLOR_SUCCESS = \033[1;32m
@@ -52,7 +49,7 @@ all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS)
 	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Compiling $(NAME)...$(COLOR_RESET)\t"
-	@cc $(OBJS) $(CODAM_FLAGS) $(if DEBUG, $(DEBUG_FLAGS)) -DDEBUG=$(DEBUG) $(LINKER) $(INCLUDES) $(LIBS) -o $@
+	@cc $(OBJS) $(CODAM_FLAGS) $(if DEBUG, $(DEBUG_FLAGS)) -DDEBUG=$(DEBUG) $(LINKER) $(INCLUDES) $(LIBFT) -o $@
 	@sleep 0.25
 	@printf "✅\n"
 
@@ -66,14 +63,6 @@ $(LIBFT):
 	@printf "✅\n"
 	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Building Libft...$(COLOR_RESET)\t\t"
 	@$(MAKE) -C libft DEBUG=$(DEBUG) > /dev/null
-	@sleep 0.25
-	@printf "✅\n"
-
-$(READLINE):
-	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Building Readline...$(COLOR_RESET)\t"
-	@cd readline && ./configure > /dev/null
-	@$(MAKE) static -C readline > /dev/null
-	@rm -rf doc && rm -rf examples
 	@sleep 0.25
 	@printf "✅\n"
 
@@ -105,8 +94,6 @@ re:
 
 bonus: all
 
-readline: $(READLINE)
-
 module-update:
 	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Updating submodules...$(COLOR_RESET)\t"
 	@git submodule update --remote --merge
@@ -114,4 +101,3 @@ module-update:
 	@printf "✅\n"
 
 .PHONY: all clean fclean run re module-update
-

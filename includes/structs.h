@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 11:15:16 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/09/11 12:29:29 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/20 22:34:57 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,26 @@ typedef struct s_exec
 }				t_exec;
 
 /**
+ * @brief The global struct
+ *
+ * @param token_vec The token_vec vector from the lexer and parser;
+ * @param env The environment variables;
+ * @param data to be passed to the executor;
+ * @param exit_type The type of exit;
+ * @param exit_msg The message to be printed as part of err()
+ * @warning exit_msg will not be freed by err()
+ */
+typedef struct s_shell
+{
+	t_vector	token_vec;
+	t_vector	env;
+	t_exec		*exec;
+	t_exit		exit_type;
+	char		*exit_msg;
+	bool		exit_shell;
+}				t_shell;
+
+/**
  * @brief a group to be individually executed.
  * @param cmd The command to be executed
  * @param args The arguments to be passed to the execve
@@ -88,26 +108,6 @@ typedef struct s_group
 	int			right_pipe[2];
 	t_shell		*data;
 }				t_group;
-
-/**
- * @brief The global struct
- *
- * @param token_vec The token_vec vector from the lexer and parser;
- * @param env The environment variables;
- * @param data to be passed to the executor;
- * @param exit_type The type of exit;
- * @param exit_msg The message to be printed as part of err()
- * @warning exit_msg will not be freed by err()
- */
-typedef struct s_shell
-{
-	t_vector	token_vec;
-	t_vector	env;
-	t_exec		*exec;
-	t_exit		exit_type;
-	char		*exit_msg;
-	bool		exit_shell;
-}				t_shell;
 
 /**
  * @brief The struct for the parser functions.
