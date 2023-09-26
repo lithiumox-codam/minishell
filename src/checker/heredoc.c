@@ -6,18 +6,18 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/13 22:15:51 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/13 23:14:34 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/26 14:19:40 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
 /**
- * @brief Com
+ * @brief Combines two strings with a space in between
  *
- * @param s1
- * @param s2
- * @return char*
+ * @param s1 The first string
+ * @param s2 The second string
+ * @return char* The combined string
  */
 static char	*ft_strjoin_space(char *s1, char *s2)
 {
@@ -69,12 +69,12 @@ static t_token	*combine_tokens(t_vector *vec, size_t i)
 }
 
 /**
- * @brief
+ * @brief Combines the given and next token into one token
  *
- * @param vec
- * @param i
- * @return true
- * @return false
+ * @param vec The vector to combine in of tokens
+ * @param i The index of the first token
+ * @return true If the tokens were combined
+ * @return false If the tokens could not be combined
  */
 bool	combine_heredoc(t_vector *vec, size_t i)
 {
