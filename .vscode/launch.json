@@ -11,7 +11,7 @@
 			"program": "${workspaceFolder}/./minishell",
 			"preLaunchTask": "build",
 			"args": [
-				"<< test >>"
+				"<< test"
 				// "|😀 <0001f972> ☺️ 😌 😍😘 <0001f928>  <0001f9d0> <0001f92a> <0001f973> <0001f929> 😭 <0001f976>    😱"
 				// "city||test| heyhello<<hello \"helloworld\" << > | "
 			],

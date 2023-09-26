@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/13 22:15:51 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/26 17:56:14 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/09/26 23:09:28 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,13 @@ static char	*ft_strjoin_space(char *s1, char *s2)
 		return (NULL);
 	s1_len = ft_strlen(s1);
 	s2_len = ft_strlen(s2);
-	if (s1_len == 0)
-		return (ft_strdup(s2));
-	if (s2_len == 0)
-		return (ft_strdup(s1));
 	ptr = malloc((s1_len + s2_len + 2) * sizeof(char));
 	if (ptr == NULL)
 		return (NULL);
 	ft_memcpy(ptr, s1, s1_len);
-	ft_memcpy(ptr, " ", 1);
+	ptr[s1_len] = ' ';
 	ft_memcpy(ptr + s1_len + 1, s2, s2_len);
-	ptr[s1_len + s2_len + 2] = '\0';
+	ptr[s1_len + s2_len + 1] = '\0';
 	return (ptr);
 }
 
@@ -84,6 +80,8 @@ bool	combine_heredoc(t_vector *vec, size_t i)
 	if (!token)
 		return (false);
 	if (!vec_replace(vec, i, token))
+		return (false);
+	if (!vec_remove(vec, i + 1))
 		return (false);
 	return (true);
 }
