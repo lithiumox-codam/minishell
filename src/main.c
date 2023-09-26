@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/26 14:15:47 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/26 17:41:59 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,8 @@
 
 t_signal	g_signal;
 
-static void	check_leaks(void)
-{
-	printf("\033[1;10m●\n");
-	printf("\033[1;12m│\n");
-	printf("├── Checking for leaks 💦\n");
-	printf("\033[1;12m│\n");
-	printf("\033[0m\n");
-	system("leaks minishell");
-}
-
 static void	debug(void)
 {
-	atexit(check_leaks);
 	printf("\033[1;32m●\n");
 	printf("\033[1;34m│\n");
 	printf("├── Debug mode enabled\n");
@@ -79,7 +68,7 @@ int	main(int ac, char **av, char **env)
 		if (!lexer(av[1], data))
 			write_err(data);
 		parser(data);
-		// print_vector(&data->token_vec, print_token);
+		print_vector(&data->token_vec, print_token);
 		operator_split(data);
 		if (!check_tokens(data))
 			return (write_err(data), free_shell(data, true), 1);

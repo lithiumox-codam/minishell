@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 16:57:32 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/26 14:29:54 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/26 17:58:48 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ bool	filter_operators(void *item)
 	t_token	*token;
 
 	token = (t_token *)item;
-	return (type_compare(5, token->type, PIPE, HEREDOC, O_REDIRECT, I_REDIRECT,
-			AND, OR));
+	return (type_compare(6, token->type, PIPE, HEREDOC, O_REDIRECT, I_REDIRECT,
+			A_REDIRECT, AND, OR));
 }
 
 static bool	check_double_ops(t_vector *found, t_shell *data)
@@ -39,11 +39,49 @@ static bool	check_double_ops(t_vector *found, t_shell *data)
 		if (next_found->index - current_found->index == 1)
 			if (current_token->type == next_token->type)
 				return (set_err(SYNTAX, type_symbol(current_token->type), data),
-						false);
+					false);
 		i++;
 	}
 	return (true);
 }
+/**
+ * @brief A function that checks if every heredoc has a string after it
+ *
+ * @param found The found vector
+ * @param data The shell struct
+ * @return true When every heredoc has a string after it
+ * @return false When a heredoc does not have a string after it
+ */
+static bool	check_heredoc(t_vector *found, t_shell *data)
+{
+	t_found	*current_found;
+	t_token	*current_token;
+	t_token	*next_token;
+	size_t	i;
+
+	i = 0;
+	while (i < found->length)
+	{
+		current_found = (t_found *)vec_get(found, i);
+		current_token = (t_token *)current_found->item;
+		if (current_token->type == HEREDOC)
+		{
+			if (i == found->length - 1)
+				return (set_err(SYNTAX, type_symbol(current_token->type), data),
+					false);
+			next_token = (t_token *)vec_get(&data->token_vec,
+					current_found->index + 1);
+			if (next_token->type != STRING)
+				return (set_err(SYNTAX, type_symbol(current_token->type), data),
+					false);
+			else
+				combine_heredoc(&data->token_vec, current_found->index);
+		}
+		i++;
+	}
+	return (true);
+}
+
 void	print_t_found(void *item, size_t index)
 {
 	t_found	*found;
@@ -76,13 +114,13 @@ bool	check_tokens(t_shell *data)
 	print_vector(found, print_t_found);
 	found_item = (t_found *)vec_get(found, i);
 	token = (t_token *)found_item->item;
-	if (found_item->index == 0 && type_compare(1, token->type, PIPE, OR, AND,
+	if (found_item->index == 0 && type_compare(5, token->type, PIPE, OR, AND,
 			I_REDIRECT, O_REDIRECT))
 		return (set_err(SYNTAX, type_symbol(token->type), data),
-				vec_free(found),
-				free(found),
-				false);
+			vec_free(found), free(found), false);
 	if (!check_double_ops(found, data))
+		return (vec_free(found), free(found), false);
+	if (!check_heredoc(found, data))
 		return (vec_free(found), free(found), false);
 	vec_free(found);
 	free(found);

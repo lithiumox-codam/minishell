@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 13:51:45 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/21 03:06:08 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/26 17:38:36 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ static char	*extra_types(t_types type)
 		return ("I_REDIRECT");
 	if (type == HEREDOC)
 		return ("HEREDOC");
+	if (type == A_REDIRECT)
+		return ("A_REDIRECT");
 	return ("");
 }
 
