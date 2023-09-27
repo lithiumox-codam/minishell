@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/26 23:14:00 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/27 22:51:57 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	loop(t_shell *data)
 
 	while (1)
 	{
-		input = readline("\033[1;32mminishell\n❯ \033[0m");
+		input = readline("\n\033[1;32mminishell\n❯ \033[0m");
 		if (!input)
 		{
 			free(input);
@@ -49,7 +49,7 @@ static void	loop(t_shell *data)
 				return (free(input), free_shell(data, true));
 			parser(data);
 			if (!check_tokens(data))
-				return (write_err(data), free(input), free_shell(data, true));
+				write_err(data);
 			print_vector(&data->token_vec, print_token);
 		}
 		free(input);

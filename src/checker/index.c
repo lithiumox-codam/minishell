@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 16:57:32 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/27 22:39:38 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/27 22:46:55 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,15 @@ void	print_t_found(void *item, size_t index)
 	printf("\033[0m");
 }
 
+/**
+ * @brief This function decrements the index of a found item
+ *
+ * @warning This function causes the vector to be completely reindexed
+ * and thus will cause the index of the found item to be incorrect.
+ * So dont use the vector in question after this function has been called!
+ *
+ * @param found The found item to decrement
+ */
 static void	decrement_index(void *found)
 {
 	t_found	*current_found;
