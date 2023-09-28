@@ -58,8 +58,8 @@ build/%.o: src/%.c includes/minishell.h includes/structs.h includes/enum.h
 	@cc $(INCLUDES) $(CODAM_FLAGS) $(if DEBUG, $(DEBUG_FLAGS)) -DDEBUG=$(DEBUG) -c $< -o $@
 
 $(LIBFT):
-	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Initializing submodules...$(COLOR_RESET)\t"
-	@sleep 0.25
+	printf "$(COLOR_INFO)$(EMOJI_INFO)  Initializing submodules...$(COLOR_RESET)\t"
+	@git submodule update --init --recursive > /dev/null
 	@printf "✅\n"
 	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Building Libft...$(COLOR_RESET)\t\t"
 	@$(MAKE) -C libft DEBUG=$(DEBUG) > /dev/null
