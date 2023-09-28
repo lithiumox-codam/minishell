@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 16:57:32 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/27 22:46:55 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/28 12:25:18 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ static bool	check_heredoc(t_vector *found, t_shell *data)
 		{
 			next_token = (t_token *)vec_get(&data->token_vec,
 											current_found->index + 1);
-			if (next_token->type != STRING)
+			if (!next_token || next_token->type != STRING)
 				return (set_err(SYNTAX, type_symbol(current_token->type), data),
 						false);
 			else if (!combine_heredoc(&data->token_vec, current_found->index))
@@ -132,7 +132,6 @@ bool	check_tokens(t_shell *data)
 	found = vec_find(&data->token_vec, filter_operators);
 	if (found == NULL)
 		return (set_err(MALLOC, "vector found returned NULL", data), true);
-	print_vector(found, print_t_found);
 	found_item = (t_found *)vec_get(found, i);
 	token = (t_token *)found_item->item;
 	if (found_item->index == 0 && type_compare(5, token->type, PIPE, OR, AND,
