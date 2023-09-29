@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 16:57:32 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/29 15:08:18 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/09/29 16:09:12 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static bool	check_double_ops(t_vector *found, t_shell *data)
 		if (next_found->index - c_found->index == 1)
 			if (c_token->type == n_token->type)
 				return (set_err(SYNTAX, type_symbol(c_token->type), data),
-					false);
+						false);
 		i++;
 	}
 	return (true);
@@ -93,7 +93,7 @@ static void	decrement_index(void *found)
  * @return true When every heredoc has a string after it
  * @return false When a heredoc does not have a string after it
  */
-static bool	check_heredoc(t_vector *found, t_shell *data)
+static bool	check_ops(t_vector *found, t_shell *data)
 {
 	t_found	*c_found;
 	t_token	*c_token;
@@ -105,15 +105,15 @@ static bool	check_heredoc(t_vector *found, t_shell *data)
 	{
 		c_found = (t_found *)vec_get(found, i);
 		c_token = (t_token *)(c_found->item);
-		if (type_compare(2, c_token->type, HEREDOC, I_REDIRECT, O_REDIRECT,
+		if (type_compare(4, c_token->type, HEREDOC, I_REDIRECT, O_REDIRECT,
 				A_REDIRECT))
 		{
 			n_token = (t_token *)vec_get(&data->token_vec, c_found->index + 1);
 			if (!n_token || n_token->type != STRING)
 				return (set_err(SYNTAX, type_symbol(c_token->type), data),
-					false);
+						false);
 			else if (!combine_tokens(&data->token_vec, c_found->index,
-					c_token->type))
+						c_token->type))
 				return (false);
 			else
 				vec_apply(found, decrement_index);
@@ -139,10 +139,12 @@ bool	check_tokens(t_shell *data)
 	if (found_item->index == 0 && type_compare(5, token->type, PIPE, OR, AND,
 			I_REDIRECT, O_REDIRECT))
 		return (set_err(SYNTAX, type_symbol(token->type), data),
-			vec_free(found), free(found), false);
+				vec_free(found),
+				free(found),
+				false);
 	if (!check_double_ops(found, data))
 		return (vec_free(found), free(found), false);
-	if (!check_heredoc(found, data))
+	if (!check_ops(found, data))
 		return (vec_free(found), free(found), false);
 	vec_free(found);
 	free(found);
