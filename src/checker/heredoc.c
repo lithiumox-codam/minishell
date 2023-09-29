@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/13 22:15:51 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/28 12:35:58 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/29 15:06:13 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@
  * @return true If the tokens were combined
  * @return false If the tokens could not be combined
  */
-bool	combine_heredoc(t_vector *vec, size_t i)
+bool	combine_tokens(t_vector *vec, size_t i, t_types type)
 {
 	t_token	*token;
 
 	token = vec_get(vec, i + 1);
-	token->type = HEREDOC;
 	if (!token)
 		return (false);
+	token->type = type;
 	if (!vec_remove(vec, i))
 		return (false);
 	return (true);

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/11 21:12:42 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/13 12:33:31 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/29 16:14:09 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,10 @@ bool	type_compare(size_t num_args, t_types type, ...)
 	}
 	va_end(args);
 	return (found);
+}
+
+void	free_found(t_vector *found)
+{
+	vec_free(found);
+	free(found);
 }
