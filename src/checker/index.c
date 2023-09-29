@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 16:57:32 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/28 12:25:18 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/29 15:08:18 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,23 @@ bool	filter_operators(void *item)
 
 static bool	check_double_ops(t_vector *found, t_shell *data)
 {
-	t_found	*current_found;
+	t_found	*c_found;
 	t_found	*next_found;
-	t_token	*current_token;
-	t_token	*next_token;
+	t_token	*c_token;
+	t_token	*n_token;
 	size_t	i;
 
 	i = 0;
 	while (i < found->length - 1)
 	{
-		current_found = (t_found *)vec_get(found, i);
+		c_found = (t_found *)vec_get(found, i);
 		next_found = (t_found *)vec_get(found, i + 1);
-		current_token = (t_token *)current_found->item;
-		next_token = (t_token *)next_found->item;
-		if (next_found->index - current_found->index == 1)
-			if (current_token->type == next_token->type)
-				return (set_err(SYNTAX, type_symbol(current_token->type), data),
-						false);
+		c_token = (t_token *)c_found->item;
+		n_token = (t_token *)next_found->item;
+		if (next_found->index - c_found->index == 1)
+			if (c_token->type == n_token->type)
+				return (set_err(SYNTAX, type_symbol(c_token->type), data),
+					false);
 		i++;
 	}
 	return (true);
@@ -74,15 +74,16 @@ void	print_t_found(void *item, size_t index)
  */
 static void	decrement_index(void *found)
 {
-	t_found	*current_found;
+	t_found	*c_found;
 
-	current_found = (t_found *)found;
-	if (current_found->index != 0)
+	c_found = (t_found *)found;
+	if (c_found->index != 0)
 	{
-		current_found->item -= sizeof(t_token);
-		current_found->index--;
+		c_found->item -= sizeof(t_token);
+		c_found->index--;
 	}
 }
+
 /**
  * @brief A function that checks if every heredoc has a string after it
  * if so it combines the two tokens into one for the execution
@@ -94,24 +95,25 @@ static void	decrement_index(void *found)
  */
 static bool	check_heredoc(t_vector *found, t_shell *data)
 {
-	t_found	*current_found;
-	t_token	*current_token;
-	t_token	*next_token;
+	t_found	*c_found;
+	t_token	*c_token;
+	t_token	*n_token;
 	size_t	i;
 
 	i = 0;
 	while (i < found->length)
 	{
-		current_found = (t_found *)vec_get(found, i);
-		current_token = (t_token *)(current_found->item);
-		if (current_token && current_token->type == HEREDOC)
+		c_found = (t_found *)vec_get(found, i);
+		c_token = (t_token *)(c_found->item);
+		if (type_compare(2, c_token->type, HEREDOC, I_REDIRECT, O_REDIRECT,
+				A_REDIRECT))
 		{
-			next_token = (t_token *)vec_get(&data->token_vec,
-											current_found->index + 1);
-			if (!next_token || next_token->type != STRING)
-				return (set_err(SYNTAX, type_symbol(current_token->type), data),
-						false);
-			else if (!combine_heredoc(&data->token_vec, current_found->index))
+			n_token = (t_token *)vec_get(&data->token_vec, c_found->index + 1);
+			if (!n_token || n_token->type != STRING)
+				return (set_err(SYNTAX, type_symbol(c_token->type), data),
+					false);
+			else if (!combine_tokens(&data->token_vec, c_found->index,
+					c_token->type))
 				return (false);
 			else
 				vec_apply(found, decrement_index);
@@ -137,9 +139,7 @@ bool	check_tokens(t_shell *data)
 	if (found_item->index == 0 && type_compare(5, token->type, PIPE, OR, AND,
 			I_REDIRECT, O_REDIRECT))
 		return (set_err(SYNTAX, type_symbol(token->type), data),
-				vec_free(found),
-				free(found),
-				false);
+			vec_free(found), free(found), false);
 	if (!check_double_ops(found, data))
 		return (vec_free(found), free(found), false);
 	if (!check_heredoc(found, data))
