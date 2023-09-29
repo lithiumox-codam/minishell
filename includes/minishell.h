@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/09/29 15:06:52 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/09/29 16:14:15 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ bool	is_and(char *str);
 void	verify_token_vec(t_shell *data);
 bool	check_tokens(t_shell *data);
 bool	combine_tokens(t_vector *vec, size_t i, t_types type);
+void	free_found(t_vector *found);
 /* group */
 bool	group_token_vec(t_shell *data);
 bool	hdoc_found(t_group *group, int i, t_shell *data);

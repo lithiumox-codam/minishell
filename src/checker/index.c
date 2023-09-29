@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 16:57:32 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/29 16:09:12 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/09/29 16:13:47 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,7 @@ static bool	check_ops(t_vector *found, t_shell *data)
 	{
 		c_found = (t_found *)vec_get(found, i);
 		c_token = (t_token *)(c_found->item);
-		if (type_compare(4, c_token->type, HEREDOC, I_REDIRECT, O_REDIRECT,
-				A_REDIRECT))
+		if (type_compare(4, c_token->type, 14, 12, 11, 13))
 		{
 			n_token = (t_token *)vec_get(&data->token_vec, c_found->index + 1);
 			if (!n_token || n_token->type != STRING)
@@ -139,14 +138,12 @@ bool	check_tokens(t_shell *data)
 	if (found_item->index == 0 && type_compare(5, token->type, PIPE, OR, AND,
 			I_REDIRECT, O_REDIRECT))
 		return (set_err(SYNTAX, type_symbol(token->type), data),
-				vec_free(found),
-				free(found),
+				free_found(found),
 				false);
 	if (!check_double_ops(found, data))
-		return (vec_free(found), free(found), false);
+		return (free_found(found), false);
 	if (!check_ops(found, data))
-		return (vec_free(found), free(found), false);
-	vec_free(found);
-	free(found);
+		return (free_found(found), false);
+	free_found(found);
 	return (true);
 }
