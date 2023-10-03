@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/10/03 13:58:24 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/04 00:22:41 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ void	free_found(t_vector *found);
 /* group */
 bool	group_token_vec(t_shell *data);
 bool	hdoc_found(t_group *group, size_t i, t_shell *data);
-bool	heredoc(char *filename, char *stop, bool is_encased, t_shell *data);
 
 /* executor */
 bool	executor(t_shell *data);
@@ -98,7 +97,7 @@ void	exit_mini(char *str, int exit_code);
 bool	set_err(t_exit type, char *msg, t_shell *data);
 void	exec_err(char *str, t_exit type);
 void	write_err(t_shell *data);
-t_token	*rm_quotes(t_token *token, bool set_string);
+bool	rm_quotes(t_token *token, bool set_string);
 bool	type_compare(size_t num_args, t_types type, ...);
 
 /* debug */

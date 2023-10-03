@@ -11,7 +11,7 @@
 			"program": "${workspaceFolder}/./minishell",
 			"preLaunchTask": "build",
 			"args": [
-				"< infile1 group < infile2 < infile3"
+				"cmd0 <<hdoc"
 			],
 			"cwd": "${workspaceFolder}"
 		}

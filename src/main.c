@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/03 17:50:58 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/04 01:01:58 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,16 +74,16 @@ int	main(int ac, char **av, char **env)
 	if (ac == 2)
 	{
 		if (!lexer(av[1], data))
-			write_err(data);
+			return (write_err(data), g_signal.exit_status);
 		if (!parser(data))
-			write_err(data);
+			return (write_err(data), g_signal.exit_status);
 		if (!operator_split(data))
-			write_err(data);
+			return (write_err(data), g_signal.exit_status);
 		if (!check_tokens(data))
-			write_err(data);
+			return (write_err(data), g_signal.exit_status);
 		print_vector(&data->token_vec, print_token);
 		if (!group_token_vec(data))
-			write_err(data);
+			return (write_err(data), g_signal.exit_status);
 		print_group(data);
 		free_shell(data, true);
 		return (0); // change this to return built_in_exit

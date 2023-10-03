@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/16 12:15:45 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/03 18:08:05 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/04 01:18:35 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static bool	push_hdoc(char *filename, t_group *group, t_shell *data)
 {
 	char	*fname;
+	t_token	*fname_token;
 	t_token	*red_token;
 
 	fname = ft_strdup(filename);
@@ -25,7 +26,10 @@ static bool	push_hdoc(char *filename, t_group *group, t_shell *data)
 		return (set_err(MALLOC, "push_hdoc", data));
 	if (!vec_push(&group->in_red, (void *)red_token))
 		return (set_err(MALLOC, "push_hdoc", data));
-	if (!vec_push(&data->exec->fname_vec, (void *)fname))
+	fname_token = create_token(fname, STRING);
+	if (!fname_token)
+		return (set_err(MALLOC, "push_hdoc", data));
+	if (!vec_push(&data->exec->fname_vec, (void *)fname_token))
 		return (set_err(MALLOC, "push_hdoc", data));
 	return (true);
 }
@@ -37,7 +41,7 @@ static bool	loop(size_t heredoc_fd, char *stop, bool expand, t_shell *data)
 
 	while (1)
 	{
-		line = readline(">");
+		line = readline("hdoc>");
 		if (!line || ft_strcmp(line, stop) == 0)
 			break ;
 		if (expand)
@@ -49,7 +53,7 @@ static bool	loop(size_t heredoc_fd, char *stop, bool expand, t_shell *data)
 			// line = expanded_line;
 			if (!data)
 				return (false);
-			// ^^^^ this is placeholder to avoid data error
+			// ^^^^ this is placeholder to avoid data unused error
 		}
 		write(heredoc_fd, line, ft_strlen(line));
 		write(heredoc_fd, "\n", 1);
@@ -62,28 +66,36 @@ static bool	loop(size_t heredoc_fd, char *stop, bool expand, t_shell *data)
 /**
  * @param	filename the filename to be given to the new file
  * @param	stop	the string to stop readline
- * @param	type	string or quoted, if quoted there will be no expansion.
- * @param	exec	to be freed when an error occurs
+ * @note	depending on expansion DQ logic can be removed
  */
-bool	heredoc(char *filename, char *stop, bool expand, t_shell *data)
+bool	heredoc(char *filename, char *stop, t_shell *data)
 {
-	int	heredoc_fd;
+	int		heredoc_fd;
+	bool	loop_success;
 
 	heredoc_fd = open(filename, O_CREAT | O_WRONLY, 0644);
 	if (heredoc_fd == -1)
 		return (set_err(PERR, filename, data));
-	if (!loop(heredoc_fd, stop, expand, data))
+	if ((is_encased_dq(stop)) && ft_strlen(stop) == 2)
+		loop_success = loop(heredoc_fd, "", true, data);
+	else if (is_encased_dq(stop))
 	{
-		close(heredoc_fd);
-		return (false);
+		stop = ft_strtrim(stop, "\"");
+		if (!stop)
+			return (set_err(MALLOC, "heredoc", data));
+		loop_success = loop(heredoc_fd, stop, true, data);
 	}
-	if (!close(heredoc_fd))
+	else
+		loop_success = loop(heredoc_fd, stop, false, data);
+	if (!loop_success)
+		return (close(heredoc_fd), false);
+	if (close(heredoc_fd) != 0)
 		return (set_err(PERR, filename, data));
 	return (true);
 }
 
 /**
- * @brief Creates a token for the hdoc file, and adds the filename to the f_name
+ * @brief 	creates a heredoc file and adds it to the group
  * @param	group the group to add the new token_vec to
  * @param	i to step over the heredoc and the quotes / filenames
  * @param	data general data struct
@@ -92,25 +104,13 @@ bool	heredoc(char *filename, char *stop, bool expand, t_shell *data)
 bool	hdoc_found(t_group *group, size_t i, t_shell *data)
 {
 	t_token	*token;
-	t_token	*stop;
-	bool	succes;
 	char	*filename;
 
 	filename = ft_strjoin("./src/.heredoc/", ft_itoa((i)));
 	if (!filename)
 		return (set_err(MALLOC, "hdoc_found", data));
 	token = vec_get(&data->token_vec, i);
-	if ((is_encased_dq(token->value)) && ft_strlen(token->value) == 2)
-		succes = heredoc(filename, "", true, data);
-	else
-	{
-		stop = rm_quotes(token, true);
-		if (!stop)
-			return (set_err(MALLOC, "hdoc_found", data));
-		succes = heredoc(filename, stop->value, is_encased_dq(token), data);
-		clear_token(stop);
-	}
-	if (!succes)
+	if (!heredoc(filename, token->value, data))
 		return (false);
 	return (push_hdoc(filename, group, data));
 }
