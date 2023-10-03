@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 16:57:32 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/29 16:13:47 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/03 14:26:58 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,8 +135,7 @@ bool	check_tokens(t_shell *data)
 		return (set_err(MALLOC, "vector found returned NULL", data), true);
 	found_item = (t_found *)vec_get(found, i);
 	token = (t_token *)found_item->item;
-	if (found_item->index == 0 && type_compare(5, token->type, PIPE, OR, AND,
-			I_REDIRECT, O_REDIRECT))
+	if (found_item->index == 0 && type_compare(3, token->type, PIPE, OR, AND))
 		return (set_err(SYNTAX, type_symbol(token->type), data),
 				free_found(found),
 				false);

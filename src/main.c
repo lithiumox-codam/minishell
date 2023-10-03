@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/27 22:51:57 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/03 17:50:58 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,17 @@ static void	loop(t_shell *data)
 		else
 		{
 			if (!lexer(input, data))
-				return (free(input), free_shell(data, true));
-			parser(data);
+				write_err(data);
+			if (!parser(data))
+				write_err(data);
+			if (!operator_split(data))
+				write_err(data);
 			if (!check_tokens(data))
 				write_err(data);
 			print_vector(&data->token_vec, print_token);
+			if (!group_token_vec(data))
+				write_err(data);
+			print_group(data);
 		}
 		free(input);
 		free_shell(data, false);
@@ -69,18 +75,16 @@ int	main(int ac, char **av, char **env)
 	{
 		if (!lexer(av[1], data))
 			write_err(data);
-		parser(data);
-		print_vector(&data->token_vec, print_token);
-		operator_split(data);
+		if (!parser(data))
+			write_err(data);
+		if (!operator_split(data))
+			write_err(data);
 		if (!check_tokens(data))
-			return (write_err(data), free_shell(data, true), 1);
+			write_err(data);
 		print_vector(&data->token_vec, print_token);
-		// combine redirects+heredoc into 1 token + verify_token_vec combined
-		// verify_token_vec(data);
-		// expansion based on env vector
-		// group_token_vec(data);
-		// // check if all groups are properly cerated
-		// executor(data->exec);
+		if (!group_token_vec(data))
+			write_err(data);
+		print_group(data);
 		free_shell(data, true);
 		return (0); // change this to return built_in_exit
 	}
