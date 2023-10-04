@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/03 18:11:09 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/04 01:24:50 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/04 13:41:34 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	free_shell(t_shell *data, bool close_shell)
 	if (data->token_vec.data)
 		vec_free(&data->token_vec);
 	if (data->exec)
-		clear_exec(data->exec);
+		clear_exec(&data->exec);
 	if (close_shell)
 	{
 		vec_free(&data->env);

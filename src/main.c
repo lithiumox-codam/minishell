@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/04 01:01:58 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/04 16:38:11 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	debug(void)
  *
  * @param vec The vector to store the token_vec in
  */
-static void	loop(t_shell *data)
+static int	loop(t_shell *data)
 {
 	char	*input;
 
@@ -41,27 +41,26 @@ static void	loop(t_shell *data)
 			break ;
 		}
 		add_history(input);
-		if (!ft_strcmp(input, "exit"))
-			return (free(input), free_shell(data, true));
-		else
-		{
-			if (!lexer(input, data))
-				write_err(data);
-			if (!parser(data))
-				write_err(data);
-			if (!operator_split(data))
-				write_err(data);
-			if (!check_tokens(data))
-				write_err(data);
-			print_vector(&data->token_vec, print_token);
-			if (!group_token_vec(data))
-				write_err(data);
-			print_group(data);
-		}
+		if (!lexer(input, data))
+			write_err(data);
+		if (!parser(data))
+			write_err(data);
+		if (!operator_split(data))
+			write_err(data);
+		if (!check_tokens(data))
+			write_err(data);
+		if (!group_token_vec(data))
+			write_err(data);
+		print_group(data);
+		if (!executor(data))
+			write_err(data);
 		free(input);
+		if (data->exit_shell == true)
+			return (free_shell(data, true), g_signal.exit_status);
 		free_shell(data, false);
 		vec_init(&data->token_vec, 5, sizeof(t_token), clear_token);
 	}
+	return (0);
 }
 
 int	main(int ac, char **av, char **env)
@@ -89,7 +88,7 @@ int	main(int ac, char **av, char **env)
 		return (0); // change this to return built_in_exit
 	}
 	else if (ac == 1)
-		loop(data);
+		return (loop(data));
 	else
 	{
 		printf("Too many arguments");

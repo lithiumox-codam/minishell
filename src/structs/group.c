@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 20:42:59 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/04 01:27:31 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/04 13:40:56 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,14 @@ void	clear_fname(void *data)
 	filename = NULL;
 }
 
-void	clear_exec(t_exec *exec)
+void	clear_exec(t_exec **exec)
 {
-	if (!exec)
+	if (!(*exec))
 		return ;
-	vec_free(&exec->group_vec);
-	vec_free(&exec->fname_vec);
-	free(exec);
-	exec = NULL;
+	vec_free(&(*exec)->group_vec);
+	vec_free(&(*exec)->fname_vec);
+	free(*exec);
+	*exec = NULL;
 }
 
 /**

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/16 12:15:45 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/04 01:18:35 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/04 14:33:55 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,17 @@ static bool	push_hdoc(char *filename, t_group *group, t_shell *data)
 	return (true);
 }
 
+/**
+ * @note if signal ctrl D break while loop and return true
+ */
 static bool	loop(size_t heredoc_fd, char *stop, bool expand, t_shell *data)
 {
 	char	*line;
-	// char	*expanded_line;
 
+	// char	*expanded_line;
 	while (1)
 	{
-		line = readline("hdoc>");
+		line = readline(">");
 		if (!line || ft_strcmp(line, stop) == 0)
 			break ;
 		if (expand)
@@ -106,7 +109,7 @@ bool	hdoc_found(t_group *group, size_t i, t_shell *data)
 	t_token	*token;
 	char	*filename;
 
-	filename = ft_strjoin("./src/.heredoc/", ft_itoa((i)));
+	filename = ft_strjoin("./src/hdoc_files/", ft_itoa((i)));
 	if (!filename)
 		return (set_err(MALLOC, "hdoc_found", data));
 	token = vec_get(&data->token_vec, i);

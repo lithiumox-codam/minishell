@@ -21,7 +21,11 @@ SRC = main \
     group/heredoc \
     debug/print_vector \
 	debug/print_group \
-    # exec/exec \
+    exec/exec \
+	exec/utils \
+	exec/exec_builtin \
+	built_in/placeholder_special \
+	built_in/placeholder \
     # exec/create_processes \
     # exec/redirect \
     # exec/exec_process \

@@ -10,9 +10,7 @@
 			"name": "Debug",
 			"program": "${workspaceFolder}/./minishell",
 			"preLaunchTask": "build",
-			"args": [
-				"cmd0 <<hdoc"
-			],
+			"args": [],
 			"cwd": "${workspaceFolder}"
 		}
 	]

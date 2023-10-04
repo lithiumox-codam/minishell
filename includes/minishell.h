@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/10/04 00:22:41 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/04 16:49:44 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,24 @@ void	exec_built_in(t_group *group, t_process type);
 void	exec_absolut_path(t_group *group);
 void	redirect_input(t_group *group, size_t i);
 
+void	exec_special_builtin(t_group *group);
+
 /* exec_utils */
-bool	is_built_in(char *str);
+bool	is_builtin(char *str);
+bool	is_special_builtin(char *str);
 char	**combine_env(t_vector *env_vec);
 char	**create_cmd(t_vector *input);
 bool	is_redirect(t_token *token);
 bool	is_string_type(t_token *token);
+
+/* built_in */
+void	ft_exit(t_group *group);
+void	ft_cd(t_group *group);
+void	ft_export(t_group *group);
+void	ft_unset(t_group *group);
+void	ft_echo(t_group *group);
+void	ft_pwd(t_group *group);
+void	ft_env(t_group *group);
 
 /* structs */
 t_token	*create_token(char *value, t_types type);
@@ -90,7 +102,7 @@ t_group	*create_group(t_shell *data);
 void	clear_group(void *data);
 void	clear_fname(void *data);
 t_exec	*create_exec(void);
-void	clear_exec(t_exec *exec);
+void	clear_exec(t_exec **exec);
 
 /* general utils */
 void	exit_mini(char *str, int exit_code);
