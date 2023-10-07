@@ -24,9 +24,9 @@ SRC = main \
     exec/exec \
 	exec/utils \
 	exec/exec_builtin \
+    exec/create_processes \
 	built_in/placeholder_special \
 	built_in/placeholder \
-    # exec/create_processes \
     # exec/redirect \
     # exec/exec_process \
     # exec/utils
