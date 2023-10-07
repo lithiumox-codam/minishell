@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 12:40:07 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/07 16:09:15 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/07 18:38:02 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ static bool	add_pipes(t_vector *group_vec, size_t process_count, t_shell *data)
 	i = 0;
 	while (i < process_count - 1)
 	{
-		group = vector_get(group_vec, i);
+		group = vec_get(group_vec, i);
 		if (pipe(group->right_pipe) != 0)
 			return (set_err(PERR, NULL, data));
-		next_group = vector_get(group_vec, i + 1);
+		next_group = vec_get(group_vec, i + 1);
 		next_group->left_pipe[0] = group->right_pipe[0];
 		next_group->left_pipe[1] = group->right_pipe[1];
 		i++;
@@ -36,25 +36,24 @@ static bool	fork_processes(t_shell *data, size_t process_count)
 {
 	size_t		i;
 	t_group		*group;
-	t_group		*next_group;
 	t_vector	*group_vec;
 
 	group_vec = &data->exec->group_vec;
 	i = 0;
 	while (i < process_count)
 	{
-		group = vector_get(group_vec, i);
+		group = vec_get(group_vec, i);
 		group->pd = fork();
 		if (group->pd == -1)
 			return (set_err(PERR, NULL, data));
 		if (group->pd == 0)
 		{
 			if (i == 0)
-				exec_process(LEFT, group);
+				exec_process(group, LEFT);
 			else if (i == process_count - 1)
-				exec_process(RIGHT, group);
+				exec_process(group, RIGHT);
 			else
-				exec_process(MIDDLE, group);
+				exec_process(group, MIDDLE);
 		}
 		i++;
 	}
@@ -74,13 +73,13 @@ static bool	close_pipes(t_vector *group_vec, t_shell *data)
 	status = true;
 	while (i < group_vec->length - 1)
 	{
-		group = vector_get(group_vec, i);
+		group = vec_get(group_vec, i);
 		if (group->right_pipe[0] >= 0)
 			if (close(group->right_pipe[0]) == -1)
-				status = set_error(PERR, NULL, data);
+				status = set_err(PERR, NULL, data);
 		if (group->right_pipe[1] >= 0)
 			if (close(group->right_pipe[1]) == -1)
-				status = set_error(PERR, NULL, data);
+				status = set_err(PERR, NULL, data);
 		i++;
 	}
 	return (status);
@@ -97,11 +96,12 @@ bool	create_processes(t_shell *data)
 	group_vec = &data->exec->group_vec;
 	if (group_vec->length == 1)
 	{
-		group = vector_get(group_vec, 0);
+		group = vec_get(group_vec, 0);
 		group->pd = fork();
 		if (group->pd == -1)
 			return (set_err(PERR, NULL, data));
-		exec_process(SINGLE, group);
+		if (group->pd == 0)
+			exec_process(group, SINGLE);
 	}
 	else
 	{

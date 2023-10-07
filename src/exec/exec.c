@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:50 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/07 16:12:17 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/07 18:26:21 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	wait_processes(t_vector *group_vec, t_shell *data,
 	i = 0;
 	while (i < group_vec->length)
 	{
-		group = vector_get(group_vec, i);
+		group = vec_get(group_vec, i);
 		if (group->pd >= 0)
 			if (waitpid(group->pd, &temp, 0) == -1)
 				success = false;
@@ -67,7 +67,7 @@ bool	executor(t_shell *data)
 	}
 	if (!create_processes(data))
 	{
-		wait_process(&data->exec->group_vec, data, false);
+		wait_processes(&data->exec->group_vec, data, false);
 		return (false);
 	}
 	if (wait_processes(&data->exec->group_vec, data, true) == -1)

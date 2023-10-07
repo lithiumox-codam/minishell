@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 16:08:08 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/07 17:06:16 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/07 18:36:06 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,27 +58,24 @@ void	dup_fd(t_group *group, t_process type)
 
 void	exec_process(t_group *group, t_process type)
 {
-	size_t	i;
 	char	**env;
 
 	close_start(type, group);
 	handle_redirects(group);
-	if (is_built_in(group->cmd))
+	if (is_builtin(group->cmd))
 		exec_built_in(group, type);
 	check_cmd(group);
 	dup_fd(group, type);
-	exec_built_in(group, type);
 	env = combine_env(&group->data->env);
 	execve(group->cmd, group->args, env);
 }
 
-void	exec_absolut_path(t_group *group)
+void	exec_absolute_path(t_group *group)
 {
-	char **env;
+	char	**env;
 
 	if (access(group->cmd, X_OK) != 0)
 		exec_err(group->cmd, PERMISSION);
-	handle_redirects(group);
 	env = combine_env(&group->data->env);
 	execve(group->cmd, group->args, env);
 }

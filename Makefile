@@ -26,10 +26,11 @@ SRC = main \
 	exec/exec_builtin \
     exec/create_processes \
     exec/exec_process \
+    exec/redirect \
+	exec/check_cmd \
 	built_in/placeholder_special \
-	built_in/placeholder \
-    # exec/redirect \
-    # exec/utils
+	built_in/placeholder
+
 SRCS = $(addsuffix .c, $(addprefix src/, $(SRC)))
 OBJS = $(patsubst src/%.c, build/%.o, $(SRCS))
 LIBFT = libft/libft.a
