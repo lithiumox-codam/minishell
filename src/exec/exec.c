@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:50 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/07 15:40:31 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/07 16:12:17 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,41 +14,14 @@
 
 extern t_signal	g_signal;
 
-close_pipes(t_vector *group_vec, t_shell *data)
-{
-	size_t	i;
-	t_group	*group;
-	bool	status;
-
-	i = 0;
-	status = true;
-	while (i < group_vec->length)
-	{
-		group = vector_get(group_vec, i);
-		if (group->left_pipe[0] >= 0)
-			if (close(group->left_pipe[0]) == -1)
-				status = set_error(PERR, NULL, data);
-		if (group->left_pipe[1] >= 0)
-			if (close(group->left_pipe[1]) == -1)
-				status = set_error(PERR, NULL, data);
-		if (group->right_pipe[0] >= 0)
-			if (close(group->right_pipe[0]) == -1)
-				status = set_error(PERR, NULL, data);
-		if (group->right_pipe[1] >= 0)
-			if (close(group->right_pipe[1]) == -1)
-				status = set_error(PERR, NULL, data);
-		i++;
-	}
-	return (status);
-}
-
 /**
  * @brief	waits for processes to complete
  * @brief 	sets exit_status to the exit status of the last process to complete
  * @return	return value is true if all processes completed successfully
  * @return	if WAITPID fails, sets PERR and returns false
  */
-static int	wait_processes(t_vector *group_vec, t_shell *data)
+static int	wait_processes(t_vector *group_vec, t_shell *data,
+		bool check_status)
 {
 	size_t	i;
 	t_group	*group;
@@ -56,7 +29,6 @@ static int	wait_processes(t_vector *group_vec, t_shell *data)
 	int		temp;
 
 	i = 0;
-	success = true;
 	while (i < group_vec->length)
 	{
 		group = vector_get(group_vec, i);
@@ -65,12 +37,16 @@ static int	wait_processes(t_vector *group_vec, t_shell *data)
 				success = false;
 		i++;
 	}
-	if (success == true)
+	if (check_status)
 	{
-		g_signal.exit_status = WEXITSTATUS(temp);
-		return (true);
+		if (success == true)
+		{
+			g_signal.exit_status = WEXITSTATUS(temp);
+			return (true);
+		}
+		return (set_err(PERR, NULL, data));
 	}
-	return (set_error(PERR, NULL, data));
+	return (false);
 }
 
 /**
@@ -91,16 +67,10 @@ bool	executor(t_shell *data)
 	}
 	if (!create_processes(data))
 	{
-		close_pipes(&data->exec->group_vec, data);
-		wait_process(&data->exec->group_vec, data);
+		wait_process(&data->exec->group_vec, data, false);
 		return (false);
 	}
-	if (!close_pipes(&data->exec->group_vec, data))
-	{
-		wait_processes(&data->exec->group_vec, data);
-		return (false);
-	}
-	if (wait_processes(&data->exec->group_vec, data) == -1)
+	if (wait_processes(&data->exec->group_vec, data, true) == -1)
 		return (false);
 	return (true);
 }

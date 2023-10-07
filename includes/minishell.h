@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/10/04 16:49:44 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/07 17:06:27 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ bool	hdoc_found(t_group *group, size_t i, t_shell *data);
 bool	executor(t_shell *data);
 bool	create_processes(t_shell *data);
 void	exec_process(t_group *group, t_process type);
+void	dup_fd(t_group *group, t_process type);
 void	check_cmd(t_group *group);
 void	exec_built_in(t_group *group, t_process type);
 void	exec_absolut_path(t_group *group);

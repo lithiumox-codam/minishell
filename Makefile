@@ -25,10 +25,10 @@ SRC = main \
 	exec/utils \
 	exec/exec_builtin \
     exec/create_processes \
+    exec/exec_process \
 	built_in/placeholder_special \
 	built_in/placeholder \
     # exec/redirect \
-    # exec/exec_process \
     # exec/utils
 SRCS = $(addsuffix .c, $(addprefix src/, $(SRC)))
 OBJS = $(patsubst src/%.c, build/%.o, $(SRCS))

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 12:40:07 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/07 15:25:54 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/07 16:09:15 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,31 @@ static bool	fork_processes(t_shell *data, size_t process_count)
 }
 
 /**
+ * @brief Closes the pipes in the main process
+ */
+static bool	close_pipes(t_vector *group_vec, t_shell *data)
+{
+	size_t	i;
+	t_group	*group;
+	bool	status;
+
+	i = 0;
+	status = true;
+	while (i < group_vec->length - 1)
+	{
+		group = vector_get(group_vec, i);
+		if (group->right_pipe[0] >= 0)
+			if (close(group->right_pipe[0]) == -1)
+				status = set_error(PERR, NULL, data);
+		if (group->right_pipe[1] >= 0)
+			if (close(group->right_pipe[1]) == -1)
+				status = set_error(PERR, NULL, data);
+		i++;
+	}
+	return (status);
+}
+
+/**
  * @brief Creates the processes and pipes for the execution
  */
 bool	create_processes(t_shell *data)
@@ -85,5 +110,7 @@ bool	create_processes(t_shell *data)
 		if (!fork_processes(data, group_vec->length))
 			return (false);
 	}
+	if (!close_pipes(group_vec, data))
+		return (false);
 	return (true);
 }

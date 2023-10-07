@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 16:08:08 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/11 20:13:14 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/07 17:06:16 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	close_start(t_process type, t_group *group)
 	}
 }
 
-static void	dup_fd(t_group *group, t_process type)
+void	dup_fd(t_group *group, t_process type)
 {
 	if (type == SINGLE)
 		return ;
@@ -62,10 +62,10 @@ void	exec_process(t_group *group, t_process type)
 	char	**env;
 
 	close_start(type, group);
+	handle_redirects(group);
 	if (is_built_in(group->cmd))
 		exec_built_in(group, type);
 	check_cmd(group);
-	handle_redirects(group);
 	dup_fd(group, type);
 	exec_built_in(group, type);
 	env = combine_env(&group->data->env);

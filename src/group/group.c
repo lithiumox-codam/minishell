@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:05 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/04 00:00:07 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/07 15:56:07 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,12 @@ bool	alloc_args(t_group *group, size_t i, t_shell *data)
 	return (true);
 }
 
+/**
+
+	* @note check the else statement depending on how we will handle quotes (ie. could be else if (token->type == STRING
+		|| token->type == QUOTE_STRING)
+ *
+ */
 static bool	group_tokens(t_group *group, size_t *i, t_shell *data)
 {
 	size_t	i_arg;
@@ -77,7 +83,7 @@ static bool	group_tokens(t_group *group, size_t *i, t_shell *data)
 			if (!add_redirect(token, group, (*i), data))
 				return (false);
 		}
-		else if (token->type == STRING)
+		else
 		{
 			group->args[i_arg] = ft_strdup(token->value);
 			if (!group->args[i_arg])
