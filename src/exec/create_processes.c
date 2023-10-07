@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 12:40:07 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/07 18:38:02 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/07 22:25:44 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,29 +32,30 @@ static bool	add_pipes(t_vector *group_vec, size_t process_count, t_shell *data)
 	return (true);
 }
 
-static bool	fork_processes(t_shell *data, size_t process_count)
+static bool	fork_processes(t_shell *data, size_t count)
 {
-	size_t		i;
-	t_group		*group;
-	t_vector	*group_vec;
+	size_t	i;
+	pid_t	pid;
+	t_group	*group;
 
-	group_vec = &data->exec->group_vec;
 	i = 0;
-	while (i < process_count)
+	while (i < count)
 	{
-		group = vec_get(group_vec, i);
-		group->pd = fork();
-		if (group->pd == -1)
+		group = vec_get(&data->exec->group_vec, i);
+		pid = fork();
+		if (pid == -1)
 			return (set_err(PERR, NULL, data));
-		if (group->pd == 0)
+		if (pid == 0)
 		{
 			if (i == 0)
 				exec_process(group, LEFT);
-			else if (i == process_count - 1)
+			else if ((i == 1 && count == 2) || (count > 2 && i == count - 1))
 				exec_process(group, RIGHT);
 			else
 				exec_process(group, MIDDLE);
 		}
+		else
+			group->pd = pid;
 		i++;
 	}
 	return (true);

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:50 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/07 18:26:21 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/07 21:06:21 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,15 @@ bool	executor(t_shell *data)
 		exec_special_builtin(group);
 		return (true);
 	}
-	if (!create_processes(data))
+	else
 	{
-		wait_processes(&data->exec->group_vec, data, false);
-		return (false);
+		if (!create_processes(data))
+		{
+			wait_processes(&data->exec->group_vec, data, false);
+			return (false);
+		}
+		if (wait_processes(&data->exec->group_vec, data, true) == -1)
+			return (false);
 	}
-	if (wait_processes(&data->exec->group_vec, data, true) == -1)
-		return (false);
 	return (true);
 }

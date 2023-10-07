@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/19 21:42:24 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/04 01:09:56 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/07 19:17:47 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	write_err(t_shell *data)
 		return ;
 	if (data->exit_type == PERR)
 	{
-		perror("minishell:");
+		perror("minishell");
 		g_signal.exit_status = errno;
 	}
 	if (data->exit_type == MALLOC)
@@ -103,7 +103,7 @@ void	exec_err(char *str, t_exit type)
 {
 	if (type == PERR)
 	{
-		perror("minishell:");
+		perror("minishell");
 		exit(errno);
 	}
 	if (type == MALLOC)

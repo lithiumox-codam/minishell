@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/10/07 18:36:11 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/07 22:31:59 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,11 @@ bool	executor(t_shell *data);
 bool	create_processes(t_shell *data);
 void	exec_process(t_group *group, t_process type);
 void	dup_fd(t_group *group, t_process type);
-void	check_cmd(t_group *group);
+void	check_cmd(t_group *group, t_process type);
 void	exec_built_in(t_group *group, t_process type);
 void	exec_absolut_path(t_group *group);
 void	handle_redirects(t_group *group);
-void	exec_absolute_path(t_group *group);
+void	exec_absolute_path(t_group *group, t_process type);
 
 void	exec_special_builtin(t_group *group);
 
@@ -121,5 +121,6 @@ char	*print_type(t_types type);
 char	*type_symbol(t_types type);
 void	print_env(void *data, size_t i);
 void	print_group(t_shell *data);
+void	p_group(t_group *group);
 
 #endif

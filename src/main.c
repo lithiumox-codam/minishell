@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/04 16:38:11 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/07 20:15:39 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	loop(t_shell *data)
 
 	while (1)
 	{
-		input = readline("\n\033[1;32mminishell\n❯ \033[0m");
+		input = readline("\033[1;32mminishell\n❯ \033[0m");
 		if (!input)
 		{
 			free(input);
@@ -42,18 +42,53 @@ static int	loop(t_shell *data)
 		}
 		add_history(input);
 		if (!lexer(input, data))
+		{
 			write_err(data);
+			free(input);
+			free_shell(data, false);
+			vec_init(&data->token_vec, 5, sizeof(t_token), clear_token);
+			continue ;
+		}
 		if (!parser(data))
+		{
 			write_err(data);
+			free(input);
+			free_shell(data, false);
+			vec_init(&data->token_vec, 5, sizeof(t_token), clear_token);
+			continue ;
+		}
 		if (!operator_split(data))
+		{
 			write_err(data);
+			free(input);
+			free_shell(data, false);
+			vec_init(&data->token_vec, 5, sizeof(t_token), clear_token);
+			continue ;
+		}
 		if (!check_tokens(data))
+		{
 			write_err(data);
+			free(input);
+			free_shell(data, false);
+			vec_init(&data->token_vec, 5, sizeof(t_token), clear_token);
+			continue ;
+		}
 		if (!group_token_vec(data))
+		{
 			write_err(data);
-		print_group(data);
+			free(input);
+			free_shell(data, false);
+			vec_init(&data->token_vec, 5, sizeof(t_token), clear_token);
+			continue ;
+		}
 		if (!executor(data))
+		{
 			write_err(data);
+			free(input);
+			free_shell(data, false);
+			vec_init(&data->token_vec, 5, sizeof(t_token), clear_token);
+			continue ;
+		}
 		free(input);
 		if (data->exit_shell == true)
 			return (free_shell(data, true), g_signal.exit_status);
@@ -73,17 +108,23 @@ int	main(int ac, char **av, char **env)
 	if (ac == 2)
 	{
 		if (!lexer(av[1], data))
-			return (write_err(data), g_signal.exit_status);
+			return (write_err(data), free_shell(data, true),
+				g_signal.exit_status);
 		if (!parser(data))
-			return (write_err(data), g_signal.exit_status);
+			return (write_err(data), free_shell(data, true),
+				g_signal.exit_status);
 		if (!operator_split(data))
-			return (write_err(data), g_signal.exit_status);
+			return (write_err(data), free_shell(data, true),
+				g_signal.exit_status);
 		if (!check_tokens(data))
-			return (write_err(data), g_signal.exit_status);
-		print_vector(&data->token_vec, print_token);
+			return (write_err(data), free_shell(data, true),
+				g_signal.exit_status);
 		if (!group_token_vec(data))
-			return (write_err(data), g_signal.exit_status);
-		print_group(data);
+			return (write_err(data), free_shell(data, true),
+				g_signal.exit_status);
+		if (!executor(data))
+			return (write_err(data), free_shell(data, true),
+				g_signal.exit_status);
 		free_shell(data, true);
 		return (0); // change this to return built_in_exit
 	}
