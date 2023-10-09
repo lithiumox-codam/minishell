@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/27 22:51:57 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/09 12:28:43 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static void	loop(t_shell *data)
 			if (!lexer(input, data))
 				return (free(input), free_shell(data, true));
 			parser(data);
+			expand(data);
 			if (!check_tokens(data))
 				write_err(data);
 			print_vector(&data->token_vec, print_token);
@@ -70,6 +71,7 @@ int	main(int ac, char **av, char **env)
 		if (!lexer(av[1], data))
 			write_err(data);
 		parser(data);
+		expand(data);
 		print_vector(&data->token_vec, print_token);
 		operator_split(data);
 		if (!check_tokens(data))
