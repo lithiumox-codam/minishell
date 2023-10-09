@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/04 15:01:59 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/04 16:50:45 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/09 16:14:03 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,24 @@
 
 extern t_signal	g_signal;
 
+int long long ft_exit_atoi(char *str)
+{
+	size_t			i;
+	int long long	output;
+
+	i = 0;
+	while (checkchar(str[i], "1234567890"))
+	{
+		output = (output * 10) + (str[i] - '0');
+		i++;
+	}
+	return (output);
+}
+
 void	ft_exit(t_group *group)
 {
 	size_t	i;
+	int		long long	output;
 
 	i = 0;
 	while (group->args[i])
@@ -46,7 +61,8 @@ void	ft_exit(t_group *group)
 		}
 		i++;
 	}
-	g_signal.exit_status = ft_atoi(group->args[1]);
+	output = ft_exit_atoi(group->args[1]);
+	g_signal.exit_status = output % 256;
 	group->data->exit_shell = true;
 }
 

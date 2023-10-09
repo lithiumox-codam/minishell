@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:50 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/07 21:06:21 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/08 23:10:12 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static int	wait_processes(t_vector *group_vec, t_shell *data,
 	bool	success;
 	int		temp;
 
+	success = true;
 	i = 0;
 	while (i < group_vec->length)
 	{

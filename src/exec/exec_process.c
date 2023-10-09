@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 16:08:08 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/07 22:35:37 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/09 16:09:29 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	dup_fd(t_group *group, t_process type)
 		if (close(group->right_pipe[1]) == -1)
 			perror("minishell");
 	}
-	else if (type == RIGHT || type == MIDDLE)
+	if (type == RIGHT || type == MIDDLE)
 	{
 		if (dup2(group->left_pipe[0], STDIN_FILENO) == -1)
 			perror("minishell: left_pipe[0]");
