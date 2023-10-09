@@ -17,7 +17,8 @@ SRC = main \
     checker/index \
 	checker/helpers \
 	checker/heredoc \
-    debug/print_vector
+    debug/print_vector \
+	expander/index \
     # exec/exec \
     # exec/create_processes \
     # exec/redirect \
