@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/10/07 22:31:59 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/10 21:14:46 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	exec_built_in(t_group *group, t_process type);
 void	exec_absolut_path(t_group *group);
 void	handle_redirects(t_group *group);
 void	exec_absolute_path(t_group *group, t_process type);
+void	close_pipes(t_shell *data);
 
 void	exec_special_builtin(t_group *group);
 

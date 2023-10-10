@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 12:40:07 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/07 22:25:44 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/10 21:15:34 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,26 +64,25 @@ static bool	fork_processes(t_shell *data, size_t count)
 /**
  * @brief Closes the pipes in the main process
  */
-static bool	close_pipes(t_vector *group_vec, t_shell *data)
+void	close_pipes(t_shell *data)
 {
-	size_t	i;
-	t_group	*group;
-	bool	status;
+	size_t		i;
+	t_group		*group;
+	t_vector	*group_vec;
 
+	group_vec = &data->exec->group_vec;
 	i = 0;
-	status = true;
 	while (i < group_vec->length - 1)
 	{
 		group = vec_get(group_vec, i);
 		if (group->right_pipe[0] >= 0)
 			if (close(group->right_pipe[0]) == -1)
-				status = set_err(PERR, NULL, data);
+				perror("minishell: close_pipes");
 		if (group->right_pipe[1] >= 0)
 			if (close(group->right_pipe[1]) == -1)
-				status = set_err(PERR, NULL, data);
+				perror("minishell: close_pipes");
 		i++;
 	}
-	return (status);
 }
 
 /**
@@ -111,7 +110,6 @@ bool	create_processes(t_shell *data)
 		if (!fork_processes(data, group_vec->length))
 			return (false);
 	}
-	if (!close_pipes(group_vec, data))
-		return (false);
+	close_pipes(data);
 	return (true);
 }
