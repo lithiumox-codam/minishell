@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 13:51:45 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/27 22:52:57 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/03 12:54:50 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ void	print_vector(t_vector *vec, void (*printer)(void *, size_t))
 
 	// print_stack_trace();
 	i = 0;
-	if (!DEBUG)
-		return ;
+	// if (!DEBUG)
+	// 	return ;
 	while (i < vec->length)
 	{
 		printer(vec_get(vec, i), i);

@@ -1,10 +1,11 @@
 NAME = minishell
 SRC = main \
-    check_input \
     utils/error \
     utils/miscellaneous \
     structs/token \
     structs/env \
+    structs/shell \
+	structs/group \
     parser/index \
     parser/quotes \
     parser/tokens \
@@ -13,19 +14,23 @@ SRC = main \
     lexer/string \
     lexer/token \
     lexer/op_split \
-    structs/shell \
     checker/index \
 	checker/helpers \
 	checker/heredoc \
-    debug/print_vector
-    # exec/exec \
-    # exec/create_processes \
-    # exec/redirect \
-    # exec/exec_process \
-    # exec/utils \
-    # group/heredoc \
-    # structs/group \
-    # group/group
+    group/group \
+    group/heredoc \
+    debug/print_vector \
+	debug/print_group \
+    exec/exec \
+	exec/utils \
+	exec/exec_builtin \
+    exec/create_processes \
+    exec/exec_process \
+    exec/redirect \
+	exec/check_cmd \
+	built_in/placeholder_special \
+	built_in/placeholder
+
 SRCS = $(addsuffix .c, $(addprefix src/, $(SRC)))
 OBJS = $(patsubst src/%.c, build/%.o, $(SRCS))
 LIBFT = libft/libft.a
@@ -58,7 +63,7 @@ build/%.o: src/%.c includes/minishell.h includes/structs.h includes/enum.h
 	@cc $(INCLUDES) $(CODAM_FLAGS) $(if DEBUG, $(DEBUG_FLAGS)) -DDEBUG=$(DEBUG) -c $< -o $@
 
 $(LIBFT):
-	printf "$(COLOR_INFO)$(EMOJI_INFO)  Initializing submodules...$(COLOR_RESET)\t"
+	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Initializing submodules...$(COLOR_RESET)\t"
 	@git submodule update --init --recursive > /dev/null
 	@printf "✅\n"
 	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Building Libft...$(COLOR_RESET)\t\t"

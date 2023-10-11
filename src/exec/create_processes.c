@@ -6,13 +6,13 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 12:40:07 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/06 20:31:39 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/10 21:15:34 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static bool	add_pipes(t_vector *group_vec, size_t process_count)
+static bool	add_pipes(t_vector *group_vec, size_t process_count, t_shell *data)
 {
 	size_t	i;
 	t_group	*group;
@@ -21,10 +21,10 @@ static bool	add_pipes(t_vector *group_vec, size_t process_count)
 	i = 0;
 	while (i < process_count - 1)
 	{
-		group = vector_get(group_vec, i);
+		group = vec_get(group_vec, i);
 		if (pipe(group->right_pipe) != 0)
-			return (false);
-		next_group = vector_get(group_vec, i + 1);
+			return (set_err(PERR, NULL, data));
+		next_group = vec_get(group_vec, i + 1);
 		next_group->left_pipe[0] = group->right_pipe[0];
 		next_group->left_pipe[1] = group->right_pipe[1];
 		i++;
@@ -32,35 +32,62 @@ static bool	add_pipes(t_vector *group_vec, size_t process_count)
 	return (true);
 }
 
-static bool	fork_processes(t_shell *data, size_t process_count)
+static bool	fork_processes(t_shell *data, size_t count)
 {
-	size_t		i;
-	t_group		*group;
-	t_group		*next_group;
-	t_vector	*group_vec;
+	size_t	i;
+	pid_t	pid;
+	t_group	*group;
 
-	group_vec = &data->exec->group_vec;
 	i = 0;
-	while (i < process_count)
+	while (i < count)
 	{
-		group = vector_get(group_vec, i);
-		group->pd = fork();
-		if (group->pd == -1)
-			return (false);
-		if (group->pd == 0)
+		group = vec_get(&data->exec->group_vec, i);
+		pid = fork();
+		if (pid == -1)
+			return (set_err(PERR, NULL, data));
+		if (pid == 0)
 		{
 			if (i == 0)
-				exec_process(LEFT, data);
-			else if (i == process_count - 1)
-				exec_process(RIGHT, data);
+				exec_process(group, LEFT);
+			else if ((i == 1 && count == 2) || (count > 2 && i == count - 1))
+				exec_process(group, RIGHT);
 			else
-				exec_process(MIDDLE, data);
+				exec_process(group, MIDDLE);
 		}
+		else
+			group->pd = pid;
 		i++;
 	}
 	return (true);
 }
 
+/**
+ * @brief Closes the pipes in the main process
+ */
+void	close_pipes(t_shell *data)
+{
+	size_t		i;
+	t_group		*group;
+	t_vector	*group_vec;
+
+	group_vec = &data->exec->group_vec;
+	i = 0;
+	while (i < group_vec->length - 1)
+	{
+		group = vec_get(group_vec, i);
+		if (group->right_pipe[0] >= 0)
+			if (close(group->right_pipe[0]) == -1)
+				perror("minishell: close_pipes");
+		if (group->right_pipe[1] >= 0)
+			if (close(group->right_pipe[1]) == -1)
+				perror("minishell: close_pipes");
+		i++;
+	}
+}
+
+/**
+ * @brief Creates the processes and pipes for the execution
+ */
 bool	create_processes(t_shell *data)
 {
 	t_vector	*group_vec;
@@ -69,18 +96,20 @@ bool	create_processes(t_shell *data)
 	group_vec = &data->exec->group_vec;
 	if (group_vec->length == 1)
 	{
-		group = vector_get(group_vec, 0);
+		group = vec_get(group_vec, 0);
 		group->pd = fork();
 		if (group->pd == -1)
-			return (false);
-		exec_process(SINGLE, group);
+			return (set_err(PERR, NULL, data));
+		if (group->pd == 0)
+			exec_process(group, SINGLE);
 	}
 	else
 	{
-		if (!add_pipes(group_vec, group_vec->length))
+		if (!add_pipes(group_vec, group_vec->length, data))
 			return (false);
-		if (!fork_processes(group_vec, group_vec->length))
+		if (!fork_processes(data, group_vec->length))
 			return (false);
 	}
+	close_pipes(data);
 	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/11 14:04:28 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/11 20:14:03 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/07 18:26:58 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,30 @@ static void	ghost_exec(t_group *group, t_process type)
 	exit(0);
 }
 
+/**
+ * @note	check if dup_fd or redirects should be done for the built_in
+ */
 void	exec_built_in(t_group *group, t_process type)
 {
 	dup_fd(group, type);
-	//@note check if dup_Fd is necessary for builtins
-	if (is_special_built_in(group->cmd))
+	if (is_special_builtin(group->cmd))
 		ghost_exec(group, type);
-	else if (ft_strcmp(group->cmd[0], "echo") == 0)
+	else if (ft_strcmp(group->cmd, "echo") == 0)
 		ft_echo(group);
-	else if (ft_strcmp(group->cmd[0], "pwd") == 0)
+	else if (ft_strcmp(group->cmd, "pwd") == 0)
 		ft_pwd(group);
-	else if (ft_strcmp(group->cmd[0], "env") == 0)
-		ft_env(group);
-	else if (ft_strcmp(group->cmd[0], "exit") == 0)
+	else if (ft_strcmp(group->cmd, "env") == 0)
 		ft_exit(group);
+}
+
+void	exec_special_builtin(t_group *group)
+{
+	if (ft_strcmp(group->cmd, "exit") == 0)
+		ft_exit(group);
+	else if (ft_strcmp(group->cmd, "cd") == 0)
+		ft_cd(group);
+	else if (ft_strcmp(group->cmd, "export") == 0)
+		ft_export(group);
+	else if (ft_strcmp(group->cmd, "unset") == 0)
+		ft_unset(group);
 }

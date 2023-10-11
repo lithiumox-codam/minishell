@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 16:32:48 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/21 02:42:41 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/07 17:34:44 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	in_redirect(t_group *group)
 	{
 		red_in = vec_get(&group->in_red, i);
 		if (access(red_in->value, F_OK) == -1)
-			exec_err(red_in->value, NOT_FOUND);
+			exec_err(red_in->value, NO_SUCH);
 		if (access(red_in->value, R_OK) == -1)
 			exec_err(red_in->value, PERMISSION);
 		fd = open(red_in->value, O_RDONLY);

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/13 17:41:00 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/21 02:48:06 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/07 22:23:11 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,8 @@ typedef enum e_process
 {
 	SINGLE,
 	LEFT,
-	RIGHT,
 	MIDDLE,
+	RIGHT,
 }	t_process;
 
 #endif

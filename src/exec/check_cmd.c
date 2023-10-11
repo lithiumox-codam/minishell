@@ -6,18 +6,18 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/01 17:36:19 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/11 20:02:03 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/07 21:19:12 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static bool	process_path(t_group *group, char **paths)
+static bool	process_path(t_group *group, char **paths, int i)
 {
 	char	*tmp;
 	char	*new_cmd;
 
-	tmp = ft_strjoin(*paths, "/");
+	tmp = ft_strjoin(paths[i], "/");
 	if (tmp == NULL)
 		exec_err("process_path", MALLOC);
 	new_cmd = ft_strjoin(tmp, group->cmd);
@@ -26,7 +26,7 @@ static bool	process_path(t_group *group, char **paths)
 	free(tmp);
 	if (access(new_cmd, F_OK) == 0)
 	{
-		if (access(new_cmd, X_OK) == -1)
+		if (access(new_cmd, X_OK) != 0)
 			exec_err(group->cmd, PERMISSION);
 		free(group->cmd);
 		group->cmd = new_cmd;
@@ -38,22 +38,26 @@ static bool	process_path(t_group *group, char **paths)
 }
 
 /**
- * @brief	Replaces the command with the correct path
-*/
-static void	replace_cmd(t_group *group, char *path)
+ * @brief	Checks if the command is in the path
+ * @details if it is, it replaces the command with the full path
+ * @details if it is not, it calls exec_err
+ */
+static void	find_cmd_path(t_group *group, char *path)
 {
 	char	**paths;
+	int		i;
 
-	paths = ft_strsplit(path, ':');
+	i = 0;
+	paths = ft_split(path, ':');
 	if (paths == NULL)
 		exec_err("replace cmd", MALLOC);
-	while (*paths != NULL)
+	while (paths[i] != NULL)
 	{
-		if (process_path(group, paths))
+		if (process_path(group, paths, i))
 			return ;
-		paths++;
+		i++;
 	}
-	free(paths);
+	ft_free(paths);
 	exec_err(group->cmd, NOT_FOUND);
 }
 
@@ -61,7 +65,7 @@ static void	replace_cmd(t_group *group, char *path)
  * @brief	checks if path is absolute, checks for permissions
  * @brief 	calls replace_cmd to find the correct path
  */
-void	check_cmd(t_group *group)
+void	check_cmd(t_group *group, t_process type)
 {
 	t_env	*env;
 	size_t	i;
@@ -69,7 +73,7 @@ void	check_cmd(t_group *group)
 	if (group->cmd == NULL || group->cmd[0] == '\0')
 		exec_err("", NOT_FOUND);
 	if (access(group->cmd, F_OK) == 0)
-		exec_absolute_path(group);
+		exec_absolute_path(group, type);
 	i = 0;
 	env = vec_get(&group->data->env, i);
 	while (i < (&group->data->env)->length)
@@ -81,5 +85,5 @@ void	check_cmd(t_group *group)
 	}
 	if (i == (&group->data->env)->length)
 		exec_err(group->cmd, NO_SUCH);
-	replace_cmd(group, env->value);
+	find_cmd_path(group, env->value);
 }

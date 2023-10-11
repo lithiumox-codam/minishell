@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 16:53:28 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/15 17:04:02 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/04 00:15:08 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  * @param	token the token to remove the quotes from
  * @param	set_string if true, sets the token->type to STRING
  */
-t_token	*rm_quotes(t_token *token, bool set_string)
+bool	rm_quotes(t_token *token, bool set_string)
 {
 	char	*temp;
 
@@ -40,10 +40,10 @@ t_token	*rm_quotes(t_token *token, bool set_string)
 		token->value = temp;
 	}
 	if (token->value == NULL)
-		return (NULL);
+		return (false);
 	if (set_string)
 		token->type = STRING;
-	return (token);
+	return (true);
 }
 
 /**
