@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 16:57:32 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/09 09:56:29 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/11 16:09:31 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static bool	check_double_ops(t_vector *found, t_shell *data)
 		if (next_found->index - c_found->index == 1)
 			if (c_token->type == n_token->type)
 				return (set_err(SYNTAX, type_symbol(c_token->type), data),
-						false);
+					false);
 		i++;
 	}
 	return (true);
@@ -87,14 +87,14 @@ static bool	check_ops(t_vector *found, t_shell *data)
 	{
 		c_found = (t_found *)vec_get(found, i);
 		c_token = (t_token *)(c_found->item);
-		if (type_compare(4, c_token->type, 14, 12, 11, 13))
+		if (c_token->type >= 11 && c_token->type <= 14)
 		{
 			n_token = (t_token *)vec_get(&data->token_vec, c_found->index + 1);
 			if (!n_token || n_token->type != STRING)
 				return (set_err(SYNTAX, type_symbol(c_token->type), data),
-						false);
+					false);
 			else if (!combine_tokens(&data->token_vec, c_found->index,
-						c_token->type))
+					c_token->type))
 				return (false);
 			else
 				vec_apply(found, decrement_index);
@@ -104,24 +104,35 @@ static bool	check_ops(t_vector *found, t_shell *data)
 	return (true);
 }
 
+static bool	check_bounds(t_vector *found, t_shell *data)
+{
+	t_found	*first;
+	t_token	*last_t;
+	t_found	*last;
+	t_token	*first_t;
+
+	if (found->length == 0)
+		return (true);
+	first = (t_found *)vec_get(found, 0);
+	last = (t_found *)vec_get(found, found->length - 1);
+	first_t = (t_token *)first->item;
+	last_t = (t_token *)last->item;
+	if (first->index == 0 && (first_t->type >= 5 && first_t->type <= 7))
+		return (set_err(SYNTAX, type_symbol(first_t->type), data), false);
+	if (last->index == data->token_vec.length - 1)
+		return (set_err(SYNTAX, type_symbol(last_t->type), data), false);
+	return (true);
+}
+
 bool	check_tokens(t_shell *data)
 {
 	t_vector	*found;
-	t_found		*found_item;
-	t_token		*token;
-	size_t		i;
 
-	i = 0;
 	found = vec_find(&data->token_vec, filter_operators);
 	if (found == NULL)
 		return (set_err(MALLOC, "vector found returned NULL", data), true);
-	found_item = (t_found *)vec_get(found, i);
-	token = (t_token *)found_item->item;
-	if (found_item->index == 0 && type_compare(5, token->type, PIPE, OR, AND,
-			I_REDIRECT, O_REDIRECT))
-		return (set_err(SYNTAX, type_symbol(token->type), data),
-				free_found(found),
-				false);
+	if (!check_bounds(found, data))
+		return (free_found(found), false);
 	if (!check_double_ops(found, data))
 		return (free_found(found), false);
 	if (!check_ops(found, data))
