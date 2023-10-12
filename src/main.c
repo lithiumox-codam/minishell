@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/12 19:31:13 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/12 21:18:45 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,9 @@ static int	loop(t_shell *data)
 int	main(int ac, char **av, char **env)
 {
 	t_shell	*data;
-	bool 	exit_shell;
+//	bool 	exit_shell;
 
-	exit_shell = false;
+	//exit_shell = false;
 	if (DEBUG)
 		debug();
 	data = init_shell(env, true);
@@ -126,9 +126,9 @@ int	main(int ac, char **av, char **env)
 		if (!group_token_vec(data))
 			return (write_err(data), free_shell(data, true),
 				g_signal.exit_status);
-		if (!executor(data, &exit_shell))
-			return (write_err(data), free_shell(data, true),
-				g_signal.exit_status);
+		// if (!executor(data, &exit_shell))
+		// 	return (write_err(data), free_shell(data, true),
+		// 		g_signal.exit_status);
 		free_shell(data, true);
 		return (0); // change this to return built_in_exit
 	}

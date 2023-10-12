@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 20:42:59 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/12 18:44:54 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/12 21:25:36 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,15 @@ void	clear_group(void *data)
 	vec_free(&p->in_red);
 	vec_free(&p->out_red);
 	if (p->cmd)
+	{
 		free(p->cmd);
+		p->cmd = NULL;
+	}
 	if (p->args)
+	{
 		ft_free(p->args);
+		p->args = NULL;
+	}
 	p = NULL;
 }
 
