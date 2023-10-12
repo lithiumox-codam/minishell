@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 16:32:48 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/12 20:45:56 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/12 21:41:07 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	handle_redirects(t_group *group)
 	out_redirect(group);
 }
 
-void validate_redirects(t_group *group)
+void	validate_redirects(t_group *group)
 {
 	size_t	i;
 	t_token	*red_token;

@@ -12,9 +12,9 @@
 
 #include <minishell.h>
 
-static bool set_pipe(t_group *group, size_t i, size_t count, t_shell *data)
+static bool	set_pipe(t_group *group, size_t i, size_t count, t_shell *data)
 {
-	t_group *next_group;
+	t_group	*next_group;
 
 	if (i < count - 1)
 	{
@@ -22,12 +22,12 @@ static bool set_pipe(t_group *group, size_t i, size_t count, t_shell *data)
 			return (false);
 		next_group = vec_get(&data->exec->group_vec, i + 1);
 		next_group->left_pipe[0] = group->right_pipe[0];
-		next_group->left_pipe[1] = group->right_pipe[1];		
+		next_group->left_pipe[1] = group->right_pipe[1];
 	}
 	return (true);
 }
 
-static void call_process (t_group *group, size_t i, size_t count,t_shell *data)
+static void	call_process(t_group *group, size_t i, size_t count, t_shell *data)
 {
 	if (i == 0)
 		exec_process(group, LEFT, (&data->env));
@@ -37,7 +37,7 @@ static void call_process (t_group *group, size_t i, size_t count,t_shell *data)
 		exec_process(group, MIDDLE, (&data->env));
 }
 
-static void set_group_and_close(t_group *group, pid_t pid, size_t i)
+static void	set_group_and_close(t_group *group, pid_t pid, size_t i)
 {
 	group->pd = pid;
 	if (i != 0)
@@ -52,7 +52,7 @@ static void set_group_and_close(t_group *group, pid_t pid, size_t i)
 static bool	fork_and_pipe(t_shell *data)
 {
 	size_t	i;
-	size_t 	count;
+	size_t	count;
 	pid_t	pid;
 	t_group	*group;
 

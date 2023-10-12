@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:05 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/12 21:31:06 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/12 21:43:07 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ bool	add_redirect(t_token *token, t_group *group, size_t i, t_shell *data)
 
 /**
  * @note STRING DOULBE QUOTE ETC MAYBE REMOVE AFTER EXPANSION
-*/
+ */
 bool	alloc_args(t_group *group, size_t i, t_shell *data)
 {
 	size_t	size;
@@ -48,7 +48,8 @@ bool	alloc_args(t_group *group, size_t i, t_shell *data)
 		token = (t_token *)vec_get(&data->token_vec, i);
 		if (token->type == PIPE)
 			break ;
-		if (token->type == STRING || token->type == DOUBLE_QUOTE || token->type == SINGLE_QUOTE)
+		if (token->type == STRING || token->type == DOUBLE_QUOTE
+			|| token->type == SINGLE_QUOTE)
 			size++;
 		i++;
 	}
@@ -65,8 +66,8 @@ bool	alloc_args(t_group *group, size_t i, t_shell *data)
 }
 
 /**
-
-	* @note check the else statement depending on how we will handle quotes (ie. could be else if (token->type == STRING
+	* @note check the else statement depending on how we will handle quotes
+	 (ie. could be else if (token->type == STRING
 		|| token->type == QUOTE_STRING)
  *
  */
