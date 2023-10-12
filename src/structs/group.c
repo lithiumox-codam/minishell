@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 20:42:59 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/07 20:42:41 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/12 18:44:54 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	clear_exec(t_exec **exec)
  * @note pid_t is set to -2 by default
  * @return t_group initialised, NULL on malloc failure
  */
-t_group	*create_group(t_shell *data)
+t_group	*create_group(void)
 {
 	t_group	*p;
 
@@ -78,7 +78,6 @@ t_group	*create_group(t_shell *data)
 	p->left_pipe[1] = -1;
 	p->right_pipe[0] = -1;
 	p->right_pipe[1] = -1;
-	p->data = data;
 	return (p);
 }
 

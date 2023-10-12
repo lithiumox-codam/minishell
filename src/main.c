@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/07 20:15:39 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/12 19:31:13 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,16 @@ static void	debug(void)
 static int	loop(t_shell *data)
 {
 	char	*input;
+	bool	exit_shell;
 
+	exit_shell = false;
 	while (1)
 	{
 		input = readline("\033[1;32mminishell\n❯ \033[0m");
-		if (!input)
+		if (!input || input[0] == '\0')
 		{
 			free(input);
-			break ;
+			continue ;
 		}
 		add_history(input);
 		if (!lexer(input, data))
@@ -81,7 +83,7 @@ static int	loop(t_shell *data)
 			vec_init(&data->token_vec, 5, sizeof(t_token), clear_token);
 			continue ;
 		}
-		if (!executor(data))
+		if (!executor(data, &exit_shell))
 		{
 			write_err(data);
 			free(input);
@@ -90,7 +92,7 @@ static int	loop(t_shell *data)
 			continue ;
 		}
 		free(input);
-		if (data->exit_shell == true)
+		if (exit_shell == true)
 			return (free_shell(data, true), g_signal.exit_status);
 		free_shell(data, false);
 		vec_init(&data->token_vec, 5, sizeof(t_token), clear_token);
@@ -101,7 +103,9 @@ static int	loop(t_shell *data)
 int	main(int ac, char **av, char **env)
 {
 	t_shell	*data;
+	bool 	exit_shell;
 
+	exit_shell = false;
 	if (DEBUG)
 		debug();
 	data = init_shell(env, true);
@@ -122,7 +126,7 @@ int	main(int ac, char **av, char **env)
 		if (!group_token_vec(data))
 			return (write_err(data), free_shell(data, true),
 				g_signal.exit_status);
-		if (!executor(data))
+		if (!executor(data, &exit_shell))
 			return (write_err(data), free_shell(data, true),
 				g_signal.exit_status);
 		free_shell(data, true);
