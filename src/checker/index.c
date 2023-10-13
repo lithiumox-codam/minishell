@@ -39,7 +39,7 @@ static bool	check_double_ops(t_vector *found, t_shell *data)
 		if (next_found->index - c_found->index == 1)
 			if (c_token->type == n_token->type)
 				return (set_err(SYNTAX, type_symbol(c_token->type), data),
-					false);
+						false);
 		i++;
 	}
 	return (true);
@@ -92,9 +92,9 @@ static bool	check_ops(t_vector *found, t_shell *data)
 			n_token = (t_token *)vec_get(&data->token_vec, c_found->index + 1);
 			if (!n_token || n_token->type != STRING)
 				return (set_err(SYNTAX, type_symbol(c_token->type), data),
-					false);
+						false);
 			else if (!combine_tokens(&data->token_vec, c_found->index,
-					c_token->type))
+						c_token->type))
 				return (false);
 			else
 				vec_apply(found, decrement_index);
