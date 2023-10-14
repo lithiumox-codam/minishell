@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/11 14:04:28 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/12 20:31:27 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/14 10:58:24 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ void	exec_built_in(t_group *group, t_process type, t_vector *env_vec)
 	dup_fd(group, type);
 	if (is_special_builtin(group->cmd))
 		exit(0);
-	if (ft_strcmp(group->cmd, "echo"))
+	if (ft_strcmp(group->cmd, "echo") == 0)
 		ft_echo(group);
-	else if (ft_strcmp(group->cmd, "pwd"))
+	else if (ft_strcmp(group->cmd, "pwd") == 0)
 		ft_pwd(group);
-	else if (ft_strcmp(group->cmd, "env"))
+	else if (ft_strcmp(group->cmd, "env") == 0)
 		ft_env(group, env_vec);
 }
 
