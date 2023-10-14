@@ -6,7 +6,11 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2023/10/09 12:28:43 by mdekker/jde   ########   odam.nl         */
+=======
+/*   Updated: 2023/10/14 12:17:29 by mdekker/jde   ########   odam.nl         */
+>>>>>>> origin/exec_optimisation
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,35 +32,72 @@ static void	debug(void)
  *
  * @param vec The vector to store the token_vec in
  */
-static void	loop(t_shell *data)
+static int	loop(t_shell *data)
 {
 	char	*input;
 
 	while (1)
 	{
-		input = readline("\n\033[1;32mminishell\n❯ \033[0m");
-		if (!input)
+		input = readline("minishell\n❯ ");
+		if (!input || input[0] == '\0')
 		{
 			free(input);
-			break ;
+			continue ;
 		}
 		add_history(input);
-		if (!ft_strcmp(input, "exit"))
-			return (free(input), free_shell(data, true));
-		else
+		if (!lexer(input, data))
 		{
-			if (!lexer(input, data))
-				return (free(input), free_shell(data, true));
-			parser(data);
-			expand(data);
-			if (!check_tokens(data))
-				write_err(data);
-			print_vector(&data->token_vec, print_token);
+			write_err(data);
+			free(input);
+			free_shell(data, false);
+			vec_init(&data->token_vec, 5, sizeof(t_token), clear_token);
+			continue ;
+		}
+		if (!parser(data))
+		{
+			write_err(data);
+			free(input);
+			free_shell(data, false);
+			vec_init(&data->token_vec, 5, sizeof(t_token), clear_token);
+			continue ;
+		}
+		if (!operator_split(data))
+		{
+			write_err(data);
+			free(input);
+			free_shell(data, false);
+			vec_init(&data->token_vec, 5, sizeof(t_token), clear_token);
+			continue ;
+		}
+		if (!check_tokens(data))
+		{
+			write_err(data);
+			free(input);
+			free_shell(data, false);
+			vec_init(&data->token_vec, 5, sizeof(t_token), clear_token);
+			continue ;
+		}
+		if (!group_token_vec(data))
+		{
+			write_err(data);
+			free(input);
+			free_shell(data, false);
+			vec_init(&data->token_vec, 5, sizeof(t_token), clear_token);
+			continue ;
+		}
+		if (!executor(data))
+		{
+			write_err(data);
+			free(input);
+			free_shell(data, false);
+			vec_init(&data->token_vec, 5, sizeof(t_token), clear_token);
+			continue ;
 		}
 		free(input);
 		free_shell(data, false);
 		vec_init(&data->token_vec, 5, sizeof(t_token), clear_token);
 	}
+	return (0);
 }
 
 int	main(int ac, char **av, char **env)
@@ -69,25 +110,28 @@ int	main(int ac, char **av, char **env)
 	if (ac == 2)
 	{
 		if (!lexer(av[1], data))
-			write_err(data);
-		parser(data);
-		expand(data);
-		print_vector(&data->token_vec, print_token);
-		operator_split(data);
+			return (write_err(data), free_shell(data, true),
+				g_signal.exit_status);
+		if (!parser(data))
+			return (write_err(data), free_shell(data, true),
+				g_signal.exit_status);
+		if (!operator_split(data))
+			return (write_err(data), free_shell(data, true),
+				g_signal.exit_status);
 		if (!check_tokens(data))
-			return (write_err(data), free_shell(data, true), 1);
-		print_vector(&data->token_vec, print_token);
-		// combine redirects+heredoc into 1 token + verify_token_vec combined
-		// verify_token_vec(data);
-		// expansion based on env vector
-		// group_token_vec(data);
-		// // check if all groups are properly cerated
-		// executor(data->exec);
+			return (write_err(data), free_shell(data, true),
+				g_signal.exit_status);
+		if (!group_token_vec(data))
+			return (write_err(data), free_shell(data, true),
+				g_signal.exit_status);
+		if (!executor(data))
+			return (write_err(data), free_shell(data, true),
+				g_signal.exit_status);
 		free_shell(data, true);
 		return (0); // change this to return built_in_exit
 	}
 	else if (ac == 1)
-		loop(data);
+		return (loop(data));
 	else
 	{
 		printf("Too many arguments");

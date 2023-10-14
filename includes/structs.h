@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 11:15:16 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/09/20 22:34:57 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/12 18:19:49 by julius        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ typedef struct s_shell
 	t_exec		*exec;
 	t_exit		exit_type;
 	char		*exit_msg;
-	bool		exit_shell;
 }				t_shell;
 
 /**
@@ -106,7 +105,6 @@ typedef struct s_group
 	pid_t		pd;
 	int			left_pipe[2];
 	int			right_pipe[2];
-	t_shell		*data;
 }				t_group;
 
 /**

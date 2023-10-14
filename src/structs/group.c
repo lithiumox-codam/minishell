@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 20:42:59 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/11 20:12:01 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/12 21:25:36 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,33 +25,39 @@ void	clear_group(void *data)
 	vec_free(&p->in_red);
 	vec_free(&p->out_red);
 	if (p->cmd)
+	{
 		free(p->cmd);
+		p->cmd = NULL;
+	}
 	if (p->args)
+	{
 		ft_free(p->args);
+		p->args = NULL;
+	}
 	p = NULL;
 }
 
 void	clear_fname(void *data)
 {
-	char	*filename;
+	t_token	*filename;
 
 	if (!data)
 		return ;
-	filename = (char *)data;
-	if (-1 == unlink(filename))
-		PERR("minishell:");
-	free(filename);
+	filename = (t_token *)data;
+	if (-1 == unlink(filename->value))
+		perror("minishell");
+	free(filename->value);
 	filename = NULL;
 }
 
-void	clear_exec(t_exec *exec)
+void	clear_exec(t_exec **exec)
 {
-	if (!exec)
+	if (!(*exec))
 		return ;
-	vec_free(&exec->group_vec);
-	vec_free(&exec->fname_vec);
-	free(exec);
-	exec = NULL;
+	vec_free(&(*exec)->group_vec);
+	vec_free(&(*exec)->fname_vec);
+	free(*exec);
+	*exec = NULL;
 }
 
 /**
@@ -60,7 +66,7 @@ void	clear_exec(t_exec *exec)
  * @note pid_t is set to -2 by default
  * @return t_group initialised, NULL on malloc failure
  */
-t_group	*create_group(t_shell *data)
+t_group	*create_group(void)
 {
 	t_group	*p;
 
@@ -78,7 +84,7 @@ t_group	*create_group(t_shell *data)
 	p->left_pipe[1] = -1;
 	p->right_pipe[0] = -1;
 	p->right_pipe[1] = -1;
-	p->data = data;
+	return (p);
 }
 
 /**
@@ -96,7 +102,7 @@ t_exec	*create_exec(void)
 		free(exec);
 		return (NULL);
 	}
-	if (!vec_init(&exec->fname_vec, 1, sizeof(char *), clear_fname))
+	if (!vec_init(&exec->fname_vec, 1, sizeof(t_token), clear_fname))
 	{
 		vec_free(&exec->group_vec);
 		free(exec);

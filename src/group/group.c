@@ -6,50 +6,50 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:05 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/11 12:29:56 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/12 21:43:07 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-bool	add_redirect(t_group *group, int i, t_shell *data)
+bool	add_redirect(t_token *token, t_group *group, size_t i, t_shell *data)
 {
-	t_token	*token;
 	t_token	*dup;
 
-	token = (t_token *)vec_get(&data->token_vec, i);
 	if (token->type == HEREDOC)
-	{
-		hdoc_found(group, i, data);
-		return (true);
-	}
+		return (hdoc_found(group, i, data));
+	dup = dup_token(token);
+	if (!dup)
+		return (set_err(MALLOC, "add_redirect", data));
 	if (token->type == I_REDIRECT)
 	{
-		dup = dup_token(token);
-		if (!dup)
-			return (set_err(MALLOC, "add_redirect", data));
 		if (!vec_push(&group->in_red, (void *)dup))
 			return (set_err(MALLOC, "add_redirect", data));
 	}
 	if (token->type == O_REDIRECT || token->type == A_REDIRECT)
 	{
-		dup = dup_token(token);
-		if (!dup)
-			return (set_err(MALLOC, "add_redirect", data));
 		if (!vec_push(&group->out_red, (void *)dup))
 			return (set_err(MALLOC, "add_redirect", data));
 	}
+	return (true);
 }
 
-bool	set_args(t_group *group, int i, t_shell *data)
+/**
+ * @note STRING DOULBE QUOTE ETC MAYBE REMOVE AFTER EXPANSION
+ */
+bool	alloc_args(t_group *group, size_t i, t_shell *data)
 {
 	size_t	size;
 	t_token	*token;
 
-	token = (t_token *)vec_get(&data->token_vec, i);
-	while (i < (&data->token_vec)->length && token->type != PIPE)
+	size = 0;
+	while (i < (&data->token_vec)->length)
 	{
-		if (token->type == STRING)
+		token = (t_token *)vec_get(&data->token_vec, i);
+		if (token->type == PIPE)
+			break ;
+		if (token->type == STRING || token->type == DOUBLE_QUOTE
+			|| token->type == SINGLE_QUOTE)
 			size++;
 		i++;
 	}
@@ -65,41 +65,49 @@ bool	set_args(t_group *group, int i, t_shell *data)
 	return (true);
 }
 
-static bool	group_tokens(t_group *group, int *i, t_shell *data)
+/**
+	* @note check the else statement depending on how we will handle quotes
+	 (ie. could be else if (token->type == STRING
+		|| token->type == QUOTE_STRING)
+ *
+ */
+static bool	group_tokens(t_group *group, size_t *i, t_shell *data)
 {
 	size_t	i_arg;
 	t_token	*token;
 
-	if (!set_args(group, *i, data))
-		return (false);
-	token = (t_token *)vec_get(&data->token_vec, (*i));
 	i_arg = 0;
-	while (i < (&data->token_vec)->length && token->type != PIPE)
+	while ((*i) < (&data->token_vec)->length)
 	{
+		token = (t_token *)vec_get(&data->token_vec, (*i));
+		if (token->type == PIPE)
+			break ;
 		if (is_redirect(token))
 		{
-			if (!add_redirect(group, i, data))
+			if (!add_redirect(token, group, (*i), data))
 				return (false);
 		}
-		if (token->type == STRING)
+		else
 		{
 			group->args[i_arg] = ft_strdup(token->value);
 			if (!group->args[i_arg])
 				return (set_err(MALLOC, "group_tokens", data));
 			i_arg++;
 		}
-		i++;
+		(*i)++;
 	}
 	return (true);
 }
 
-static bool	set_cmd(t_group *group, int i, t_shell *data)
+static bool	set_cmd(t_group *group, size_t i, t_shell *data)
 {
 	t_token	*token;
 
-	token = (t_token *)vec_get(&data->token_vec, i);
-	while (i < (&data->token_vec)->length && token->type != PIPE)
+	while (i < (&data->token_vec)->length)
 	{
+		token = (t_token *)vec_get(&data->token_vec, i);
+		if (token->type == PIPE)
+			break ;
 		if (token->type == STRING)
 		{
 			group->cmd = ft_strdup(token->value);
@@ -107,8 +115,9 @@ static bool	set_cmd(t_group *group, int i, t_shell *data)
 				return (set_err(MALLOC, "set_cmd", data));
 			return (true);
 		}
+		i++;
 	}
-	group->cmd == NULL;
+	group->cmd = NULL;
 	return (true);
 }
 
@@ -121,7 +130,6 @@ static bool	set_cmd(t_group *group, int i, t_shell *data)
 bool	group_token_vec(t_shell *data)
 {
 	size_t	i;
-	t_exec	*exec;
 	t_group	*group;
 
 	data->exec = create_exec();
@@ -130,13 +138,16 @@ bool	group_token_vec(t_shell *data)
 	i = 0;
 	while (i < (&data->token_vec)->length)
 	{
-		group = create_group(t_shell *data);
+		group = create_group();
 		if (!group)
 			return (set_err(MALLOC, "group_token_v", data));
 		if (!set_cmd(group, i, data))
 			return (false);
-		group_tokens(group, &i, data);
-		if (!vec_push(&exec->group_vec, group))
+		if (!alloc_args(group, i, data))
+			return (false);
+		if (!group_tokens(group, &i, data))
+			return (false);
+		if (!vec_push(&data->exec->group_vec, group))
 			return (set_err(MALLOC, "group_token_v", data));
 		i++;
 	}
