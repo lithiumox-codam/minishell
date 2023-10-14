@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/07 20:15:39 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/14 12:17:29 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ static int	loop(t_shell *data)
 
 	while (1)
 	{
-		input = readline("\033[1;32mminishell\n❯ \033[0m");
-		if (!input)
+		input = readline("minishell\n❯ ");
+		if (!input || input[0] == '\0')
 		{
 			free(input);
-			break ;
+			continue ;
 		}
 		add_history(input);
 		if (!lexer(input, data))
@@ -90,8 +90,6 @@ static int	loop(t_shell *data)
 			continue ;
 		}
 		free(input);
-		if (data->exit_shell == true)
-			return (free_shell(data, true), g_signal.exit_status);
 		free_shell(data, false);
 		vec_init(&data->token_vec, 5, sizeof(t_token), clear_token);
 	}

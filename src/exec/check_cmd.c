@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/01 17:36:19 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/07 21:19:12 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/12 21:40:20 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static void	find_cmd_path(t_group *group, char *path)
  * @brief	checks if path is absolute, checks for permissions
  * @brief 	calls replace_cmd to find the correct path
  */
-void	check_cmd(t_group *group, t_process type)
+void	check_cmd(t_group *group, t_process type, t_vector *env_vec)
 {
 	t_env	*env;
 	size_t	i;
@@ -73,17 +73,16 @@ void	check_cmd(t_group *group, t_process type)
 	if (group->cmd == NULL || group->cmd[0] == '\0')
 		exec_err("", NOT_FOUND);
 	if (access(group->cmd, F_OK) == 0)
-		exec_absolute_path(group, type);
+		exec_absolute_path(group, type, env_vec);
 	i = 0;
-	env = vec_get(&group->data->env, i);
-	while (i < (&group->data->env)->length)
+	while (i < env_vec->length)
 	{
+		env = vec_get(env_vec, i);
 		if (ft_strcmp(env->key, "PATH") == 0)
 			break ;
 		i++;
-		env = vec_get(&group->data->env, i);
 	}
-	if (i == (&group->data->env)->length)
+	if (i == env_vec->length)
 		exec_err(group->cmd, NO_SUCH);
 	find_cmd_path(group, env->value);
 }

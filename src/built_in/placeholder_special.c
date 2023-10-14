@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/04 15:01:59 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/09 16:14:03 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/14 12:18:14 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int long long ft_exit_atoi(char *str)
 	size_t			i;
 	int long long	output;
 
+	output = 0;
 	i = 0;
 	while (checkchar(str[i], "1234567890"))
 	{
@@ -28,7 +29,7 @@ int long long ft_exit_atoi(char *str)
 	return (output);
 }
 
-void	ft_exit(t_group *group)
+void	ft_exit(t_group *group, t_shell *data)
 {
 	size_t	i;
 	int		long long	output;
@@ -38,9 +39,8 @@ void	ft_exit(t_group *group)
 		i++;
 	if (i == 1)
 	{
-		group->data->exit_shell = true;
-		g_signal.exit_status = 0;
-		return ;
+		free_shell(data, true);
+		exit (0);
 	}
 	if (i > 2)
 	{
@@ -62,8 +62,8 @@ void	ft_exit(t_group *group)
 		i++;
 	}
 	output = ft_exit_atoi(group->args[1]);
-	g_signal.exit_status = output % 256;
-	group->data->exit_shell = true;
+	free_shell(data, true);
+	exit(output);
 }
 
 void	ft_cd(t_group *group)

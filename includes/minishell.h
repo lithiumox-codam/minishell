@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/10/10 21:14:46 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/14 12:16:01 by julius        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,16 +69,16 @@ bool	hdoc_found(t_group *group, size_t i, t_shell *data);
 /* executor */
 bool	executor(t_shell *data);
 bool	create_processes(t_shell *data);
-void	exec_process(t_group *group, t_process type);
+void	exec_process(t_group *group, t_process type, t_vector *env_vec);
 void	dup_fd(t_group *group, t_process type);
-void	check_cmd(t_group *group, t_process type);
-void	exec_built_in(t_group *group, t_process type);
-void	exec_absolut_path(t_group *group);
+void	check_cmd(t_group *group, t_process type, t_vector *env_vec);
+void	exec_built_in(t_group *group, t_process type, t_vector *env_vec);
+void	exec_absolute_path(t_group *group, t_process type, t_vector *env_vec);
 void	handle_redirects(t_group *group);
-void	exec_absolute_path(t_group *group, t_process type);
+void    validate_redirects(t_group *group);
 void	close_pipes(t_shell *data);
 
-void	exec_special_builtin(t_group *group);
+void	exec_special_builtin(t_group *group, t_shell *data);
 
 /* exec_utils */
 bool	is_builtin(char *str);
@@ -86,13 +86,13 @@ bool	is_special_builtin(char *str);
 char	**combine_env(t_vector *env_vec);
 
 /* built_in */
-void	ft_exit(t_group *group);
+void	ft_exit(t_group *group, t_shell *data);
 void	ft_cd(t_group *group);
 void	ft_export(t_group *group);
 void	ft_unset(t_group *group);
 void	ft_echo(t_group *group);
 void	ft_pwd(t_group *group);
-void	ft_env(t_group *group);
+void	ft_env(t_group *group, t_vector *env_vec);
 
 /* structs */
 t_token	*create_token(char *value, t_types type);
@@ -100,7 +100,7 @@ void	clear_token(void *data);
 t_token	*dup_token(t_token *input);
 t_env	*create_env(char *key, char *value);
 void	clear_env(void *data);
-t_group	*create_group(t_shell *data);
+t_group	*create_group(void);
 void	clear_group(void *data);
 void	clear_fname(void *data);
 t_exec	*create_exec(void);

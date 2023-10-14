@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:50 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/08 23:10:12 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/14 12:15:57 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ bool	executor(t_shell *data)
 	group = vec_get(&data->exec->group_vec, 0);
 	if ((&data->exec->group_vec)->length == 1 && is_special_builtin(group->cmd))
 	{
-		exec_special_builtin(group);
+		exec_special_builtin(group, data);
 		return (true);
 	}
 	else
