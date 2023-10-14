@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/10/12 20:36:18 by julius        ########   odam.nl         */
+/*   Updated: 2023/10/14 12:16:01 by julius        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ bool	group_token_vec(t_shell *data);
 bool	hdoc_found(t_group *group, size_t i, t_shell *data);
 
 /* executor */
-bool	executor(t_shell *data, bool *exit_shell);
+bool	executor(t_shell *data);
 bool	create_processes(t_shell *data);
 void	exec_process(t_group *group, t_process type, t_vector *env_vec);
 void	dup_fd(t_group *group, t_process type);
@@ -78,7 +78,7 @@ void	handle_redirects(t_group *group);
 void    validate_redirects(t_group *group);
 void	close_pipes(t_shell *data);
 
-void	exec_special_builtin(t_group *group, bool *exit_shell);
+void	exec_special_builtin(t_group *group, t_shell *data);
 
 /* exec_utils */
 bool	is_builtin(char *str);
@@ -86,7 +86,7 @@ bool	is_special_builtin(char *str);
 char	**combine_env(t_vector *env_vec);
 
 /* built_in */
-void	ft_exit(t_group *group, bool *exit_shell);
+void	ft_exit(t_group *group, t_shell *data);
 void	ft_cd(t_group *group);
 void	ft_export(t_group *group);
 void	ft_unset(t_group *group);

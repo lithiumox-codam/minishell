@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/14 10:34:32 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/14 12:17:29 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,7 @@ static void	debug(void)
 static int	loop(t_shell *data)
 {
 	char	*input;
-	bool	exit_shell;
 
-	exit_shell = false;
 	while (1)
 	{
 		input = readline("minishell\n❯ ");
@@ -83,7 +81,7 @@ static int	loop(t_shell *data)
 			vec_init(&data->token_vec, 5, sizeof(t_token), clear_token);
 			continue ;
 		}
-		if (!executor(data, &exit_shell))
+		if (!executor(data))
 		{
 			write_err(data);
 			free(input);
@@ -92,8 +90,6 @@ static int	loop(t_shell *data)
 			continue ;
 		}
 		free(input);
-		if (exit_shell == true)
-			return (free_shell(data, true), g_signal.exit_status);
 		free_shell(data, false);
 		vec_init(&data->token_vec, 5, sizeof(t_token), clear_token);
 	}
@@ -103,9 +99,7 @@ static int	loop(t_shell *data)
 int	main(int ac, char **av, char **env)
 {
 	t_shell	*data;
-	bool 	exit_shell;
 
-	exit_shell = false;
 	if (DEBUG)
 		debug();
 	data = init_shell(env, true);
@@ -126,7 +120,7 @@ int	main(int ac, char **av, char **env)
 		if (!group_token_vec(data))
 			return (write_err(data), free_shell(data, true),
 				g_signal.exit_status);
-		if (!executor(data, &exit_shell))
+		if (!executor(data))
 			return (write_err(data), free_shell(data, true),
 				g_signal.exit_status);
 		free_shell(data, true);

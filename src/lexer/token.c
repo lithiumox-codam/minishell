@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/03 19:55:34 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/09/21 01:50:38 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/14 12:04:17 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,9 @@ char	**split(t_token *token)
 	char	**array;
 
 	split = split_size(token->value);
-	array = malloc(sizeof(char *) * (split + 1));
+	array = ft_calloc((split + 1), sizeof(char *));
 	if (!array)
 		return (NULL);
-	array[split] = NULL;
 	split = 0;
 	i = 0;
 	while (token->value[i])

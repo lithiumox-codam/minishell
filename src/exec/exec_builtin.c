@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/11 14:04:28 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/14 10:58:24 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/14 12:17:37 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ void	exec_built_in(t_group *group, t_process type, t_vector *env_vec)
 		ft_env(group, env_vec);
 }
 
-void	exec_special_builtin(t_group *group, bool *exit)
+void	exec_special_builtin(t_group *group, t_shell *data)
 {
 	if (ft_strcmp(group->cmd, "exit") == 0)
-		ft_exit(group, exit);
+		ft_exit(group, data);
 	else if (ft_strcmp(group->cmd, "cd") == 0)
 		ft_cd(group);
 	else if (ft_strcmp(group->cmd, "export") == 0)

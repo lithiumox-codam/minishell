@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:50 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/12 19:10:01 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/14 12:15:57 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,14 @@ static int	wait_processes(t_vector *group_vec, t_shell *data,
  * @return	return value is the EXITSTATUS of the last childprocess to complete
 	@note		sets g_signal.exit_status
  */
-bool	executor(t_shell *data, bool *exit_shell)
+bool	executor(t_shell *data)
 {
 	t_group	*group;
 
 	group = vec_get(&data->exec->group_vec, 0);
 	if ((&data->exec->group_vec)->length == 1 && is_special_builtin(group->cmd))
 	{
-		exec_special_builtin(group, exit_shell);
+		exec_special_builtin(group, data);
 		return (true);
 	}
 	else
