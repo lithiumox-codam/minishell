@@ -2,6 +2,3 @@
 	path = libft
 	url = git@github.com:lithiumox-codam/libft.git
 	branch = minishell
-[submodule "builtins"]
-	path = src/builtins
-	url = git@github.com:lithiumox-codam/built-ins.git
