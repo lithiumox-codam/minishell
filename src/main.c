@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/12 21:36:07 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/14 10:34:32 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	loop(t_shell *data)
 	exit_shell = false;
 	while (1)
 	{
-		input = readline("\033[1;32mminishell\n❯ \033[0m");
+		input = readline("minishell\n❯ ");
 		if (!input || input[0] == '\0')
 		{
 			free(input);
