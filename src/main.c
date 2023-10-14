@@ -6,11 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-<<<<<<< HEAD
-/*   Updated: 2023/10/09 12:28:43 by mdekker/jde   ########   odam.nl         */
-=======
-/*   Updated: 2023/10/14 12:17:29 by mdekker/jde   ########   odam.nl         */
->>>>>>> origin/exec_optimisation
+/*   Updated: 2023/10/14 20:54:03 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
