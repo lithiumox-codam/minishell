@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/10/09 09:57:28 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/14 20:24:01 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ void	exec_err(char *str, t_exit type);
 void	write_err(t_shell *data);
 t_token	*rm_quotes(t_token *token, bool set_string);
 bool	type_compare(size_t num_args, t_types type, ...);
+bool	out_of_scope(t_vector *found, t_shell *data);
 
 /* debug */
 void	print_vector(t_vector *vec, void (*printer)(void *, size_t));

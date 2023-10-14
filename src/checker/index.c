@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 16:57:32 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/11 16:09:31 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/10/14 20:25:22 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ bool	filter_operators(void *item)
 	t_token	*token;
 
 	token = (t_token *)item;
-	return (type_compare(6, token->type, PIPE, HEREDOC, O_REDIRECT, I_REDIRECT,
-			A_REDIRECT, AND, OR));
+	return (token->type >= 5 && token->type <= 14);
 }
 
 static bool	check_double_ops(t_vector *found, t_shell *data)
@@ -39,7 +38,7 @@ static bool	check_double_ops(t_vector *found, t_shell *data)
 		if (next_found->index - c_found->index == 1)
 			if (c_token->type == n_token->type)
 				return (set_err(SYNTAX, type_symbol(c_token->type), data),
-						false);
+					false);
 		i++;
 	}
 	return (true);
@@ -92,9 +91,9 @@ static bool	check_ops(t_vector *found, t_shell *data)
 			n_token = (t_token *)vec_get(&data->token_vec, c_found->index + 1);
 			if (!n_token || n_token->type != STRING)
 				return (set_err(SYNTAX, type_symbol(c_token->type), data),
-						false);
+					false);
 			else if (!combine_tokens(&data->token_vec, c_found->index,
-						c_token->type))
+					c_token->type))
 				return (false);
 			else
 				vec_apply(found, decrement_index);
@@ -131,6 +130,8 @@ bool	check_tokens(t_shell *data)
 	found = vec_find(&data->token_vec, filter_operators);
 	if (found == NULL)
 		return (set_err(MALLOC, "vector found returned NULL", data), true);
+	if (!out_of_scope(found, data))
+		return (free_found(found), false);
 	if (!check_bounds(found, data))
 		return (free_found(found), false);
 	if (!check_double_ops(found, data))
