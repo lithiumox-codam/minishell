@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/09 09:53:38 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/09 12:46:43 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/15 16:46:12 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,6 @@ bool	expand(t_shell *data)
 		i++;
 	}
 	if (found)
-	{
-		vec_free(found);
-		free(found);
-	}
+		free_found(found);
 	return (true);
 }
