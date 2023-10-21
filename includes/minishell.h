@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/10/14 12:16:01 by julius        ########   odam.nl         */
+/*   Updated: 2023/10/14 20:54:19 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@
 t_shell	*init_shell(char **env, bool first_init);
 void	free_shell(t_shell *data, bool close_shell);
 
+/* expander */
+bool	expand(t_shell *data);
 /* lexer */
 bool	lexer(char *input, t_shell *data);
 bool	make_string(char *str, size_t *i, t_vector *vec);
@@ -113,6 +115,7 @@ void	exec_err(char *str, t_exit type);
 void	write_err(t_shell *data);
 bool	rm_quotes(t_token *token, bool set_string);
 bool	type_compare(size_t num_args, t_types type, ...);
+bool	out_of_scope(t_vector *found, t_shell *data);
 bool	is_redirect(t_token *token);
 
 /* debug */

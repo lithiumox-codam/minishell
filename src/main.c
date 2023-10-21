@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/14 12:17:29 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/15 16:55:44 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,14 @@ static void	debug(void)
 	printf("\033[0m");
 }
 
+static void	soft_exit(t_shell *data, char *input)
+{
+	write_err(data);
+	free(input);
+	free_shell(data, false);
+	vec_init(&data->token_vec, 5, sizeof(t_token), clear_token);
+}
+
 /**
  * @brief The main loop of the program
  *
@@ -34,7 +42,7 @@ static int	loop(t_shell *data)
 
 	while (1)
 	{
-		input = readline("minishell\n❯ ");
+		input = readline("\nminishell\n❯ ");
 		if (!input || input[0] == '\0')
 		{
 			free(input);
@@ -43,50 +51,32 @@ static int	loop(t_shell *data)
 		add_history(input);
 		if (!lexer(input, data))
 		{
-			write_err(data);
-			free(input);
-			free_shell(data, false);
-			vec_init(&data->token_vec, 5, sizeof(t_token), clear_token);
+			soft_exit(data, input);
 			continue ;
 		}
 		if (!parser(data))
 		{
-			write_err(data);
-			free(input);
-			free_shell(data, false);
-			vec_init(&data->token_vec, 5, sizeof(t_token), clear_token);
+			soft_exit(data, input);
 			continue ;
 		}
 		if (!operator_split(data))
 		{
-			write_err(data);
-			free(input);
-			free_shell(data, false);
-			vec_init(&data->token_vec, 5, sizeof(t_token), clear_token);
+			soft_exit(data, input);
 			continue ;
 		}
 		if (!check_tokens(data))
 		{
-			write_err(data);
-			free(input);
-			free_shell(data, false);
-			vec_init(&data->token_vec, 5, sizeof(t_token), clear_token);
+			soft_exit(data, input);
 			continue ;
 		}
 		if (!group_token_vec(data))
 		{
-			write_err(data);
-			free(input);
-			free_shell(data, false);
-			vec_init(&data->token_vec, 5, sizeof(t_token), clear_token);
+			soft_exit(data, input);
 			continue ;
 		}
 		if (!executor(data))
 		{
-			write_err(data);
-			free(input);
-			free_shell(data, false);
-			vec_init(&data->token_vec, 5, sizeof(t_token), clear_token);
+			soft_exit(data, input);
 			continue ;
 		}
 		free(input);
