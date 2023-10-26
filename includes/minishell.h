@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/10/14 20:54:19 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/26 15:16:12 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	check_cmd(t_group *group, t_process type, t_vector *env_vec);
 void	exec_built_in(t_group *group, t_process type, t_vector *env_vec);
 void	exec_absolute_path(t_group *group, t_process type, t_vector *env_vec);
 void	handle_redirects(t_group *group);
-void    validate_redirects(t_group *group);
+void	validate_redirects(t_group *group);
 void	close_pipes(t_shell *data);
 
 void	exec_special_builtin(t_group *group, t_shell *data);
@@ -90,7 +90,7 @@ char	**combine_env(t_vector *env_vec);
 /* built_in */
 void	ft_exit(t_group *group, t_shell *data);
 void	ft_cd(t_group *group);
-void	ft_export(t_group *group);
+void	ft_export(t_group *group, t_vector *env_vec);
 void	ft_unset(t_group *group);
 void	ft_echo(t_group *group);
 void	ft_pwd(t_group *group);

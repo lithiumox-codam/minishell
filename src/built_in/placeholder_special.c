@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/04 15:01:59 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/14 12:18:14 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/26 15:15:56 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 extern t_signal	g_signal;
 
-int long long ft_exit_atoi(char *str)
+int long long	ft_exit_atoi(char *str)
 {
 	size_t			i;
 	int long long	output;
@@ -31,8 +31,8 @@ int long long ft_exit_atoi(char *str)
 
 void	ft_exit(t_group *group, t_shell *data)
 {
-	size_t	i;
-	int		long long	output;
+	size_t			i;
+	int long long	output;
 
 	i = 0;
 	while (group->args[i])
@@ -40,7 +40,7 @@ void	ft_exit(t_group *group, t_shell *data)
 	if (i == 1)
 	{
 		free_shell(data, true);
-		exit (0);
+		exit(0);
 	}
 	if (i > 2)
 	{
@@ -73,16 +73,39 @@ void	ft_cd(t_group *group)
 	g_signal.exit_status = 0;
 }
 
-void	ft_export(t_group *group)
-{
-	(void)group;
-	printf("built_in export placeholder\n");
-	g_signal.exit_status = 0;
-}
-
 void	ft_unset(t_group *group)
 {
 	(void)group;
 	printf("built_in unset placeholder\n");
 	g_signal.exit_status = 0;
+}
+
+static void	set_env(t_vector *env_vec, char *key, char *value)
+{
+	t_env	*token;
+
+	token = create_env(key, value);
+	if (!token && !vec_push(env_vec, token))
+		exit(1);
+	exit(0);
+}
+
+void	ft_export(t_group *group, t_vector *env_vec)
+{
+	size_t i;
+	char **env;
+
+	i = 1;
+	while (group->args[i])
+	{
+		env = ft_split(group->args[i], '=');
+		if (!env)
+			exit(1);
+		if (env[1])
+			set_env(env_vec, env[0], env[1]);
+		else
+			set_env(env_vec, env[0], "");
+		i++;
+	}
+	exit(0);
 }

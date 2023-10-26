@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/11 14:04:28 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/14 12:17:37 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/26 15:33:57 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	exec_special_builtin(t_group *group, t_shell *data)
 	else if (ft_strcmp(group->cmd, "cd") == 0)
 		ft_cd(group);
 	else if (ft_strcmp(group->cmd, "export") == 0)
-		ft_export(group);
+		ft_export(group, &data->env);
 	else if (ft_strcmp(group->cmd, "unset") == 0)
 		ft_unset(group);
 }
