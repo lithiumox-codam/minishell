@@ -23,6 +23,7 @@
 		"vector": "c",
 		"minishell.h": "c",
 		"random": "c",
-		"__tuple": "c"
+		"__tuple": "c",
+		"history.h": "c"
 	}
 }

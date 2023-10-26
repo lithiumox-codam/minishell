@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/13 17:41:00 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/07 22:23:11 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/26 14:37:41 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,14 @@ typedef enum e_types
 	SINGLE_QUOTE,
 	PARENTHESES,
 	PIPE,
-	OR,
-	AND,
 	ENV,
 	DQ_ENV,
 	ENV_QUESTION,
 	O_REDIRECT,
 	I_REDIRECT,
 	A_REDIRECT,
-	HEREDOC
+	HEREDOC,
+	HDOC_LITERAL
 }	t_types;
 
 /**

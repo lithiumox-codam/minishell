@@ -25,31 +25,3 @@ bool	contains_env_var(char *str)
 		return (true);
 	return (false);
 }
-
-/**
- * @brief Checks if a string contains an AND
- *
- * @param str The string to check
- * @return true The string contains an AND
- * @return false The string does not contain an AND
- */
-bool	is_and(char *str)
-{
-	if (ft_strcmp(str, "&&") == 0)
-		return (true);
-	return (false);
-}
-
-/**
- * @brief Checks if a string contains an OR
- *
- * @param str The string to check
- * @return true The string contains an OR
- * @return false The string does not contain an OR
- */
-bool	is_or(char *str)
-{
-	if (ft_strcmp(str, "||") == 0)
-		return (true);
-	return (false);
-}

@@ -6,62 +6,58 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/09 09:53:38 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/15 16:46:12 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/10/26 15:07:02 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-extern t_signal	g_signal;
-
-static bool	filter_env(void *item)
+static bool	expand(t_token *token, t_shell *data)
 {
-	t_token	*token;
-	size_t	i;
+	t_vector	expanded_string;
+	size_t		i;
 
+	if (!vec_init(&expanded_string, 10, sizeof(char), NULL))
+		return (set_err(MALLOC, "expand", data));
 	i = 0;
-	token = (t_token *)item;
 	while (token->value[i])
 	{
-		if (token->value[i] == '$')
-			return (true);
-		i++;
+		if (checkchar(token->value[i], "\'"))
+			expand_sq(token, &i, &expanded_string, data);
+		else if (checkchar(token->value[i], "\""))
+			expand_dq(token, &i, &expanded_string, data);
+		else if (checkchar(token->value[i], "$"))
+			expand_env(token, &i, &expanded_string, data);
+		else
+		{
+			vec_push(&expanded_string, &token->value[i]);
+			i++;
+		}
 	}
-	return (false);
-}
-
-static bool	expand_question(t_token *token, t_shell *data)
-{
-	if (token->value[1] != '?')
-		return (true);
-	free(token->value);
-	token->value = ft_itoa(g_signal.exit_status);
-	if (token->value == NULL)
-		return (set_err(MALLOC, NULL, data), false);
-	token->type = STRING;
+	convert_vec_to_string(expanded_string, token);
 	return (true);
 }
 
-bool	expand(t_shell *data)
+bool	expander(t_shell *data)
 {
-	t_vector	*found;
-	t_token		*token;
-	size_t		i;
+	size_t	i;
+	size_t	j;
+	t_token	*token;
 
-	i = 0;
-	found = vec_find(&data->token_vec, filter_env);
-	if (found == NULL)
-		return (true);
-	while (i < found->length)
+	while (i < (&data->token_vec)->length)
 	{
-		token = (t_token *)vec_get(&data->token_vec, i);
-		if (!token)
-			return (set_err(MALLOC, NULL, data), false);
-		if (!expand_question(token, data))
-			return (false);
+		token = vec_get(&data->token_vec, i);
+		j = 0;
+		while (token->value[j])
+		{
+			if (checkchar(token->value[j], "\"\'$"))
+			{
+				if (!expand(token, data))
+					return (false);
+			}
+			j++;
+		}
 		i++;
 	}
-	if (found)
-		free_found(found);
 	return (true);
 }

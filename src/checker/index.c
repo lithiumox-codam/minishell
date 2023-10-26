@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 16:57:32 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/14 20:54:07 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/26 13:05:23 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,8 +130,8 @@ bool	check_tokens(t_shell *data)
 	found = vec_find(&data->token_vec, filter_operators);
 	if (found == NULL)
 		return (set_err(MALLOC, "vector found returned NULL", data), true);
-	if (!out_of_scope(found, data))
-		return (free_found(found), false);
+	// if (!out_of_scope(found, data))
+	// 	return (free_found(found), false);
 	if (!check_bounds(found, data))
 		return (free_found(found), false);
 	if (!check_double_ops(found, data))

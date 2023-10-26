@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 13:51:45 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/15 16:42:56 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/10/26 13:06:25 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ void	print_vector(t_vector *vec, void (*printer)(void *, size_t))
 
 static char	*extra_types(t_types type)
 {
-	if (type == AND)
-		return ("AND");
 	if (type == ENV)
 		return ("ENV");
 	if (type == DQ_ENV)
@@ -85,8 +83,6 @@ char	*print_type(t_types type)
 		return ("PIPE");
 	if (type == PARENTHESES)
 		return ("PARENTHESES");
-	if (type == OR)
-		return ("OR");
 	if (type == ENV_QUESTION)
 		return ("ENV_QUESTION");
 	if (extra_types(type)[0] != '\0')
@@ -96,8 +92,6 @@ char	*print_type(t_types type)
 
 static char	*extra_types_short(t_types type)
 {
-	if (type == AND)
-		return ("&&");
 	if (type == ENV)
 		return ("$");
 	if (type == DQ_ENV)
@@ -125,8 +119,6 @@ char	*type_symbol(t_types type)
 		return ("|");
 	if (type == PARENTHESES)
 		return ("()");
-	if (type == OR)
-		return ("||");
 	if (type == ENV_QUESTION)
 		return ("$?");
 	if (extra_types(type)[0] != '\0')

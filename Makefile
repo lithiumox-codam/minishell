@@ -10,10 +10,6 @@ SRC = main \
     parser/quotes \
     parser/tokens \
 	parser/tokens2 \
-    lexer/index \
-    lexer/string \
-    lexer/token \
-    lexer/op_split \
     checker/index \
 	checker/helpers \
 	checker/heredoc \
@@ -29,7 +25,13 @@ SRC = main \
     exec/redirect \
 	exec/check_cmd \
 	built_in/placeholder_special \
-	built_in/placeholder
+	built_in/placeholder \
+	lexer2/index \
+	expander/index
+    # lexer/index
+    # lexer/string
+    # lexer/token
+    # lexer/op_split
 
 SRCS = $(addsuffix .c, $(addprefix src/, $(SRC)))
 OBJS = $(patsubst src/%.c, build/%.o, $(SRCS))
