@@ -27,7 +27,8 @@ SRC = main \
 	built_in/placeholder_special \
 	built_in/placeholder \
 	lexer2/index \
-	expander/index
+	expander/index \
+	expander/expand
     # lexer/index
     # lexer/string
     # lexer/token

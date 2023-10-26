@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/10/26 14:55:09 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/26 16:03:10 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,10 @@ void	free_shell(t_shell *data, bool close_shell);
 
 /* expander */
 bool	expander(t_shell *data);
+bool	expand_sq(t_token *token, size_t *i, t_vector *vec, t_shell *data);
+bool	expand_dq(t_token *token, size_t *i, t_vector *vec, t_shell *data);
+bool	expand_env(t_token *token, size_t *i, t_vector *vec, t_shell *data);
+
 /* lexer */
 bool	lexer(char *input, t_shell *data);
 bool	make_string(char *str, size_t *i, t_vector *vec);

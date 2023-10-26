@@ -24,6 +24,8 @@
 		"minishell.h": "c",
 		"random": "c",
 		"__tuple": "c",
-		"history.h": "c"
+		"history.h": "c",
+		"ranges": "c",
+		"span": "c"
 	}
 }
