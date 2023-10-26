@@ -26,6 +26,7 @@
 		"__tuple": "c",
 		"history.h": "c",
 		"ranges": "c",
-		"span": "c"
+		"span": "c",
+		"type_traits": "c"
 	}
 }

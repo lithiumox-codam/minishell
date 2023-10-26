@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/26 16:02:26 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/26 17:40:19 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/27 00:46:42 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,11 @@
 
 bool	expand_sq(t_token *token, size_t *i, t_vector *vec, t_shell *data)
 {
-	char	*c;
-
 	(*i)++;
 	while (token->value[(*i)] != '\'')
 	{
-		c = malloc(sizeof(char));
-		*c = token->value[(*i)];
-		if (!vec_push(vec, c))
-		{
-			free(c);
+		if (!char_vec_push(vec, token->value[(*i)]))
 			return (set_err(MALLOC, "expand_sq", data));
-		}
 		(*i)++;
 	}
 	(*i)++;
@@ -36,8 +29,6 @@ bool	expand_sq(t_token *token, size_t *i, t_vector *vec, t_shell *data)
 
 bool	expand_dq(t_token *token, size_t *i, t_vector *vec, t_shell *data)
 {
-	char	*c;
-
 	(*i)++;
 	while (token->value[(*i)] != '\"')
 	{
@@ -48,13 +39,8 @@ bool	expand_dq(t_token *token, size_t *i, t_vector *vec, t_shell *data)
 		}
 		else
 		{
-			c = malloc(sizeof(char));
-			*c = token->value[(*i)];
-			if (!vec_push(vec, c))
-			{
-				free(c);
+			if (!char_vec_push(vec, token->value[(*i)]))
 				return (set_err(MALLOC, "expand_dq", data));
-			}
 			(*i)++;
 		}
 	}
@@ -64,7 +50,7 @@ bool	expand_dq(t_token *token, size_t *i, t_vector *vec, t_shell *data)
 	return (true);
 }
 
-static t_env	*find_env(char *value, t_shell *data)
+static t_env	*compare_key(char *key, t_shell *data)
 {
 	t_env	*env_token;
 	size_t	env_i;
@@ -73,42 +59,55 @@ static t_env	*find_env(char *value, t_shell *data)
 	while (env_i < (&data->env)->length)
 	{
 		env_token = vec_get(&data->env, env_i);
-		if (ft_strcmp(value, env_token->key) == 0)
+		if (ft_strcmp(key, env_token->key) == 0)
 			break ;
 		env_i++;
 	}
+	free (key);
 	if (env_i == (&data->env)->length)
 		return (NULL);
 	return (env_token);
 }
 
-bool	expand_env(t_token *token, size_t *i, t_vector *vec, t_shell *data)
+static char	*get_env_key(t_token *token, size_t *i, t_shell *data)
 {
-	char	*value;
 	size_t	start;
-	t_env	*env_token;
-	char	*c;
+	char	*key;
 
-	start = (*i)++;
+	start = (*i);
 	while (token->value[(*i)] && token->value[(*i)] != ' '
 		&& token->value[(*i)] != '\"' && token->value[(*i)] != '\''
 		&& token->value[(*i)] != '$')
 		(*i)++;
-	value = ft_substr(token->value, start, (*i) - start);
-	if (!value)
-		return (set_err(MALLOC, "expand_env", data));
-	env_token = find_env(value, data);
-	free(value);
+	key = ft_substr(token->value, start, (*i) - start);
+	if (!key)
+		set_err(MALLOC, "expand_env", data);
+	return (key);
+}
+bool	expand_env(t_token *token, size_t *i, t_vector *vec, t_shell *data)
+{
+	char	*key;
+	size_t	j;
+	t_env	*env_token;
+
+	(*i)++;
+	if (token->value[(*i)] == '\0' || checkchar(token->value[(*i)], "\'\" "))
+	{
+		char_vec_push(vec, '$');
+		return (true);
+	}
+	key = get_env_key(token, i, data);
+	if (!key)
+		return (false);
+	env_token = compare_key(key, data);
 	if (!env_token)
 		return (true);
-	start = 0;
-	while (env_token->value[start])
+	j = 0;
+	while (env_token->value[j])
 	{
-		c = malloc(sizeof(char));
-		*c = env_token->value[start];
-		if (!vec_push(vec, c))
+		if (!char_vec_push(vec, token->value[j]))
 			return (set_err(MALLOC, "expand_env", data));
-		start++;
+		j++;
 	}
 	return (true);
 }
