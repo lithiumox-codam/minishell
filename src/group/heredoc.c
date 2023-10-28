@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/16 12:15:45 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/23 20:09:15 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/28 15:20:58 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ bool	heredoc(char *filename, char *stop, t_shell *data)
 	int		heredoc_fd;
 	bool	loop_success;
 
-	heredoc_fd = open(filename, O_CREAT | O_RDWR, 0644);
+	heredoc_fd = open(filename, O_CREAT | O_TRUNC | O_RDWR, 0644);
 	if (heredoc_fd == -1)
 		return (set_err(PERR, filename, data));
 	if ((is_encased_dq(stop)) && ft_strlen(stop) == 2)

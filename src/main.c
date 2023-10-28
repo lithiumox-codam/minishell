@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/26 17:12:27 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/28 18:24:06 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static int	loop(t_shell *data)
 			continue ;
 		}
 		print_vector(&data->token_vec, print_token);
-		if (!expander(data))
+		if (!expand_tokens(data))
 		{
 			soft_exit(data, input);
 			continue ;

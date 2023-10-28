@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/09 09:53:38 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/27 00:48:50 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/28 18:22:34 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ static bool	convert_vec_to_string(t_vector *vec, t_token *token, t_shell *data)
 		return (set_err(MALLOC, "convert_vec_to_string", data));
 	char_vec_push(vec, '\0');
 	free(token->value);
-	token->value = ft_strdup((char *)vec->data);
-	vec_free(vec);
+	token->value = (char *)vec->data;
 	return (true);
 }
 
@@ -125,7 +124,7 @@ static bool	expand(t_token *token, t_shell *data)
 // 	return (true);
 // }
 
-bool	expander(t_shell *data)
+bool	expand_tokens(t_shell *data)
 {
 	size_t	i;
 	size_t	j;

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/26 16:02:26 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/27 00:46:42 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/28 18:24:16 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ bool	expand_env(t_token *token, size_t *i, t_vector *vec, t_shell *data)
 	j = 0;
 	while (env_token->value[j])
 	{
-		if (!char_vec_push(vec, token->value[j]))
+		if (!char_vec_push(vec, env_token->value[j]))
 			return (set_err(MALLOC, "expand_env", data));
 		j++;
 	}
