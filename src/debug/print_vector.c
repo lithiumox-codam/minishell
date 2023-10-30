@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 13:51:45 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/26 13:06:25 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/30 19:01:03 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,6 @@ void	print_vector(t_vector *vec, void (*printer)(void *, size_t))
 
 static char	*extra_types(t_types type)
 {
-	if (type == ENV)
-		return ("ENV");
-	if (type == DQ_ENV)
-		return ("DQ_ENV");
 	if (type == STRING)
 		return ("STRING");
 	if (type == O_REDIRECT)
@@ -62,6 +58,8 @@ static char	*extra_types(t_types type)
 		return ("I_REDIRECT");
 	if (type == HEREDOC)
 		return ("HEREDOC");
+	if (type == HDOC_LITERAL)
+		return ("HDOC_LITERAL");
 	if (type == A_REDIRECT)
 		return ("A_REDIRECT");
 	return ("");
@@ -75,16 +73,8 @@ static char	*extra_types(t_types type)
  */
 char	*print_type(t_types type)
 {
-	if (type == DOUBLE_QUOTE)
-		return ("DOUBLE_QUOTE");
-	if (type == SINGLE_QUOTE)
-		return ("SINGLE_QUOTE");
 	if (type == PIPE)
 		return ("PIPE");
-	if (type == PARENTHESES)
-		return ("PARENTHESES");
-	if (type == ENV_QUESTION)
-		return ("ENV_QUESTION");
 	if (extra_types(type)[0] != '\0')
 		return (extra_types(type));
 	return ("UNKNOWN");
@@ -92,10 +82,6 @@ char	*print_type(t_types type)
 
 static char	*extra_types_short(t_types type)
 {
-	if (type == ENV)
-		return ("$");
-	if (type == DQ_ENV)
-		return ("$DQ");
 	if (type == STRING)
 		return ("STR");
 	if (type == O_REDIRECT)
@@ -106,21 +92,15 @@ static char	*extra_types_short(t_types type)
 		return (">>");
 	if (type == HEREDOC)
 		return ("<<");
+	if (type == HDOC_LITERAL)
+		return ("<<_LITERAL");
 	return ("");
 }
 
 char	*type_symbol(t_types type)
 {
-	if (type == DOUBLE_QUOTE)
-		return ("DQ");
-	if (type == SINGLE_QUOTE)
-		return ("SQ");
 	if (type == PIPE)
 		return ("|");
-	if (type == PARENTHESES)
-		return ("()");
-	if (type == ENV_QUESTION)
-		return ("$?");
 	if (extra_types(type)[0] != '\0')
 		return (extra_types_short(type));
 	return ("UNK");

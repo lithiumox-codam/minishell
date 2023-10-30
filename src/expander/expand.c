@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/26 16:02:26 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/28 18:24:16 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/30 22:36:01 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ bool	expand_dq(t_token *token, size_t *i, t_vector *vec, t_shell *data)
 	{
 		if (token->value[(*i)] == '$')
 		{
-			if (!expand_env(token, i, vec, data))
+			if (!expand_env(token->value, i, vec, data))
 				return (false);
 		}
 		else
@@ -50,7 +50,7 @@ bool	expand_dq(t_token *token, size_t *i, t_vector *vec, t_shell *data)
 	return (true);
 }
 
-static t_env	*compare_key(char *key, t_shell *data)
+t_env	*compare_key(char *key, t_shell *data)
 {
 	t_env	*env_token;
 	size_t	env_i;
@@ -69,34 +69,32 @@ static t_env	*compare_key(char *key, t_shell *data)
 	return (env_token);
 }
 
-static char	*get_env_key(t_token *token, size_t *i, t_shell *data)
+char	*get_env_key(char *str, size_t *i, t_shell *data)
 {
 	size_t	start;
 	char	*key;
 
 	start = (*i);
-	while (token->value[(*i)] && token->value[(*i)] != ' '
-		&& token->value[(*i)] != '\"' && token->value[(*i)] != '\''
-		&& token->value[(*i)] != '$')
+	while (str[(*i)] && (str[(*i)] >= 'A' && str[(*i)] <= 'Z'))
 		(*i)++;
-	key = ft_substr(token->value, start, (*i) - start);
+	key = ft_substr(str, start, (*i) - start);
 	if (!key)
 		set_err(MALLOC, "expand_env", data);
 	return (key);
 }
-bool	expand_env(t_token *token, size_t *i, t_vector *vec, t_shell *data)
+bool	expand_env(char *str, size_t *i, t_vector *vec, t_shell *data)
 {
 	char	*key;
 	size_t	j;
 	t_env	*env_token;
 
 	(*i)++;
-	if (token->value[(*i)] == '\0' || checkchar(token->value[(*i)], "\'\" "))
+	if (str[(*i)] == '\0' || checkchar(str[(*i)], "\'\" "))
 	{
 		char_vec_push(vec, '$');
 		return (true);
 	}
-	key = get_env_key(token, i, data);
+	key = get_env_key(str, i, data);
 	if (!key)
 		return (false);
 	env_token = compare_key(key, data);

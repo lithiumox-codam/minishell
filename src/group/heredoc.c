@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/16 12:15:45 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/28 15:20:58 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/30 22:42:16 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,12 @@ static bool	push_hdoc(char *filename, t_group *group, t_shell *data)
 	return (true);
 }
 
+
+
 /**
  * @note if signal ctrl D break while loop and return true
  */
-static bool	loop(size_t heredoc_fd, char *stop, bool expand, t_shell *data)
+static bool	hdoc_read(size_t heredoc_fd, t_token *token, t_shell *data)
 {
 	char	*line;
 
@@ -45,18 +47,12 @@ static bool	loop(size_t heredoc_fd, char *stop, bool expand, t_shell *data)
 	while (1)
 	{
 		line = readline(">");
-		if (!line || ft_strcmp(line, stop) == 0)
+		if (!line || ft_strcmp(line, token->value) == 0)
 			break ;
-		if (expand)
+		if (token->type != HDOC_LITERAL)
 		{
-			// expanded_line = expand(line);
-			// free(line);
-			// if (!expanded_line)
-			// 	return (set_err(MALLOC, "loop", data));
-			// line = expanded_line;
-			if (!data)
+			if (!hdoc_expand(&line, data))
 				return (false);
-			// ^^^^ this is placeholder to avoid data unused error
 		}
 		write(heredoc_fd, line, ft_strlen(line));
 		write(heredoc_fd, "\n", 1);
@@ -68,29 +64,17 @@ static bool	loop(size_t heredoc_fd, char *stop, bool expand, t_shell *data)
 
 /**
  * @param	filename the filename to be given to the new file
- * @param	stop	the string to stop readline
+ * @param	token	the hdoc token
  * @note	depending on expansion DQ logic can be removed
  */
-bool	heredoc(char *filename, char *stop, t_shell *data)
+bool	heredoc(char *filename, t_token *token, t_shell *data)
 {
 	int		heredoc_fd;
-	bool	loop_success;
 
 	heredoc_fd = open(filename, O_CREAT | O_TRUNC | O_RDWR, 0644);
 	if (heredoc_fd == -1)
 		return (set_err(PERR, filename, data));
-	if ((is_encased_dq(stop)) && ft_strlen(stop) == 2)
-		loop_success = loop(heredoc_fd, "", true, data);
-	else if (is_encased_dq(stop))
-	{
-		stop = ft_strtrim(stop, "\"");
-		if (!stop)
-			return (set_err(MALLOC, "heredoc", data));
-		loop_success = loop(heredoc_fd, stop, true, data);
-	}
-	else
-		loop_success = loop(heredoc_fd, stop, false, data);
-	if (!loop_success)
+	if (!hdoc_read(heredoc_fd, token, data))
 		return (close(heredoc_fd), false);
 	if (close(heredoc_fd) != 0)
 		return (set_err(PERR, filename, data));
@@ -113,7 +97,7 @@ bool	hdoc_found(t_group *group, size_t i, t_shell *data)
 	if (!filename)
 		return (set_err(MALLOC, "hdoc_found", data));
 	token = vec_get(&data->token_vec, i);
-	if (!heredoc(filename, token->value, data))
+	if (!heredoc(filename, token, data))
 		return (false);
 	return (push_hdoc(filename, group, data));
 }

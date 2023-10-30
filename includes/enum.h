@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/13 17:41:00 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/26 14:37:41 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/30 18:26:44 by julius        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,32 +16,20 @@
 /**
  * @brief The enum for the different types of token_vec
  *
- * @param DOUBLE_QUOTE (")
- * @param SINGLE_QUOTE (')
- * @param PIPE (|)
- * @param PARENTHESES (())
- * @param OR (||)
- * @param AND (&&)
- * @param ENV ($)
- * @param DQ_ENV An environment variable in double quotes ("$")
- * @param ENV_QUESTION An environment variable with a question mark ("$?")
+ * @param UNKNOWN An unknown type
  * @param STRING A string
+ * @param PIPE (|)
  * @param O_REDIRECT (>)
  * @param I_REDIRECT (<)
  * @param A_REDIRECT (>>)
  * @param HEREDOC (<<)
+ * @param HDOC_LITERAL (<<) with no expansion
  */
 typedef enum e_types
 {
 	UNKNOWN,
 	STRING,
-	DOUBLE_QUOTE,
-	SINGLE_QUOTE,
-	PARENTHESES,
 	PIPE,
-	ENV,
-	DQ_ENV,
-	ENV_QUESTION,
 	O_REDIRECT,
 	I_REDIRECT,
 	A_REDIRECT,

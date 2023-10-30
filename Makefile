@@ -7,14 +7,13 @@ SRC = main \
     structs/shell \
 	structs/group \
     parser/index \
-    parser/quotes \
     parser/tokens \
-	parser/tokens2 \
     checker/index \
 	checker/helpers \
 	checker/heredoc \
     group/group \
     group/heredoc \
+	group/hdoc_expand \
     debug/print_vector \
 	debug/print_group \
     exec/exec \
@@ -26,7 +25,7 @@ SRC = main \
 	exec/check_cmd \
 	built_in/placeholder_special \
 	built_in/placeholder \
-	lexer2/index \
+	lexer/index \
 	expander/index \
 	expander/expand
     # lexer/index
