@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/04 14:46:00 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/26 15:15:53 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/10/31 13:51:15 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,19 @@ void	ft_echo(t_group *group)
 {
 	size_t	i;
 
-	i = 1;
+	if (group->args[1] && ft_strcmp(group->args[1], "-n") == 0)
+		i = 2;
+	else
+		i = 1;
 	while (group->args[i])
 	{
-		printf("Triggered exho built in\n");
 		write(1, group->args[i], ft_strlen(group->args[i]));
 		if (group->args[i + 1])
 			write(1, " ", 1);
 		i++;
 	}
-	write(1, "\n", 1);
+	if (group->args[1] && ft_strcmp(group->args[1], "-n") != 0)
+		write(1, "\n", 1);
 	exit(0);
 }
 
