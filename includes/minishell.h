@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/10/31 14:04:29 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/10/31 23:15:41 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,10 @@ void	clear_group(void *data);
 void	clear_fname(void *data);
 t_exec	*create_exec(void);
 void	clear_exec(t_exec **exec);
+void	init_env(char **env, t_vector *env_vec);
 
 /* general utils */
+bool	compare_env_key(void *item, void *key);
 void	exit_mini(char *str, int exit_code);
 bool	set_err(t_exit type, char *msg, t_shell *data);
 void	exec_err(char *str, t_exit type);

@@ -29,7 +29,8 @@ SRC = main \
     exec/redirect \
 	exec/check_cmd \
 	built_in/placeholder_special \
-	built_in/placeholder
+	built_in/placeholder \
+	built_in/ft_export \
 
 SRCS = $(addsuffix .c, $(addprefix src/, $(SRC)))
 OBJS = $(patsubst src/%.c, build/%.o, $(SRCS))
