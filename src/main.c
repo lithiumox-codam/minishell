@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/15 16:55:44 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/02 17:17:16 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,17 @@ static int	loop(t_shell *data)
 			soft_exit(data, input);
 			continue ;
 		}
-		if (!operator_split(data))
-		{
-			soft_exit(data, input);
-			continue ;
-		}
 		if (!check_tokens(data))
 		{
 			soft_exit(data, input);
 			continue ;
 		}
+		if (!expand_tokens(data))
+		{
+			soft_exit(data, input);
+			continue ;
+		}
+		print_vector(&data->token_vec, print_token);
 		if (!group_token_vec(data))
 		{
 			soft_exit(data, input);
@@ -101,9 +102,9 @@ int	main(int ac, char **av, char **env)
 		if (!parser(data))
 			return (write_err(data), free_shell(data, true),
 				g_signal.exit_status);
-		if (!operator_split(data))
-			return (write_err(data), free_shell(data, true),
-				g_signal.exit_status);
+		// if (!operator_split(data))
+		// 	return (write_err(data), free_shell(data, true),
+		// 		g_signal.exit_status);
 		if (!check_tokens(data))
 			return (write_err(data), free_shell(data, true),
 				g_signal.exit_status);

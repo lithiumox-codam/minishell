@@ -7,18 +7,13 @@ SRC = main \
     structs/shell \
 	structs/group \
     parser/index \
-    parser/quotes \
     parser/tokens \
-	parser/tokens2 \
-    lexer/index \
-    lexer/string \
-    lexer/token \
-    lexer/op_split \
     checker/index \
 	checker/helpers \
 	checker/heredoc \
     group/group \
     group/heredoc \
+	group/hdoc_expand \
     debug/print_vector \
 	debug/print_group \
     exec/exec \
@@ -29,7 +24,11 @@ SRC = main \
     exec/redirect \
 	exec/check_cmd \
 	built_in/placeholder_special \
-	built_in/placeholder
+	built_in/placeholder \
+	lexer/index \
+	expander/index \
+	expander/expand_env \
+	expander/expand_quotes
 
 SRCS = $(addsuffix .c, $(addprefix src/, $(SRC)))
 OBJS = $(patsubst src/%.c, build/%.o, $(SRCS))
