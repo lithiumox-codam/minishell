@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/10/30 22:26:35 by julius        ########   odam.nl         */
+/*   Updated: 2023/11/02 17:39:42 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,7 @@ void	free_shell(t_shell *data, bool close_shell);
 
 /* expander */
 bool	expand_tokens(t_shell *data);
-bool 	char_vec_push(t_vector *vec, char c);
-t_env	*compare_key(char *key, t_shell *data);
-char	*get_env_key(char *str, size_t *i, t_shell *data);
+bool	char_vec_push(t_vector *vec, char c);
 bool	expand_sq(t_token *token, size_t *i, t_vector *vec, t_shell *data);
 bool	expand_dq(t_token *token, size_t *i, t_vector *vec, t_shell *data);
 bool	expand_env(char *str, size_t *i, t_vector *vec, t_shell *data);

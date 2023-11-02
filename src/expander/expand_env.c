@@ -1,56 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   expand.c                                           :+:    :+:            */
+/*   expand_env.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/26 16:02:26 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/30 22:36:01 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/02 17:40:26 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-bool	expand_sq(t_token *token, size_t *i, t_vector *vec, t_shell *data)
+extern t_signal	g_signal;
+
+static bool	push_status(size_t *i, t_vector *vec, t_shell *data)
 {
+	char	*exit_string;
+	int		j;
+
 	(*i)++;
-	while (token->value[(*i)] != '\'')
+	exit_string = ft_itoa(g_signal.exit_status);
+	if (!exit_string)
+		return (set_err(MALLOC, "push_status", data));
+	j = 0;
+	while (exit_string[j])
 	{
-		if (!char_vec_push(vec, token->value[(*i)]))
-			return (set_err(MALLOC, "expand_sq", data));
-		(*i)++;
+		char_vec_push(vec, exit_string[j]);
+		j++;
 	}
-	(*i)++;
-	if (token->type == HEREDOC)
-		token->type = HDOC_LITERAL;
+	free(exit_string);
 	return (true);
 }
 
-bool	expand_dq(t_token *token, size_t *i, t_vector *vec, t_shell *data)
-{
-	(*i)++;
-	while (token->value[(*i)] != '\"')
-	{
-		if (token->value[(*i)] == '$')
-		{
-			if (!expand_env(token->value, i, vec, data))
-				return (false);
-		}
-		else
-		{
-			if (!char_vec_push(vec, token->value[(*i)]))
-				return (set_err(MALLOC, "expand_dq", data));
-			(*i)++;
-		}
-	}
-	(*i)++;
-	if (token->type == HEREDOC)
-		token->type = HDOC_LITERAL;
-	return (true);
-}
-
-t_env	*compare_key(char *key, t_shell *data)
+static t_env	*compare_key(char *key, char *str, size_t *i, t_shell *data)
 {
 	t_env	*env_token;
 	size_t	env_i;
@@ -63,13 +46,17 @@ t_env	*compare_key(char *key, t_shell *data)
 			break ;
 		env_i++;
 	}
-	free (key);
+	free(key);
 	if (env_i == (&data->env)->length)
+	{
+		while (str[(*i)] && !checkchar(str[(*i)], "\'\" "))
+			(*i)++;
 		return (NULL);
+	}
 	return (env_token);
 }
 
-char	*get_env_key(char *str, size_t *i, t_shell *data)
+static char	*get_env_key(char *str, size_t *i, t_shell *data)
 {
 	size_t	start;
 	char	*key;
@@ -89,15 +76,14 @@ bool	expand_env(char *str, size_t *i, t_vector *vec, t_shell *data)
 	t_env	*env_token;
 
 	(*i)++;
+	if (str[(*i)] == '?')
+		return (push_status(i, vec, data));
 	if (str[(*i)] == '\0' || checkchar(str[(*i)], "\'\" "))
-	{
-		char_vec_push(vec, '$');
-		return (true);
-	}
+		return (char_vec_push(vec, '$'));
 	key = get_env_key(str, i, data);
 	if (!key)
 		return (false);
-	env_token = compare_key(key, data);
+	env_token = compare_key(key, str, i, data);
 	if (!env_token)
 		return (true);
 	j = 0;

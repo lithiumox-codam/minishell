@@ -13,9 +13,10 @@
 #include <minishell.h>
 
 /**
- * @brief vec push exlusively for sizeof(char) vectors, does not free incoming data
-*/
-bool char_vec_push(t_vector *vec, char c)
+ * @brief vec push exlusively for sizeof(char) vectors,
+	does not free incoming data
+ */
+bool	char_vec_push(t_vector *vec, char c)
 {
 	if (vec->length == vec->capacity)
 		if (vec_resize(vec, vec->capacity * 2) == false)
