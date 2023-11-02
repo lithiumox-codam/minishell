@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/04 15:01:59 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/31 23:30:56 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/01 11:42:38 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,35 @@ void	ft_exit(t_group *group, t_shell *data)
 	exit(output);
 }
 
-void	ft_cd(t_group *group)
+void	ft_cd(t_group *group, t_vector *env_vec)
 {
-	(void)group;
-	printf("built_in cd placeholder\n");
-	g_signal.exit_status = 0;
+	char	*path;
+
+	path = NULL;
+	(void)env_vec;
+	if (group->args[1] == NULL)
+		path = "";
+	else if (group->args[2] != NULL)
+	{
+		write(1, "minishell: cd: too many arguments\n", 35);
+		g_signal.exit_status = 1;
+	}
+	else if (ft_strcmp(group->args[1], "-") == 0)
+		path = "";
+	else
+		path = ft_strdup(group->args[1]);
+	if (path && chdir(path) == -1)
+	{
+		write(1, "minishell: cd: ", 15);
+		g_signal.exit_status = 1;
+	}
+	else if (!path)
+	{
+		write(1, "minishell: cd: HOME not set\n", 29);
+		g_signal.exit_status = 1;
+	}
+	else
+		g_signal.exit_status = 0;
 }
 
 void	ft_unset(t_group *group, t_vector *env_vec)

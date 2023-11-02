@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/10/31 23:15:41 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/01 11:25:37 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ char	**combine_env(t_vector *env_vec);
 
 /* built_in */
 void	ft_exit(t_group *group, t_shell *data);
-void	ft_cd(t_group *group);
+void	ft_cd(t_group *group, t_vector *env_vec);
 void	ft_export(t_group *group, t_vector *env_vec);
 void	ft_unset(t_group *group, t_vector *env_vec);
 void	ft_echo(t_group *group);
