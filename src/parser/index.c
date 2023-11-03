@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/20 11:12:20 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/09/21 02:59:51 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/10/30 18:34:57 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,15 @@ t_func_map	*return_map(void)
 {
 	t_func_map	*func_map;
 
-	func_map = (t_func_map *)malloc(sizeof(t_func_map) * 11);
+	func_map = (t_func_map *)malloc(sizeof(t_func_map) * 6);
 	if (func_map == NULL)
 		return (NULL);
-	func_map[0] = (t_func_map){is_encased_dq, DOUBLE_QUOTE};
-	func_map[1] = (t_func_map){is_encased_sq, SINGLE_QUOTE};
-	func_map[2] = (t_func_map){is_encased_parentheses, PARENTHESES};
-	func_map[3] = (t_func_map){is_and, AND};
-	func_map[4] = (t_func_map){is_or, OR};
-	func_map[5] = (t_func_map){is_pipe, PIPE};
-	func_map[6] = (t_func_map){is_r_redirect, O_REDIRECT};
-	func_map[7] = (t_func_map){is_l_redirect, I_REDIRECT};
-	func_map[8] = (t_func_map){is_a_redirect, A_REDIRECT};
-	func_map[9] = (t_func_map){is_heredoc, HEREDOC};
-	func_map[10] = (t_func_map){NULL, STRING};
+	func_map[0] = (t_func_map){is_pipe, PIPE};
+	func_map[1] = (t_func_map){is_r_redirect, O_REDIRECT};
+	func_map[2] = (t_func_map){is_l_redirect, I_REDIRECT};
+	func_map[3] = (t_func_map){is_a_redirect, A_REDIRECT};
+	func_map[4] = (t_func_map){is_heredoc, HEREDOC};
+	func_map[5] = (t_func_map){NULL, STRING};
 	return (func_map);
 }
 

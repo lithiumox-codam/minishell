@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 16:57:32 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/26 15:40:06 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/03 15:04:37 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ bool	filter_operators(void *item)
 	t_token	*token;
 
 	token = (t_token *)item;
-	return (token->type >= 5 && token->type <= 14);
+	return (token->type >= 2 && token->type <= 7);
 }
 
 static bool	check_double_ops(t_vector *found, t_shell *data)
@@ -38,7 +38,7 @@ static bool	check_double_ops(t_vector *found, t_shell *data)
 		if (next_found->index - c_found->index == 1)
 			if (c_token->type == n_token->type)
 				return (set_err(SYNTAX, type_symbol(c_token->type), data),
-						false);
+					false);
 		i++;
 	}
 	return (true);
@@ -86,14 +86,14 @@ static bool	check_ops(t_vector *found, t_shell *data)
 	{
 		c_found = (t_found *)vec_get(found, i);
 		c_token = (t_token *)(c_found->item);
-		if (c_token->type >= 11 && c_token->type <= 14)
+		if (c_token->type >= 3 && c_token->type <= 6)
 		{
 			n_token = (t_token *)vec_get(&data->token_vec, c_found->index + 1);
 			if (!n_token || n_token->type != STRING)
 				return (set_err(SYNTAX, type_symbol(c_token->type), data),
-						false);
+					false);
 			else if (!combine_tokens(&data->token_vec, c_found->index,
-						c_token->type))
+					c_token->type))
 				return (false);
 			else
 				vec_apply(found, decrement_index);
@@ -116,7 +116,7 @@ static bool	check_bounds(t_vector *found, t_shell *data)
 	last = (t_found *)vec_get(found, found->length - 1);
 	first_t = (t_token *)first->item;
 	last_t = (t_token *)last->item;
-	if (first->index == 0 && (first_t->type >= 5 && first_t->type <= 7))
+	if (first->index == 0 && (first_t->type == PIPE))
 		return (set_err(SYNTAX, type_symbol(first_t->type), data), false);
 	if (last->index == data->token_vec.length - 1)
 		return (set_err(SYNTAX, type_symbol(last_t->type), data), false);

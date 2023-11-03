@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/11/01 11:25:37 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/03 14:39:37 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,12 @@ t_shell	*init_shell(char **env, bool first_init);
 void	free_shell(t_shell *data, bool close_shell);
 
 /* expander */
-bool	expand(t_shell *data);
+bool	expand_tokens(t_shell *data);
+bool	char_vec_push(t_vector *vec, char c);
+bool	expand_sq(t_token *token, size_t *i, t_vector *vec, t_shell *data);
+bool	expand_dq(t_token *token, size_t *i, t_vector *vec, t_shell *data);
+bool	expand_env(char *str, size_t *i, t_vector *vec, t_shell *data);
+
 /* lexer */
 bool	lexer(char *input, t_shell *data);
 bool	make_string(char *str, size_t *i, t_vector *vec);
@@ -49,17 +54,11 @@ char	**split(t_token *token);
 
 /* parser */
 bool	parser(t_shell *data);
-bool	is_encased_dq(char *str);
-bool	is_encased_sq(char *str);
-bool	is_encased_parentheses(char *str);
 bool	is_pipe(char *str);
 bool	is_r_redirect(char *str);
 bool	is_l_redirect(char *str);
 bool	is_a_redirect(char *str);
 bool	is_heredoc(char *str);
-bool	contains_env_var(char *str);
-bool	is_or(char *str);
-bool	is_and(char *str);
 void	verify_token_vec(t_shell *data);
 bool	check_tokens(t_shell *data);
 bool	combine_tokens(t_vector *vec, size_t i, t_types type);
@@ -67,6 +66,7 @@ void	free_found(t_vector *found);
 /* group */
 bool	group_token_vec(t_shell *data);
 bool	hdoc_found(t_group *group, size_t i, t_shell *data);
+bool	hdoc_expand(char **str, t_shell *data);
 
 /* executor */
 bool	executor(t_shell *data);
@@ -117,7 +117,7 @@ void	exec_err(char *str, t_exit type);
 void	write_err(t_shell *data);
 bool	rm_quotes(t_token *token, bool set_string);
 bool	type_compare(size_t num_args, t_types type, ...);
-bool	out_of_scope(t_vector *found, t_shell *data);
+// bool	out_of_scope(t_vector *found, t_shell *data);
 bool	is_redirect(t_token *token);
 
 /* debug */

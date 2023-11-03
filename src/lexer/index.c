@@ -5,117 +5,86 @@
 /*                                                     +:+                    */
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/07/19 13:32:55 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/01 10:37:46 by mdekker/jde   ########   odam.nl         */
+/*   Created: 2023/10/26 11:55:20 by mdekker/jde   #+#    #+#                 */
+/*   Updated: 2023/11/03 14:46:50 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-/**
- * @brief Checks if the next quote is valid
- *
- * @param str The string to check
- * @param i The index of the string to check
- * @return true The next quote is valid
- * @return false The next quote is not valid
- */
-static bool	check_next_quote(char *str, size_t *i)
+static bool	build_redir_token(char *input, size_t *i, t_shell *data)
 {
-	char	quote;
+	char	*value;
+	size_t	size;
 
-	quote = str[(*i)];
-	(*i)++;
-	while (str[(*i)] != '\0' && str[(*i)] != quote)
-		(*i)++;
-	if (str[(*i)] == '\0')
-		return (false);
+	size = 1;
+	if (input[(*i)] == input[(*i) + 1])
+		size++;
+	value = ft_substr(input, (*i), size);
+	if (!value)
+		return (set_err(MALLOC, "build_redir_token", data));
+	if (!vec_push(&data->token_vec, (void *)create_token(value, 0)))
+	{
+		free(value);
+		return (set_err(MALLOC, "build_redir_token", data));
+	}
+	(*i) += size;
+	return (true);
+}
+
+static bool	build_pipe_token(char *input, size_t *i, t_shell *data)
+{
+	char	*value;
+
+	if (input[(*i)] == input[(*i) + 1])
+		return (set_err(OUT_OF_SCOPE, "||", data));
+	value = malloc(sizeof(char) * 2);
+	value[0] = '|';
+	value[1] = '\0';
+	if (!vec_push(&data->token_vec, (void *)create_token(value, 0)))
+		return (set_err(MALLOC, "build_pipe_token", data));
 	(*i)++;
 	return (true);
 }
 
-/**
- * @brief Checks if the parantheses are valid
- *
- * @param str The string to check
- * @param i The index of the string to check
- * @return true The parantheses are valid
- * @return false The parantheses are not valid
- */
-static bool	check_parantheses(char *str, size_t *i)
+static bool	check_quote_finish(char *input, size_t *i, t_shell *data)
 {
+	char	quote;
+
+	quote = input[(*i)];
 	(*i)++;
-	while (str[*i] != '\0' && str[*i] != ')')
+	while (input[(*i)] && input[(*i)] != quote)
+		(*i)++;
+	if (input[(*i)] == '\0')
+		return (set_err(SYNTAX_MINI, (char[2]){quote, '\0'}, data));
+	(*i)++;
+	return (true);
+}
+
+static bool	build_string_token(char *input, size_t *i, t_shell *data)
+{
+	size_t	start;
+	char	*value;
+
+	start = (*i);
+	while (input[(*i)] && !checkchar(input[(*i)], " \\()<>|;&"))
 	{
-		if (str[*i] == '(')
+		if (checkchar(input[(*i)], "\"\'"))
 		{
-			if (!check_parantheses(str, i))
-				return (false);
-		}
-		else if (str[*i] == '\"' || str[*i] == '\'')
-		{
-			if (!check_next_quote(str, i))
+			if (!check_quote_finish(input, i, data))
 				return (false);
 		}
 		else
 			(*i)++;
 	}
-	if (str[*i] == '\0')
-		return (false);
-	(*i)++;
-	return (true);
-}
-
-/**
- * @brief Checks if the delimiters are valid
- *
- * @param str The string to check
- * @return true The delimiters are valid
- * @return false The delimiters are not valid
- */
-static bool	check_delimiters(char *str)
-{
-	size_t	i;
-
-	i = 0;
-	if (str[i] == '\'' || str[i] == '\"')
+	value = ft_substr(input, start, (*i) - start);
+	if (!value)
+		return (set_err(MALLOC, "build_string_token", data));
+	if (!vec_push(&data->token_vec, (void *)create_token(value, 0)))
 	{
-		if (!check_next_quote(str, &i))
-			return (false);
+		free(value);
+		return (set_err(MALLOC, "build_string_token", data));
 	}
-	else if (str[i] == ')')
-		return (false);
-	else if (str[i] == '(')
-	{
-		if (!check_parantheses(str, &i))
-			return (false);
-	}
-	return (true);
-}
-
-bool	lexer_check_char(char *input, size_t *i, t_shell *data)
-{
-	char	temp[2];
-
-	temp[0] = '\0';
-	temp[1] = '\0';
-	if (checkchar(input[*i], "\"\'()") == 1)
-	{
-		if (!check_delimiters(&input[*i]))
-		{
-			temp[0] = input[*i];
-			return (set_err(SYNTAX_MINI, temp, data));
-		}
-		if (!make_string(input, i, &data->token_vec))
-			return (set_err(MALLOC, "lexer", data));
-	}
-	else if (input[*i] == ' ')
-	{
-		if (!create_string(input, i, &data->token_vec))
-			return (set_err(MALLOC, "lexer", data));
-	}
-	else
-		(*i)++;
 	return (true);
 }
 
@@ -132,11 +101,23 @@ bool	lexer(char *input, t_shell *data)
 	i = 0;
 	while (input[i])
 	{
-		if (!lexer_check_char(input, &i, data))
+		if (input[i] == ' ')
+			i++;
+		else if (checkchar(input[i], "\\()<>|;&"))
+		{
+			if (checkchar(input[i], "();\\&"))
+			{
+				return (set_err(OUT_OF_SCOPE, (char[2]){input[i], '\0'}, data));
+			}
+			if (checkchar(input[i], "<>"))
+				if (!build_redir_token(input, &i, data))
+					return (false);
+			if (checkchar(input[i], "|"))
+				if (!build_pipe_token(input, &i, data))
+					return (false);
+		}
+		else if (!build_string_token(input, &i, data))
 			return (false);
 	}
-	if (i > 0 && checkchar(input[i - 1], "\"\') ") == 0)
-		if (!create_string(input, &i, &data->token_vec))
-			return (set_err(MALLOC, "lexer", data));
 	return (true);
 }

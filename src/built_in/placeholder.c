@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/04 14:46:00 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/02 21:02:04 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/03 18:45:31 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,15 @@ void	ft_pwd(t_group *group)
 
 void	ft_env(t_group *group, t_vector *env_vec)
 {
-	char	**env;
-	char	**start;
+	size_t	i;
 
 	(void)group;
-	env = combine_env(env_vec);
-	start = env;
-	while (*env)
+	i = 0;
+	while (i < env_vec->length)
 	{
-		printf("%s\n", *env);
-		env++;
+		printf("%s=%s\n", ((t_env *)vec_get(env_vec, i))->key,
+			((t_env *)vec_get(env_vec, i))->value);
+		i++;
 	}
-	ft_free(start);
 	exit(0);
 }

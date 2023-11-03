@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/23 10:10:23 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/02 21:02:08 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/03 15:20:51 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,37 @@
 
 extern t_signal	g_signal;
 
-static bool	check_flag(char **args)
+/**
+ * @brief Checks if a flag only contains n's
+ *
+ * @param group The group struct with the args
+ * @return size_t The index of the first non-flag argument or 1 if no flags
+ */
+static size_t	check_flags(t_group *group)
 {
-	return (args[1] && ft_strcmp(args[1], "-n") == 0);
+	size_t	i;
+	size_t	j;
+
+	i = 1;
+	while (group->args[i])
+	{
+		j = 1;
+		if (group->args[i][0] != '-')
+			return (i);
+		while (group->args[i][j] == 'n')
+			j++;
+		if (group->args[i][j] != '\0')
+			return (i);
+		i++;
+	}
+	return (1);
 }
 
 void	ft_echo(t_group *group)
 {
-	size_t i;
+	size_t	i;
 
-	if (group->args[1] && ft_strncmp(group->args[1], "-n", 2) == 0)
-		i = 2;
-	else
-		i = 1;
+	i = check_flags(group);
 	while (group->args[i])
 	{
 		write(1, group->args[i], ft_strlen(group->args[i]));
