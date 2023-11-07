@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/31 22:20:10 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/03 18:43:33 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/07 15:47:25 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,10 @@ void	ft_export(t_group *group, t_vector *env_vec)
 		if (token)
 		{
 			free(token->value);
-			token->value = ft_strdup(env[1]);
+			if (!env[1])
+				token->value = ft_strdup("");
+			else
+				token->value = ft_strdup(env[1]);
 		}
 		else
 			add_env(env_vec, env[0], env[1]);
