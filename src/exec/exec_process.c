@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 16:08:08 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/12 20:43:15 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/03 21:24:01 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ void	exec_process(t_group *group, t_process type, t_vector *env_vec)
 
 	close_unused(type, group);
 	validate_redirects(group);
+	if (group->cmd == NULL)
+		exit (0);
 	if (is_builtin(group->cmd))
 		exec_built_in(group, type, env_vec);
 	check_cmd(group, type, env_vec);
