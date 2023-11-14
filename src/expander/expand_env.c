@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/26 16:02:26 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/03 14:58:37 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/14 16:21:20 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static t_env	*compare_key(char *key, char *str, size_t *i, t_shell *data)
 	free(key);
 	if (env_i == (&data->env)->length)
 	{
-		while (str[(*i)] && !checkchar(str[(*i)], "\'\" "))
+		while (str[(*i)] && ft_isalnum(str[(*i)]))
 			(*i)++;
 		return (NULL);
 	}
@@ -62,7 +62,7 @@ static char	*get_env_key(char *str, size_t *i, t_shell *data)
 	char	*key;
 
 	start = (*i);
-	while (str[(*i)] && (str[(*i)] >= 'A' && str[(*i)] <= 'Z'))
+	while (str[(*i)] && ft_isalnum(str[(*i)]))
 		(*i)++;
 	key = ft_substr(str, start, (*i) - start);
 	if (!key)

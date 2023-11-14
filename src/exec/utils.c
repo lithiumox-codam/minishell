@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/01 19:44:05 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/07 15:16:43 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/14 16:21:13 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 bool	is_builtin(char *str)
 {
+	if (str == NULL)
+		return (false);
 	if (ft_strcmp(str, "exit") == 0 || ft_strcmp(str, "cd") == 0
 		|| ft_strcmp(str, "env") == 0 || ft_strcmp(str, "export") == 0
 		|| ft_strcmp(str, "unset") == 0 || ft_strcmp(str, "pwd") == 0
@@ -24,6 +26,8 @@ bool	is_builtin(char *str)
 
 bool	is_special_builtin(char *str)
 {
+	if (str == NULL)
+		return (false);
 	if (ft_strcmp(str, "exit") == 0 || ft_strcmp(str, "unset") == 0
 		|| ft_strcmp(str, "export") == 0 || ft_strcmp(str, "cd") == 0)
 		return (true);
