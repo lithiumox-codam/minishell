@@ -1,38 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   placeholder.c                                      :+:    :+:            */
+/*   utils.c                                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/10/04 14:46:00 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/07 15:49:57 by mdekker       ########   odam.nl         */
+/*   Created: 2023/11/16 18:52:54 by mdekker/jde   #+#    #+#                 */
+/*   Updated: 2023/11/16 19:00:42 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	ft_pwd(t_group *group)
+/**
+ * @brief Prints the entire environment with 'declare -x' in front of it
+ *
+ * @param env The environment to print
+ * @param arg_2 The second argument of the command if there is one
+ * @return void
+ */
+void	print_env_dec(t_vector *env, char *arg_2)
 {
-	char	buff[1024];
+	size_t i;
 
-	(void)group;
-	getcwd(buff, 1024);
-	printf("%s\n", buff);
-	exit(0);
-}
-
-void	ft_env(t_group *group, t_vector *env_vec)
-{
-	size_t	i;
-
-	(void)group;
 	i = 0;
-	while (i < env_vec->length)
+	if (arg_2)
+		return ;
+	while (i < env->length)
 	{
-		printf("%s=%s\n", ((t_env *)vec_get(env_vec, i))->key,
-			((t_env *)vec_get(env_vec, i))->value);
+		printf("declare -x %s=%s\n", ((t_env *)vec_get(env, i))->key,
+			((t_env *)vec_get(env, i))->value);
 		i++;
 	}
-	exit(0);
 }

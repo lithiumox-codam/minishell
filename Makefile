@@ -23,10 +23,14 @@ SRC = main \
     exec/exec_process \
     exec/redirect \
 	exec/check_cmd \
-	built_in/placeholder_special \
-	built_in/placeholder \
+	built_in/exit \
+	built_in/pwd \
 	built_in/export \
 	built_in/echo \
+	built_in/cd \
+	built_in/utils \
+	built_in/unset \
+	built_in/env \
 	lexer/index \
 	expander/index \
 	expander/expand_env \

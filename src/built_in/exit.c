@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/04 15:01:59 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/01 11:42:38 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/16 23:16:52 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,15 @@ int long long	ft_exit_atoi(char *str)
 	return (output);
 }
 
+/**
+ * @brief The exit command will exit the shell with the given exit code.
+ *
+ * @param group The group struct with the args
+ * @param data The shell struct
+ * @return void
+ *
+ * !TODO: Make the function smaller
+ */
 void	ft_exit(t_group *group, t_shell *data)
 {
 	size_t			i;
@@ -64,64 +73,4 @@ void	ft_exit(t_group *group, t_shell *data)
 	output = ft_exit_atoi(group->args[1]);
 	free_shell(data, true);
 	exit(output);
-}
-
-void	ft_cd(t_group *group, t_vector *env_vec)
-{
-	char	*path;
-
-	path = NULL;
-	(void)env_vec;
-	if (group->args[1] == NULL)
-		path = "";
-	else if (group->args[2] != NULL)
-	{
-		write(1, "minishell: cd: too many arguments\n", 35);
-		g_signal.exit_status = 1;
-	}
-	else if (ft_strcmp(group->args[1], "-") == 0)
-		path = "";
-	else
-		path = ft_strdup(group->args[1]);
-	if (path && chdir(path) == -1)
-	{
-		write(1, "minishell: cd: ", 15);
-		g_signal.exit_status = 1;
-	}
-	else if (!path)
-	{
-		write(1, "minishell: cd: HOME not set\n", 29);
-		g_signal.exit_status = 1;
-	}
-	else
-		g_signal.exit_status = 0;
-}
-
-void	ft_unset(t_group *group, t_vector *env_vec)
-{
-	size_t	i;
-	size_t	index;
-	t_env	*token;
-
-	i = 1;
-	while (group->args[i])
-	{
-		token = (t_env *)vec_find_f(env_vec, compare_env_key, group->args[i]);
-		if (token)
-		{
-			index = (size_t)(token - (t_env *)env_vec->data);
-			if (!vec_remove(env_vec, index))
-			{
-				g_signal.exit_status = 1;
-				return ;
-			}
-		}
-		else
-		{
-			g_signal.exit_status = 1;
-			return ;
-		}
-		i++;
-	}
-	g_signal.exit_status = 0;
 }

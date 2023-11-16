@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/23 10:10:23 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/03 15:20:51 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/16 19:05:44 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 extern t_signal	g_signal;
 
 /**
- * @brief Checks if a flag only contains n's
+ * @brief Checks if a flag only contains n's and if it does, it will return the
+ * index of the first non-flag argument or 1 if no flags.
  *
  * @param group The group struct with the args
  * @return size_t The index of the first non-flag argument or 1 if no flags
@@ -40,6 +41,11 @@ static size_t	check_flags(t_group *group)
 	return (1);
 }
 
+/**
+ * @brief Prints the arguments of the echo command
+ * @param group The group struct with the args
+ * @return void
+ */
 void	ft_echo(t_group *group)
 {
 	size_t	i;

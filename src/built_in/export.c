@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/31 22:20:10 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/14 17:28:42 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/16 19:05:04 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,8 +112,7 @@ static void	add_env(t_vector *env_vec, char *key, char *value)
  *
  * @param group The group struct that contains the arguments
  * @param env_vec The vector that contains the enviroment variables
- *
- * !TODO: Add the ability to export without arguments aka print
+ * @return void
  */
 void	ft_export(t_group *group, t_vector *env_vec)
 {
@@ -122,6 +121,7 @@ void	ft_export(t_group *group, t_vector *env_vec)
 	t_env	*token;
 
 	i = 1;
+	print_env_dec(env_vec, group->args[1]);
 	while (group->args[i])
 	{
 		if (!validate_input(group))
