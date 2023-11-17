@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/11/16 23:12:07 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/16 23:13:13 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/17 15:26:31 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_env(t_vector *env_vec)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (i < env_vec->length)

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/23 10:10:23 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/16 19:05:44 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/17 15:39:14 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static size_t	check_flags(t_group *group)
 			return (i);
 		while (group->args[i][j] == 'n')
 			j++;
-		if (group->args[i][j] != '\0')
+		if (group->args[i][j] != '\0' && group->args[i + 1] == NULL)
 			return (i);
 		i++;
 	}

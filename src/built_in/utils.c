@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/11/16 18:52:54 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/16 19:00:42 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/17 15:26:12 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
  */
 void	print_env_dec(t_vector *env, char *arg_2)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	if (arg_2)

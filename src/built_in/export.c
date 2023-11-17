@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/31 22:20:10 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/16 19:05:04 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/17 16:08:44 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,28 +32,21 @@ static char	*string_handler(char *input)
 	return (str);
 }
 
-static bool	validate_input(t_group *group)
+static bool	validate_input(char *arg, size_t *i)
 {
-	size_t	i;
 	size_t	j;
 
-	i = 1;
-	while (group->args[i])
+	j = 0;
+	if (!ft_isalpha(arg[0]))
 	{
-		j = 0;
-		while (group->args[i][j])
-		{
-			if (j == 0 && !ft_isalpha(group->args[i][j]))
-			{
-				printf("export: `%s': not a valid identifier 1\n",
-					group->args[i]);
-				g_signal.exit_status = 1;
-				return (false);
-			}
-			j++;
-		}
-		i++;
+		printf("export: `%s': not a valid identifier 1\n", arg);
+		g_signal.exit_status = 1;
+		return ((*i)++, false);
 	}
+	while (arg[j] && arg[j] != '=')
+		j++;
+	if (arg[j] == '\0')
+		return ((*i)++, false);
 	return (true);
 }
 
@@ -124,8 +117,8 @@ void	ft_export(t_group *group, t_vector *env_vec)
 	print_env_dec(env_vec, group->args[1]);
 	while (group->args[i])
 	{
-		if (!validate_input(group))
-			return ;
+		if (!validate_input(group->args[i], &i))
+			continue ;
 		env = ft_split(group->args[i], '=');
 		if (!env)
 			return ;

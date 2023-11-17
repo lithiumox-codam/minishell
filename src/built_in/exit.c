@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/04 15:01:59 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/17 01:27:28 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/17 15:25:17 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int long long	ft_exit_atoi(char *str)
 	return (output);
 }
 
-static void	check_args(t_group *group, t_shell *data)
+static bool	check_args(t_group *group, t_shell *data)
 {
 	if (group->args[1] == NULL)
 	{
@@ -40,8 +40,9 @@ static void	check_args(t_group *group, t_shell *data)
 	{
 		write(1, "minishell: exit: too many arguments\n", 37);
 		g_signal.exit_status = 1;
-		return ;
+		return (false);
 	}
+	return (true);
 }
 
 /**
@@ -50,9 +51,6 @@ static void	check_args(t_group *group, t_shell *data)
  * @param group The group struct with the args
  * @param data The shell struct
  * @return void
- *
- * TODO: Its smaller but when there is more than 2 inputs
- * it does both error messages
  */
 void	ft_exit(t_group *group, t_shell *data)
 {
@@ -60,7 +58,8 @@ void	ft_exit(t_group *group, t_shell *data)
 	int long long	output;
 
 	i = 0;
-	check_args(group, data);
+	if (!check_args(group, data))
+		return ;
 	while (group->args[1][i])
 	{
 		if (!ft_isdigit(group->args[1][i]))

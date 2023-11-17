@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/11/16 22:56:39 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/17 01:17:28 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/17 15:31:20 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	ft_unset(t_group *group, t_vector *env_vec)
 		}
 		else
 		{
-			g_signal.exit_status = 1;
+			g_signal.exit_status = 0;
 			return ;
 		}
 		i++;
