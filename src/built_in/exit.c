@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/04 15:01:59 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/17 01:08:50 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/17 01:27:28 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,21 @@ int long long	ft_exit_atoi(char *str)
 	return (output);
 }
 
+static void	check_args(t_group *group, t_shell *data)
+{
+	if (group->args[1] == NULL)
+	{
+		free_shell(data, true);
+		exit(0);
+	}
+	if (group->args[2] != NULL)
+	{
+		write(1, "minishell: exit: too many arguments\n", 37);
+		g_signal.exit_status = 1;
+		return ;
+	}
+}
+
 /**
  * @brief The exit command will exit the shell with the given exit code.
  *
@@ -36,7 +51,8 @@ int long long	ft_exit_atoi(char *str)
  * @param data The shell struct
  * @return void
  *
- * TODO: Make the function smaller
+ * TODO: Its smaller but when there is more than 2 inputs
+ * it does both error messages
  */
 void	ft_exit(t_group *group, t_shell *data)
 {
@@ -44,27 +60,13 @@ void	ft_exit(t_group *group, t_shell *data)
 	int long long	output;
 
 	i = 0;
-	while (group->args[i])
-		i++;
-	if (i == 1)
-	{
-		free_shell(data, true);
-		exit(0);
-	}
-	if (i > 2)
-	{
-		write(1, "minishell: exit: too many arguments\n", 37);
-		g_signal.exit_status = 1;
-		return ;
-	}
-	i = 0;
+	check_args(group, data);
 	while (group->args[1][i])
 	{
 		if (!ft_isdigit(group->args[1][i]))
 		{
-			write(1, "minishell: exit: ", 17);
-			write(1, group->args[1], ft_strlen(group->args[1]));
-			write(1, ": numeric argument required\n", 28);
+			printf("minishell: exit: %s: numeric argument required\n",
+				group->args[1]);
 			g_signal.exit_status = 2;
 			return ;
 		}

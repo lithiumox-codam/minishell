@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/11/16 22:56:39 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/16 22:56:48 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/17 01:17:28 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,16 @@
 
 extern t_signal	g_signal;
 
+/**
+ * @brief The main function of the unset built_in. It will loop through the
+ * arguments and remove the corresponding environment variables from the
+ * environment vector.
+ *
+ * @param group The group struct containing the arguments
+ * @param env_vec The environment vector
+ * @return void
+ * @note The exit status will be set to 1 if an error occurs
+ */
 void	ft_unset(t_group *group, t_vector *env_vec)
 {
 	size_t i;
