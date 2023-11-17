@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   placeholder_special.c                              :+:    :+:            */
+/*   exit.c                                             :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/04 15:01:59 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/16 23:16:52 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/17 01:08:50 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int long long	ft_exit_atoi(char *str)
  * @param data The shell struct
  * @return void
  *
- * !TODO: Make the function smaller
+ * TODO: Make the function smaller
  */
 void	ft_exit(t_group *group, t_shell *data)
 {
