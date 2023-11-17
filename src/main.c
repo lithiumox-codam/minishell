@@ -6,13 +6,27 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/03 21:42:00 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/17 12:17:38 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
 t_signal	g_signal;
+
+/**
+ * @brief	sets up signal handling and avoid readline catching sigs
+ * @note	SIGINT = Ctrl-C
+ * @note	SIGQUIT = Ctrl-\
+ * @note	EOF = Ctrl-D
+ */
+static void	setup_signals(void)
+{
+	rl_catch_signals = 0;
+	signal(SIGINT, signal_main);
+	signal(SIGQUIT, signal_main);
+	signal(EOF, signal_main);
+}
 
 static void	debug(void)
 {
@@ -31,7 +45,7 @@ static void	soft_exit(char *input, t_shell *data)
 	vec_init(&data->token_vec, 5, sizeof(t_token), clear_token);
 }
 
-static bool function_map(char *input, t_shell *data)
+static bool	function_map(char *input, t_shell *data)
 {
 	bool	(*function[5])(t_shell *);
 	int		i;
@@ -41,7 +55,6 @@ static bool function_map(char *input, t_shell *data)
 	function[2] = expand_tokens;
 	function[3] = group_token_vec;
 	function[4] = executor;
-
 	if (!lexer(input, data))
 		return (false);
 	i = -1;
@@ -91,6 +104,7 @@ int	main(int ac, char **av, char **env)
 		write(2, "Too many arguments\n", 20);
 		return (1);
 	}
+	setup_signals();
 	data = init_shell(env, true);
 	loop(data);
 	return (0);

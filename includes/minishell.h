@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/11/02 17:39:42 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/17 12:15:14 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <libft.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 # include <stdarg.h>
 # include <stdbool.h>
 # include <stdio.h>
@@ -95,6 +96,11 @@ void	ft_unset(t_group *group);
 void	ft_echo(t_group *group);
 void	ft_pwd(t_group *group);
 void	ft_env(t_group *group, t_vector *env_vec);
+
+/* signals */
+void	signal_main(void);
+void	signal_hdoc(void);
+void	signal_child(void);
 
 /* structs */
 t_token	*create_token(char *value, t_types type);
