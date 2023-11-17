@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/03 18:11:09 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/03 21:40:09 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/14 16:21:24 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,30 +32,6 @@ void	free_shell(t_shell *data, bool close_shell)
 	{
 		vec_free(&data->env);
 		free(data);
-	}
-}
-
-/**
- * @brief Initializes the enviroment variables
- *
- * @param env The enviroment variables
- */
-static void	init_env(char **env, t_vector *env_vec)
-{
-	size_t	i;
-	char	*key;
-	char	*value;
-
-	i = 0;
-	while (env[i] != NULL)
-	{
-		key = ft_substr(env[i], 0, ft_strchr(env[i], '=') - env[i]);
-		value = ft_strdup(ft_strchr(env[i], '=') + 1);
-		if (!key || !value)
-			exit_mini("init_env", 1);
-		if (!vec_push(env_vec, create_env(key, value)))
-			exit_mini("init_env", 1);
-		i++;
 	}
 }
 

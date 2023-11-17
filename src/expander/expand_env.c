@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/26 16:02:26 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/03 18:50:19 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/14 16:21:20 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ static char	*get_env_key(char *str, size_t *i, t_shell *data)
 		set_err(MALLOC, "expand_env", data);
 	return (key);
 }
+
 bool	expand_env(char *str, size_t *i, t_vector *vec, t_shell *data)
 {
 	char	*key;

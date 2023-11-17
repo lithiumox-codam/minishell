@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/03 21:42:00 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/14 16:21:52 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	soft_exit(char *input, t_shell *data)
 	vec_init(&data->token_vec, 5, sizeof(t_token), clear_token);
 }
 
-static bool function_map(char *input, t_shell *data)
+static bool	function_map(char *input, t_shell *data)
 {
 	bool	(*function[5])(t_shell *);
 	int		i;
@@ -41,7 +41,6 @@ static bool function_map(char *input, t_shell *data)
 	function[2] = expand_tokens;
 	function[3] = group_token_vec;
 	function[4] = executor;
-
 	if (!lexer(input, data))
 		return (false);
 	i = -1;

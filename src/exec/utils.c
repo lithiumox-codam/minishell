@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/01 19:44:05 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/03 21:20:03 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/14 16:21:13 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ bool	is_special_builtin(char *str)
 
 char	**combine_env(t_vector *env_vec)
 {
-	char	**env;
-	t_env	*env_token;
-	size_t	i;
+	char **env;
+	t_env *env_token;
+	size_t i;
 
 	i = 0;
 	env = malloc(sizeof(char *) * (env_vec->length + 1));
