@@ -29,7 +29,7 @@ SRC = main \
 	expander/index \
 	expander/expand_env \
 	expander/expand_quotes \
-	signals\index
+	signals/index
 
 SRCS = $(addsuffix .c, $(addprefix src/, $(SRC)))
 OBJS = $(patsubst src/%.c, build/%.o, $(SRCS))

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/19 21:42:24 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/07 19:17:47 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/17 15:27:08 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,8 @@ void	write_err(t_shell *data)
 	}
 	if (data->exit_type == OUT_OF_SCOPE)
 	{
-		write(STDERR_FILENO, "minishell: operator: `", 23);
-		write(STDERR_FILENO, data->exit_msg, ft_strlen(data->exit_msg));
-		write(STDERR_FILENO, "`: out of project scope\n", 25);
+		write(STDERR_FILENO, "minishell: operators: ( ) ; \\ & out of scope",
+			45);
 		g_signal.exit_status = 2;
 	}
 	if (data->exit_type == SIGNAL_C)

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/17 12:17:38 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/17 19:44:18 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ static void	setup_signals(void)
 {
 	rl_catch_signals = 0;
 	signal(SIGINT, signal_main);
-	signal(SIGQUIT, signal_main);
-	signal(EOF, signal_main);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 static void	debug(void)
@@ -77,8 +76,15 @@ static void	loop(t_shell *data)
 
 	while (1)
 	{
-		input = readline("\nminishell\n❯ ");
-		if (!input || input[0] == '\0')
+		setup_signals();
+		input = readline(" ❯ ");
+		if (input == NULL)
+		{
+			free_shell(data, true);
+			printf("exit\n");
+			exit(0);
+		}
+		if (input[0] == '\0')
 		{
 			free(input);
 			continue ;
@@ -104,7 +110,6 @@ int	main(int ac, char **av, char **env)
 		write(2, "Too many arguments\n", 20);
 		return (1);
 	}
-	setup_signals();
 	data = init_shell(env, true);
 	loop(data);
 	return (0);

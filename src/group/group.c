@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:05 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/30 21:54:33 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/17 16:19:50 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ bool	alloc_args(t_group *group, size_t i, t_shell *data)
 
 /**
 	* @note check the else statement depending on how we will handle quotes
-	 (ie. could be else if (token->type == STRING
+		(ie. could be else if (token->type == STRING
 		|| token->type == QUOTE_STRING)
  *
  */
