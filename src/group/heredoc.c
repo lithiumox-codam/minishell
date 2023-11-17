@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/16 12:15:45 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/17 19:42:36 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/17 20:00:03 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,12 @@ static bool	push_hdoc(char *filename, t_group *group, t_shell *data)
 static bool	hdoc_read(size_t heredoc_fd, t_token *token, t_shell *data)
 {
 	char	*line;
+	int		i;
 
-	rl_catch_signals = 1;
+	rl_catch_signals = 0;
 	while (1)
 	{
+		rl_set_signals();
 		line = readline(">");
 		if (line == NULL || ft_strcmp(line, token->value) == 0)
 			break ;
@@ -51,6 +53,12 @@ static bool	hdoc_read(size_t heredoc_fd, t_token *token, t_shell *data)
 		{
 			if (!hdoc_expand(&line, data))
 				return (false);
+		}
+		i = 0;
+		while (line[i])
+		{
+			printf("line[i]=%d\n", line[i]);
+			i++;
 		}
 		write(heredoc_fd, line, ft_strlen(line));
 		write(heredoc_fd, "\n", 1);
