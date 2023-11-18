@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/11/16 23:17:36 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/18 23:20:27 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,10 @@ bool	hdoc_expand(char **str, t_shell *data);
 /* executor */
 bool	executor(t_shell *data);
 bool	create_processes(t_shell *data);
-void	exec_process(t_group *group, t_process type, t_vector *env_vec);
+void	exec_process(t_group *group, t_process type, t_shell *data);
 void	dup_fd(t_group *group, t_process type);
 void	check_cmd(t_group *group, t_process type, t_vector *env_vec);
-void	exec_built_in(t_group *group, t_process type, t_vector *env_vec);
+void	exec_built_in(t_group *group, t_process type, t_shell *data);
 void	exec_absolute_path(t_group *group, t_process type, t_vector *env_vec);
 void	handle_redirects(t_group *group);
 void	validate_redirects(t_group *group);
@@ -89,7 +89,7 @@ char	**combine_env(t_vector *env_vec);
 
 /* built_in */
 void	ft_exit(t_group *group, t_shell *data);
-void	ft_cd(t_group *group, t_vector *env_vec);
+void	ft_cd(t_group *group, t_shell *data);
 void	ft_export(t_group *group, t_vector *env_vec);
 void	ft_unset(t_group *group, t_vector *env_vec);
 void	ft_echo(t_group *group);

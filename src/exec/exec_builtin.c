@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/11 14:04:28 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/16 23:19:34 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/18 23:15:28 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /**
  * @note	check if dup_fd or redirects should be done for the built_in
  */
-void	exec_built_in(t_group *group, t_process type, t_vector *env_vec)
+void	exec_built_in(t_group *group, t_process type, t_shell *data)
 {
 	dup_fd(group, type);
 	if (is_special_builtin(group->cmd))
@@ -25,7 +25,7 @@ void	exec_built_in(t_group *group, t_process type, t_vector *env_vec)
 	else if (ft_strcmp(group->cmd, "pwd") == 0)
 		ft_pwd();
 	else if (ft_strcmp(group->cmd, "env") == 0)
-		ft_env(env_vec);
+		ft_env(&data->env);
 }
 
 void	exec_special_builtin(t_group *group, t_shell *data)
@@ -33,7 +33,7 @@ void	exec_special_builtin(t_group *group, t_shell *data)
 	if (ft_strcmp(group->cmd, "exit") == 0)
 		ft_exit(group, data);
 	else if (ft_strcmp(group->cmd, "cd") == 0)
-		ft_cd(group, &data->env);
+		ft_cd(group, data);
 	else if (ft_strcmp(group->cmd, "export") == 0)
 		ft_export(group, &data->env);
 	else if (ft_strcmp(group->cmd, "unset") == 0)

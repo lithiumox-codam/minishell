@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 12:40:07 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/12 20:17:37 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/18 23:22:14 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ static bool	set_pipe(t_group *group, size_t i, size_t count, t_shell *data)
 static void	call_process(t_group *group, size_t i, size_t count, t_shell *data)
 {
 	if (i == 0)
-		exec_process(group, LEFT, (&data->env));
+		exec_process(group, LEFT, data);
 	else if ((i == 1 && count == 2) || (count > 2 && i == count - 1))
-		exec_process(group, RIGHT, (&data->env));
+		exec_process(group, RIGHT, data);
 	else
-		exec_process(group, MIDDLE, (&data->env));
+		exec_process(group, MIDDLE, data);
 }
 
 static void	set_group_and_close(t_group *group, pid_t pid, size_t i)
@@ -91,7 +91,7 @@ bool	create_processes(t_shell *data)
 		if (group->pd == -1)
 			return (set_err(PERR, NULL, data));
 		if (group->pd == 0)
-			exec_process(group, SINGLE, (&data->env));
+			exec_process(group, SINGLE, data);
 	}
 	else
 		fork_and_pipe(data);

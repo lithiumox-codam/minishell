@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 11:15:16 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/10/12 18:19:49 by julius        ########   odam.nl         */
+/*   Updated: 2023/11/18 23:06:40 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ typedef struct s_shell
 	t_vector	env;
 	t_exec		*exec;
 	t_exit		exit_type;
+	t_error		error_type;
 	char		*exit_msg;
 }				t_shell;
 
