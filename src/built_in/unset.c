@@ -6,13 +6,11 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/11/16 22:56:39 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/20 17:53:14 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/20 20:57:30 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-extern t_signal	g_signal;
 
 /**
  * @brief The main function of the unset built_in. It will loop through the

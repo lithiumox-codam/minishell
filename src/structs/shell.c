@@ -6,13 +6,11 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/03 18:11:09 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/20 17:26:00 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/20 20:57:12 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-extern t_signal	g_signal;
 
 /**
  * @brief	frees the main data struct

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/11/20 18:10:00 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/20 21:10:13 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void	ft_pwd(void);
 void	ft_env(t_vector *env_vec);
 void	print_env_dec(t_vector *env, char *arg_2);
 void	update_or_create_env(t_vector *env, char *key, char *value);
+char	**ft_export_split(char *src, char delimter);
 
 /* structs */
 t_token	*create_token(char *value, t_types type);

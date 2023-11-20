@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/11/16 18:52:54 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/20 18:09:17 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/20 21:11:00 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,42 @@ void	update_or_create_env(t_vector *env, char *key, char *value)
 	}
 	else
 	{
-		if (!vec_push(env, create_env(key, ft_strdup(value))))
+		if (!vec_push(env, create_env(ft_strdup(key), ft_strdup(value))))
 			exit_mini("update_or_create_env", 1);
 	}
+}
+
+/**
+ * @brief A version of split that only splits on the first occurence of the
+ * delimiter and treats the rest as one string
+ *
+ * @param src The string to split
+ * @param delimiter The delimiter to split on
+ * @return char** The splitted string
+ */
+char	**ft_export_split(char *src, char delimter)
+{
+	char	**ret;
+	size_t	i;
+
+	ret = malloc(sizeof(char *) * 3);
+	if (!ret)
+		exit_mini("ft_export_split", 1);
+	i = 0;
+	while (src[i] && src[i] != delimter)
+		i++;
+	ret[0] = ft_substr(src, 0, i);
+	if (!ret[0])
+		exit_mini("ft_export_split", 1);
+	if (src[i] == delimter)
+	{
+		i++;
+		ret[1] = ft_strdup(src + i);
+		if (!ret[1])
+			exit_mini("ft_export_split", 1);
+	}
+	else
+		ret[1] = NULL;
+	ret[2] = NULL;
+	return (ret);
 }

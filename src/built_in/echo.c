@@ -6,13 +6,11 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/23 10:10:23 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/17 15:39:14 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/20 20:57:24 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-extern t_signal	g_signal;
 
 /**
  * @brief Checks if a flag only contains n's and if it does, it will return the

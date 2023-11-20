@@ -6,13 +6,11 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/31 22:20:10 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/20 17:48:14 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/20 21:10:27 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-extern t_signal	g_signal;
 
 /**
  * @brief Takes in a string and if it is a valid string, it will return a
@@ -119,7 +117,7 @@ void	ft_export(t_group *group, t_shell *data)
 	{
 		if (!validate_input(group->args[i], &i, data))
 			continue ;
-		env = ft_split(group->args[i], '=');
+		env = ft_export_split(group->args[i], '=');
 		if (!env)
 			return ;
 		token = (t_env *)vec_find_f(&data->env, compare_env_key, env[0]);

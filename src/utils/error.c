@@ -6,13 +6,11 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/19 21:42:24 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/07 19:17:47 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/20 21:01:00 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-extern t_signal	g_signal;
 
 /**
  * @brief called if there is an error in minihsell that should close the program
@@ -57,14 +55,14 @@ void	write_err(t_shell *data)
 	if (data->exit_type == PERR)
 	{
 		perror("minishell");
-		g_signal.exit_status = errno;
+		data->error_type = errno;
 	}
 	if (data->exit_type == MALLOC)
 	{
 		write(STDERR_FILENO, "minishell: malloc error in : ", 28);
 		write(STDERR_FILENO, data->exit_msg, ft_strlen(data->exit_msg));
 		write(STDERR_FILENO, "\n", 1);
-		g_signal.exit_status = 1;
+		data->error_type = CATCH_ALL;
 	}
 	if (data->exit_type == SYNTAX)
 	{
@@ -72,26 +70,26 @@ void	write_err(t_shell *data)
 			47);
 		write(STDERR_FILENO, data->exit_msg, ft_strlen(data->exit_msg));
 		write(STDERR_FILENO, "'\n", 2);
-		g_signal.exit_status = 258;
+		data->error_type = SYNTAX_ERROR;
 	}
 	if (data->exit_type == SYNTAX_MINI)
 	{
 		write(STDERR_FILENO, "minishell: unfinished operator : `", 34);
 		write(STDERR_FILENO, data->exit_msg, ft_strlen(data->exit_msg));
 		write(STDERR_FILENO, "`\n", 2);
-		g_signal.exit_status = 2;
+		data->error_type = MISUSE_OF_SHELL;
 	}
 	if (data->exit_type == OUT_OF_SCOPE)
 	{
 		write(STDERR_FILENO, "minishell: operator: `", 23);
 		write(STDERR_FILENO, data->exit_msg, ft_strlen(data->exit_msg));
 		write(STDERR_FILENO, "`: out of project scope\n", 25);
-		g_signal.exit_status = 2;
+		data->error_type = MISUSE_OF_SHELL;
 	}
 	if (data->exit_type == SIGNAL_C)
 	{
 		write(STDERR_FILENO, "^C\n", 3);
-		g_signal.exit_status = 130;
+		data->error_type = UNEXPECTED_EOF;
 	}
 	free_shell(data, false);
 }
