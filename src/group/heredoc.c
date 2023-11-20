@@ -6,32 +6,45 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/16 12:15:45 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/17 20:00:03 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/19 13:51:17 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
+extern t_signal	g_signal;
+
 static bool	push_hdoc(char *filename, t_group *group, t_shell *data)
 {
-	char	*fname;
-	t_token	*fname_token;
+	char	**fname;
 	t_token	*red_token;
 
-	fname = ft_strdup(filename);
+	fname = malloc(sizeof(char *));
 	if (!fname)
 		return (set_err(MALLOC, "push_hdoc", data));
 	red_token = create_token(filename, I_REDIRECT);
 	if (!red_token)
-		return (set_err(MALLOC, "push_hdoc", data));
+		return (free(fname), set_err(MALLOC, "push_hdoc", data));
 	if (!vec_push(&group->in_red, (void *)red_token))
-		return (set_err(MALLOC, "push_hdoc", data));
-	fname_token = create_token(fname, STRING);
-	if (!fname_token)
-		return (set_err(MALLOC, "push_hdoc", data));
-	if (!vec_push(&data->exec->fname_vec, (void *)fname_token))
-		return (set_err(MALLOC, "push_hdoc", data));
+		return (free(fname), set_err(MALLOC, "push_hdoc", data));
+	*fname = ft_strdup(filename);
+	if (!*fname)
+		return (free(fname), set_err(MALLOC, "push_hdoc", data));
+	if (!vec_push(&data->exec->fname_vec, (void *)fname))
+		return (free(*fname), free(fname), set_err(MALLOC, "push_hdoc", data));
 	return (true);
+}
+
+/**
+ * @brief	sets up signal handling and avoid readline catching sigs
+ * @note	SIGINT = Ctrl-C
+ * @note	SIGQUIT = Ctrl-\
+ */
+static void	setup_hdoc_signals(void)
+{
+	rl_catch_signals = 1;
+	signal(SIGINT, signal_hdoc);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 /**
@@ -40,12 +53,10 @@ static bool	push_hdoc(char *filename, t_group *group, t_shell *data)
 static bool	hdoc_read(size_t heredoc_fd, t_token *token, t_shell *data)
 {
 	char	*line;
-	int		i;
 
-	rl_catch_signals = 0;
+	setup_hdoc_signals();
 	while (1)
 	{
-		rl_set_signals();
 		line = readline(">");
 		if (line == NULL || ft_strcmp(line, token->value) == 0)
 			break ;
@@ -54,12 +65,8 @@ static bool	hdoc_read(size_t heredoc_fd, t_token *token, t_shell *data)
 			if (!hdoc_expand(&line, data))
 				return (false);
 		}
-		i = 0;
-		while (line[i])
-		{
-			printf("line[i]=%d\n", line[i]);
-			i++;
-		}
+		if (g_signal.inte)
+			return (free(line), set_err(SIGNAL_C, NULL, data));
 		write(heredoc_fd, line, ft_strlen(line));
 		write(heredoc_fd, "\n", 1);
 		free(line);
@@ -98,12 +105,17 @@ bool	hdoc_found(t_group *group, size_t i, t_shell *data)
 {
 	t_token	*token;
 	char	*filename;
+	char	*nb;
 
-	filename = ft_strjoin("./src/hdoc_files/", ft_itoa((i)));
+	nb = ft_itoa(i);
+	filename = ft_strjoin("./src/hdoc_files/", nb);
+	free(nb);
 	if (!filename)
 		return (set_err(MALLOC, "hdoc_found", data));
 	token = vec_get(&data->token_vec, i);
+	if (!push_hdoc(filename, group, data))
+		return (false);
 	if (!heredoc(filename, token, data))
 		return (false);
-	return (push_hdoc(filename, group, data));
+	return (true);
 }

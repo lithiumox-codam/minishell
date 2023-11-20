@@ -6,11 +6,13 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/11/17 11:36:59 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/17 19:34:54 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/19 14:39:04 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+extern t_signal	g_signal;
 
 void	signal_main(int signal_num)
 {
@@ -27,6 +29,8 @@ void	signal_hdoc(int signal_num)
 {
 	if (signal_num == SIGINT)
 	{
+		g_signal.inte = true;
+		printf("\n");
 	}
 }
 

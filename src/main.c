@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/17 19:44:18 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/19 14:28:26 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ t_signal	g_signal;
  * @brief	sets up signal handling and avoid readline catching sigs
  * @note	SIGINT = Ctrl-C
  * @note	SIGQUIT = Ctrl-\
- * @note	EOF = Ctrl-D
  */
 static void	setup_signals(void)
 {
+	// rl_done = 0;
 	rl_catch_signals = 0;
 	signal(SIGINT, signal_main);
 	signal(SIGQUIT, SIG_IGN);
@@ -78,6 +78,7 @@ static void	loop(t_shell *data)
 	{
 		setup_signals();
 		input = readline(" ❯ ");
+		rl_redisplay();
 		if (input == NULL)
 		{
 			free_shell(data, true);

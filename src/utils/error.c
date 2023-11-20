@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/19 21:42:24 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/17 15:27:08 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/19 13:44:54 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,7 @@ void	write_err(t_shell *data)
 		g_signal.exit_status = 2;
 	}
 	if (data->exit_type == SIGNAL_C)
-	{
-		write(STDERR_FILENO, "^C\n", 3);
 		g_signal.exit_status = 130;
-	}
-	free_shell(data, false);
 }
 
 /**

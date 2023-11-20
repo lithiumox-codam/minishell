@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 20:42:59 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/12 21:25:36 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/19 13:54:50 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@ void	clear_group(void *data)
 
 void	clear_fname(void *data)
 {
-	t_token	*filename;
+	char	**filename;
 
 	if (!data)
 		return ;
-	filename = (t_token *)data;
-	if (-1 == unlink(filename->value))
+	filename = (char **)data;
+	if (-1 == unlink(*filename))
 		perror("minishell");
-	free(filename->value);
+	free(*filename);
 	filename = NULL;
 }
 
@@ -102,7 +102,7 @@ t_exec	*create_exec(void)
 		free(exec);
 		return (NULL);
 	}
-	if (!vec_init(&exec->fname_vec, 1, sizeof(t_token), clear_fname))
+	if (!vec_init(&exec->fname_vec, 1, sizeof(char **), clear_fname))
 	{
 		vec_free(&exec->group_vec);
 		free(exec);
