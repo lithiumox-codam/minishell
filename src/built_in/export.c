@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/31 22:20:10 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/20 21:10:27 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/20 21:49:48 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,11 @@ static void	add_env(t_vector *env_vec, char *key, char *value)
 	}
 	token = (t_env *)malloc(sizeof(t_env));
 	if (!token)
+	{
+		free(key_dup);
+		free(value_dup);
 		return ;
+	}
 	token->key = key_dup;
 	token->value = value_dup;
 	if (!vec_push(env_vec, token))
