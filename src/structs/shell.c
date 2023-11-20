@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/03 18:11:09 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/14 16:21:24 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/20 17:26:00 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,6 @@ void	free_shell(t_shell *data, bool close_shell)
 }
 
 /**
- * @brief Create a g_signal struct object
- *
- * @return t_signal The created g_signal struct
- */
-void	create_signal_struct(void)
-{
-	g_signal.inte = false;
-	g_signal.quit = false;
-	g_signal.pipe = false;
-	g_signal.exit_status = 0;
-}
-
-/**
  * @brief Initializes the global variables
  *
  * @param bool if its the first init of minishell = true
@@ -73,8 +60,8 @@ t_shell	*init_shell(char **env, bool first_init)
 		init_env(env, &data->env);
 		data->exec = NULL;
 		data->exit_type = GOOD;
+		data->error_type = NO_ERROR;
 		data->exit_msg = NULL;
-		create_signal_struct();
 	}
 	else
 	{

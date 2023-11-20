@@ -6,13 +6,11 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/11/14 17:29:00 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/11/18 23:49:02 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/20 20:11:16 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-extern t_signal	g_signal;
 
 /**
  * @brief Updates the value of an environment variable when it already exists
@@ -20,16 +18,14 @@ extern t_signal	g_signal;
  * @param key The key to compare to
  * @return void
  */
-static void	update_env(t_vector *env, char *key, char *value)
+static void	update_env(t_shell *data, char *oldpwd)
 {
-	t_env	*env_var;
+	char	*buff;
 
-	env_var = vec_find_f(env, compare_env_key, key);
-	if (env_var)
-	{
-		free(env_var->value);
-		env_var->value = ft_strdup(value);
-	}
+	buff = getcwd(NULL, 0);
+	update_or_create_env(&data->env, "OLDPWD", oldpwd);
+	update_or_create_env(&data->env, "PWD", buff);
+	free(buff);
 }
 
 /**
@@ -57,6 +53,8 @@ static char	*safe_env_get(t_vector *env, char *key)
  */
 static bool	error_check(t_shell *data, t_group *group)
 {
+	char	*path;
+
 	if (group->args[2])
 	{
 		printf("cd: too many arguments\n");
@@ -65,21 +63,41 @@ static bool	error_check(t_shell *data, t_group *group)
 	}
 	if (!ft_strcmp(group->args[1], "-"))
 	{
-		printf("%s\n", safe_env_get(&data->env, "OLDPWD"));
+		path = safe_env_get(&data->env, "OLDPWD");
+		if (!path)
+		{
+			printf("cd: OLDPWD not set\n");
+			data->error_type = CATCH_ALL;
+			return (false);
+		}
+		printf("%s\n", path);
 		data->error_type = CATCH_ALL;
 		return (false);
 	}
 	return (true);
 }
 
+/**
+ * @brief Gets the path to change to
+ *
+ * @param group The group struct with the args
+ * @param data The shell struct
+ * @return char* The path to change to
+ */
 static char	*get_path(t_group *group, t_shell *data)
 {
 	char	*path;
 
-	if (!group->args[1])
+	if (!group->args[1] || !ft_strcmp(group->args[1], "~"))
+	{
 		path = safe_env_get(&data->env, "HOME");
-	else if (ft_strcmp(group->args[1], "~") == 0)
-		path = safe_env_get(&data->env, "HOME");
+		if (!path)
+		{
+			printf("cd: HOME not set\n");
+			data->error_type = CATCH_ALL;
+			return (NULL);
+		}
+	}
 	else if (ft_strncmp(group->args[1], "~/", 2) == 0)
 		path = ft_strjoin(safe_env_get(&data->env, "HOME"), group->args[1] + 1);
 	else
@@ -104,17 +122,24 @@ void	ft_cd(t_group *group, t_shell *data)
 		return ;
 	oldpwd = getcwd(NULL, 0);
 	if (!oldpwd)
-		exit_mini("ft_cd", 1);
-	path = get_path(group, data);
-	if (!path)
 	{
-		printf("cd: HOME not set\n");
+		printf("cd: error retrieving current directory: %s\n", strerror(errno));
 		data->error_type = CATCH_ALL;
 		return ;
 	}
+	path = get_path(group, data);
+	if (!path)
+		return ;
 	if (chdir(path) == -1)
-		printf("cd: %s: %s\n", strerror(errno), path);
+	{
+		printf("cd: %s: %s\n", path, strerror(errno));
+		data->error_type = CATCH_ALL;
+	}
 	else
-		update_env(&data->env, "OLDPWD", oldpwd);
+		update_env(data, oldpwd);
+	data->error_type = NO_ERROR;
 	free(oldpwd);
+	// This is a hacky for a memleak in get_path
+	if (strncmp(path, group->args[1], 2) != 0)
+		free(path);
 }

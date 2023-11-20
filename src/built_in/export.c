@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/31 22:20:10 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/17 16:08:44 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/20 17:48:14 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static char	*string_handler(char *input)
 	return (str);
 }
 
-static bool	validate_input(char *arg, size_t *i)
+static bool	validate_input(char *arg, size_t *i, t_shell *data)
 {
 	size_t	j;
 
@@ -40,7 +40,7 @@ static bool	validate_input(char *arg, size_t *i)
 	if (!ft_isalpha(arg[0]))
 	{
 		printf("export: `%s': not a valid identifier 1\n", arg);
-		g_signal.exit_status = 1;
+		data->error_type = CATCH_ALL;
 		return ((*i)++, false);
 	}
 	while (arg[j] && arg[j] != '=')
@@ -97,7 +97,7 @@ static void	add_env(t_vector *env_vec, char *key, char *value)
 	token->key = key_dup;
 	token->value = value_dup;
 	if (!vec_push(env_vec, token))
-		return ;
+		clear_token(token);
 }
 
 /**
@@ -107,31 +107,31 @@ static void	add_env(t_vector *env_vec, char *key, char *value)
  * @param env_vec The vector that contains the enviroment variables
  * @return void
  */
-void	ft_export(t_group *group, t_vector *env_vec)
+void	ft_export(t_group *group, t_shell *data)
 {
 	size_t	i;
 	char	**env;
 	t_env	*token;
 
 	i = 1;
-	print_env_dec(env_vec, group->args[1]);
+	print_env_dec(&data->env, group->args[1]);
 	while (group->args[i])
 	{
-		if (!validate_input(group->args[i], &i))
+		if (!validate_input(group->args[i], &i, data))
 			continue ;
 		env = ft_split(group->args[i], '=');
 		if (!env)
 			return ;
-		token = (t_env *)vec_find_f(env_vec, compare_env_key, env[0]);
+		token = (t_env *)vec_find_f(&data->env, compare_env_key, env[0]);
 		if (token)
 		{
 			free(token->value);
 			token->value = string_handler(env[1]);
 		}
 		else
-			add_env(env_vec, env[0], env[1]);
+			add_env(&data->env, env[0], env[1]);
 		ft_free(env);
 		i++;
 	}
-	g_signal.exit_status = 0;
+	data->error_type = NO_ERROR;
 }

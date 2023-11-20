@@ -6,13 +6,11 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:50 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/14 12:15:57 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/20 17:43:12 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-extern t_signal	g_signal;
 
 /**
  * @brief	waits for processes to complete
@@ -42,7 +40,7 @@ static int	wait_processes(t_vector *group_vec, t_shell *data,
 	{
 		if (success == true)
 		{
-			g_signal.exit_status = WEXITSTATUS(temp);
+			data->error_type = WEXITSTATUS(temp);
 			return (true);
 		}
 		return (set_err(PERR, NULL, data));
@@ -52,9 +50,9 @@ static int	wait_processes(t_vector *group_vec, t_shell *data,
 
 /**
  * @brief	creates pipes and starts processes,
-			closes pipes and waits for child_processes
+ * closes pipes and waits for child_processes
  * @return	return value is the EXITSTATUS of the last childprocess to complete
-	@note		sets g_signal.exit_status
+ * @note	sets the data error_type
  */
 bool	executor(t_shell *data)
 {
