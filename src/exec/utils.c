@@ -48,7 +48,7 @@ char	**combine_env(t_vector *env_vec)
 	{
 		env_token = vec_get(env_vec, i);
 		env[i] = ft_calloc(ft_strlen(env_token->key)
-				+ ft_strlen(env_token->value) + 2, sizeof(char));
+			+ ft_strlen(env_token->value) + 2, sizeof(char));
 		ft_strcpy(env[i], env_token->key);
 		ft_strcat(env[i], "=");
 		ft_strcat(env[i], env_token->value);

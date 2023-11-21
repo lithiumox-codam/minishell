@@ -147,7 +147,8 @@ bool	group_token_vec(t_shell *data)
 		if (!group_tokens(group, &i, data))
 			return (clear_group(group), free(group), false);
 		if (!vec_push(&data->exec->group_vec, group))
-			return (clear_group(group), free(group), set_err(MALLOC, "group_token_v", data));
+			return (clear_group(group), free(group), set_err(MALLOC,
+					"group_token_v", data));
 		i++;
 	}
 	return (true);

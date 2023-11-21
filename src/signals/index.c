@@ -23,7 +23,7 @@ void	signal_main(int signal_num)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-}	
+}
 
 /**
  * @brief	sets up signal handling and avoid readline catching sigs
@@ -45,7 +45,7 @@ void	signal_hdoc(int signal_num)
 	}
 }
 
-void setup_child_signals(void)
+void	setup_child_signals(void)
 {
 	signal(SIGINT, signal_child);
 	signal(SIGQUIT, signal_child);
