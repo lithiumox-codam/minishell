@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/11/16 18:52:54 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/20 21:11:00 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/21 16:08:32 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	print_env_dec(t_vector *env, char *arg_2)
 		i++;
 	}
 }
+
 /**
  * @brief Updates the value of an environment variable when it already exists or
  * creates a new one if it doesn't (used in cd to update PWD and OLDPWD)
