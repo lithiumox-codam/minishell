@@ -31,8 +31,8 @@ static void	soft_exit(char *input, t_shell *data)
 
 static bool	function_map(char *input, t_shell *data)
 {
-	bool	(*function[5])(t_shell *);
-	int		i;
+	int			i;
+	static bool	(*function[5])(t_shell *);
 
 	function[0] = parser;
 	function[1] = check_tokens;

@@ -21,8 +21,8 @@
 bool	is_redirect(t_token *token)
 {
 	if (token->type == O_REDIRECT || token->type == I_REDIRECT
-		|| token->type == A_REDIRECT || token->type == HEREDOC ||
-		token->type == HDOC_LITERAL)
+		|| token->type == A_REDIRECT || token->type == HEREDOC
+		|| token->type == HDOC_LITERAL)
 	{
 		return (true);
 	}

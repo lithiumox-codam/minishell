@@ -51,4 +51,4 @@ bool	hdoc_expand(char **str, t_shell *data)
 		}
 	}
 	return ((str_vec_to_string(&vec, str, data)));
-}	
+}

@@ -34,8 +34,6 @@ static bool	push_hdoc(char *filename, t_group *group, t_shell *data)
 	return (true);
 }
 
-
-
 /**
  * @note if signal ctrl D break while loop and return true
  */
@@ -68,7 +66,7 @@ static bool	hdoc_read(size_t heredoc_fd, t_token *token, t_shell *data)
  */
 bool	heredoc(char *filename, t_token *token, t_shell *data)
 {
-	int		heredoc_fd;
+	int	heredoc_fd;
 
 	heredoc_fd = open(filename, O_CREAT | O_TRUNC | O_RDWR, 0644);
 	if (heredoc_fd == -1)

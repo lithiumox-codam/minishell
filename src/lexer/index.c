@@ -107,7 +107,7 @@ bool	lexer(char *input, t_shell *data)
 		{
 			if (checkchar(input[i], "();\\&"))
 			{
-				return (set_err(OUT_OF_SCOPE, (char[2]){input[i], '\0'}, data));
+				return (set_err(OUT_OF_SCOPE, ((char[2]){input[i], '\0'}), data));
 			}
 			if (checkchar(input[i], "<>"))
 				if (!build_redir_token(input, &i, data))

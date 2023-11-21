@@ -34,6 +34,44 @@ void	free_shell(t_shell *data, bool close_shell)
 }
 
 /**
+ * @brief A helper function for init_shell for the first init
+ * @param env The enviroment char array
+ * @return t_shell* The created data struct
+ */
+static t_shell	*init_first_shell(char **env)
+{
+	t_shell	*data;
+
+	data = malloc(sizeof(t_shell));
+	if (!data)
+		exit_mini("failed to init data", 1);
+	if (!vec_init(&data->token_vec, 3, sizeof(t_token), clear_token))
+		exit_mini("failed to vec_init token_vec", 1);
+	if (!vec_init(&data->env, 50, sizeof(t_env), clear_env))
+		exit_mini("failed to vec_init env", 1);
+	init_env(env, &data->env);
+	data->exec = NULL;
+	data->exit_type = GOOD;
+	data->error_type = NO_ERROR;
+	data->exit_msg = NULL;
+	return (data);
+}
+
+/**
+ * @brief A helper function for init_shell for the subsequent inits
+ * @return t_shell* The created data struct
+ */
+static t_shell	*init_subsequent_shell(t_shell *data)
+{
+	if (!vec_init(&data->token_vec, 3, sizeof(t_token), clear_token))
+		exit_mini("failed to vec_init env", 1);
+	data->exec = NULL;
+	data->exit_type = GOOD;
+	data->exit_msg = NULL;
+	return (data);
+}
+
+/**
  * @brief Initializes the global variables
  *
  * @param bool if its the first init of minishell = true
@@ -47,27 +85,8 @@ t_shell	*init_shell(char **env, bool first_init)
 
 	data = NULL;
 	if (first_init)
-	{
-		data = malloc(sizeof(t_shell));
-		if (!data)
-			exit_mini("failed to init data", 1);
-		if (!vec_init(&data->token_vec, 3, sizeof(t_token), clear_token))
-			exit_mini("failed to vec_init token_vec", 1);
-		if (!vec_init(&data->env, 50, sizeof(t_env), clear_env))
-			exit_mini("failed to vec_init env", 1);
-		init_env(env, &data->env);
-		data->exec = NULL;
-		data->exit_type = GOOD;
-		data->error_type = NO_ERROR;
-		data->exit_msg = NULL;
-	}
+		data = init_first_shell(env);
 	else
-	{
-		if (!vec_init(&data->token_vec, 3, sizeof(t_token), clear_token))
-			exit_mini("failed to vec_init env", 1);
-		data->exec = NULL;
-		data->exit_type = GOOD;
-		data->exit_msg = NULL;
-	}
+		init_subsequent_shell(data);
 	return (data);
 }
