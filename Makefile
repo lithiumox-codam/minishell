@@ -31,6 +31,7 @@ SRC = main \
 	built_in/utils \
 	built_in/unset \
 	built_in/env \
+	built_in/sort \
 	lexer/index \
 	expander/index \
 	expander/expand_env \

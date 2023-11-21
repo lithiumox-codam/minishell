@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/21 15:48:55 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/21 17:59:51 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	main(int ac, char **av, char **env)
 		debug();
 	if (ac != 1)
 	{
-		write(2, "Too many arguments\n", 20);
+		write(2, "Too maaaaaaaaaaany arguments\n", 20);
 		return (1);
 	}
 	data = init_shell(env, true);
