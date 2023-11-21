@@ -86,7 +86,7 @@ bool	expand_env(char *str, size_t *i, t_vector *vec, t_shell *data)
 	if (!env_token)
 		return (true);
 	j = 0;
-	while (env_token->value[j])
+	while (env_token->value && env_token->value[j])
 	{
 		if (!char_vec_push(vec, env_token->value[j]))
 			return (set_err(MALLOC, "expand_env", data));
