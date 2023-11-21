@@ -71,7 +71,8 @@ bool	compare_env_key(void *item, void *key)
  *
  * @param env_vec The vector to add the env token to
  * @param key The key of the env token
- * @param value The value of the env token
+ * @param value The value of the env token (can be null so export
+ * and env can function properly)
  */
 static void	add_env(t_vector *env_vec, char *key, char *value)
 {
@@ -80,7 +81,7 @@ static void	add_env(t_vector *env_vec, char *key, char *value)
 	char	*value_dup;
 
 	key_dup = string_handler(key);
-	value_dup = string_handler(value);
+	value_dup = ft_strdup(value);
 	if (!key_dup || !value_dup)
 	{
 		if (key_dup)
@@ -120,7 +121,10 @@ void	ft_export(t_group *group, t_shell *data)
 	while (group->args[i])
 	{
 		if (!validate_input(group->args[i], &i, data))
+		{
+			add_env(&data->env, group->args[i], NULL);
 			continue ;
+		}
 		env = ft_export_split(group->args[i], '=');
 		if (!env)
 			return ;
