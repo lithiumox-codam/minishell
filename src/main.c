@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/20 20:56:46 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/21 15:48:55 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void	loop(t_shell *data)
 
 	while (1)
 	{
-		input = readline("\nminishell\n❯ ");
+		input = readline(" ❯ ");
 		if (!input || input[0] == '\0')
 		{
 			free(input);

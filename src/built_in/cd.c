@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/11/14 17:29:00 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/11/20 20:52:14 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/21 15:32:46 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	update_env(t_shell *data, char *oldpwd)
 }
 
 /**
- * @brief Helper function for vec_find_f to safely get an environment variable
+ * @brief Helper function to safely get an environment variable
  * @param *env The environment vector
  * @param *key The key to compare to
  * @return char* The value of the environment variable or NULL
@@ -48,8 +48,6 @@ static char	*safe_env_get(t_vector *env, char *key)
  * @brief Prints the error message for cd
  * @param path The path that caused the error
  * @return void
- *
- * TODO: Does not work properly in all cases
  */
 static bool	error_check(t_shell *data, t_group *group)
 {
@@ -90,7 +88,7 @@ static char	*get_path(t_group *group, t_shell *data)
 
 	if (!group->args[1] || !ft_strcmp(group->args[1], "~"))
 	{
-		path = safe_env_get(&data->env, "HOME");
+		path = ft_strdup(safe_env_get(&data->env, "HOME"));
 		if (!path)
 		{
 			printf("cd: HOME not set\n");
@@ -101,7 +99,7 @@ static char	*get_path(t_group *group, t_shell *data)
 	else if (ft_strncmp(group->args[1], "~/", 2) == 0)
 		path = ft_strjoin(safe_env_get(&data->env, "HOME"), group->args[1] + 1);
 	else
-		path = group->args[1];
+		path = ft_strdup(group->args[1]);
 	return (path);
 }
 
@@ -139,7 +137,5 @@ void	ft_cd(t_group *group, t_shell *data)
 		update_env(data, oldpwd);
 	data->error_type = NO_ERROR;
 	free(oldpwd);
-	// This is a hacky for a memleak in get_path
-	if (strncmp(path, group->args[1], 2) != 0)
-		free(path);
+	free(path);
 }
