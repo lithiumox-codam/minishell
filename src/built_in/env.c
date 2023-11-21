@@ -16,7 +16,7 @@ void	ft_env(t_vector *env_vec)
 {
 	size_t	i;
 	size_t	**arr;
-	char *value;
+	char	*value;
 
 	i = 0;
 	arr = return_sorted_arr(env_vec);
@@ -26,8 +26,7 @@ void	ft_env(t_vector *env_vec)
 	{
 		value = ((t_env *)vec_get(env_vec, *arr[i]))->value;
 		if (value)
-			printf("%s=%s\n", ((t_env *)vec_get(env_vec, *arr[i]))->key,
-			value);
+			printf("%s=%s\n", ((t_env *)vec_get(env_vec, *arr[i]))->key, value);
 		i++;
 	}
 	ft_free_size_t(arr, env_vec->length);
