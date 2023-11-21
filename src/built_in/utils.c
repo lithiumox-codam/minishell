@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/11/16 18:52:54 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/21 18:18:52 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/21 18:26:53 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	print_env_dec(t_vector *env, char *arg_2)
 	arr = return_sorted_arr(env);
 	while (i < env->length)
 	{
-		printf("declare -x %s=%s\n", ((t_env *)vec_get(env, *arr[i]))->key,
+		printf("declare -x %s=\"%s\"\n", ((t_env *)vec_get(env, *arr[i]))->key,
 			((t_env *)vec_get(env, *arr[i]))->value);
 		i++;
 	}
