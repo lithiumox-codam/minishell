@@ -19,7 +19,7 @@ static bool	validate_input(char *arg, size_t *i, t_shell *data)
 	j = 0;
 	if (!ft_isalpha(arg[0]))
 	{
-		printf("export: `%s': not a valid identifier 1\n", arg);
+		printf("export: `%s': not a valid identifier\n", arg);
 		data->error_type = CATCH_ALL;
 		return ((*i)++, false);
 	}
