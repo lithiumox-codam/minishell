@@ -25,8 +25,6 @@ static bool	validate_input(char *arg, size_t *i, t_shell *data)
 	}
 	while (arg[j] && arg[j] != '=')
 		j++;
-	// if (arg[j] == '\0')
-	// 	return ((*i)++, false);
 	return (true);
 }
 
