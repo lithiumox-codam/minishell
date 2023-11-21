@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/11/17 11:36:59 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/21 17:28:02 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/21 17:52:56 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ void	signal_hdoc(int signal_num)
 {
 	if (signal_num == SIGINT)
 	{
-		printf("\n");
 		exit(130);
 	}
 }
