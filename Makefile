@@ -42,7 +42,7 @@ OBJS = $(patsubst src/%.c, build/%.o, $(SRCS))
 LIBFT = libft/libft.a
 
 DEBUG ?= 0
-DEBUG_FLAGS = -g -fsanitize=address
+DEBUG_FLAGS = -g
 CODAM_FLAGS = -Wall -Wextra -Werror
 LINKER = -lreadline
 INCLUDES = -I $(CURDIR)/includes -I $(CURDIR)/libft/includes

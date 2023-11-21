@@ -23,6 +23,7 @@ void	print_env_dec(t_vector *env, char *arg_2)
 {
 	size_t	i;
 	size_t	**arr;
+	char	*value;
 
 	i = 0;
 	if (arg_2)
@@ -30,8 +31,14 @@ void	print_env_dec(t_vector *env, char *arg_2)
 	arr = return_sorted_arr(env);
 	while (i < env->length)
 	{
-		printf("declare -x %s=\"%s\"\n", ((t_env *)vec_get(env, *arr[i]))->key,
-			((t_env *)vec_get(env, *arr[i]))->value);
+		value = ((t_env *)vec_get(env, *arr[i]))->value;
+		if (value)
+		{
+			printf("declare -x %s=\"%s\"\n", ((t_env *)vec_get(env,
+						*arr[i]))->key, value);
+		}
+		else
+			printf("declare -x %s\n", ((t_env *)vec_get(env, *arr[i]))->key);
 		i++;
 	}
 	ft_free_size_t(arr, env->length);
@@ -62,6 +69,20 @@ void	update_or_create_env(t_vector *env, char *key, char *value)
 	}
 }
 
+static char	**only_key_helper(char *src)
+{
+	char	**ret;
+
+	ret = malloc(sizeof(char *) * 2);
+	if (!ret)
+		exit_mini("ft_export_split", 1);
+	ret[0] = ft_strdup(src);
+	if (!ret[0])
+		exit_mini("ft_export_split", 1);
+	ret[1] = NULL;
+	return (ret);
+}
+
 /**
  * @brief A version of split that only splits on the first occurence of the
  * delimiter and treats the rest as one string
@@ -75,6 +96,8 @@ char	**ft_export_split(char *src, char delimter)
 	char	**ret;
 	size_t	i;
 
+	if (!ft_strchr(src, '='))
+		return (only_key_helper(src));
 	ret = malloc(sizeof(char *) * 3);
 	if (!ret)
 		exit_mini("ft_export_split", 1);
@@ -95,4 +118,22 @@ char	**ft_export_split(char *src, char delimter)
 		ret[1] = NULL;
 	ret[2] = NULL;
 	return (ret);
+}
+
+/**
+ * @brief Takes in a string and if it is a valid string, it will return a
+ *  duplicate or if the input equals to NULL it
+ * will return a duplicate of an empty string
+ */
+char	*string_handler(char *input)
+{
+	char	*str;
+
+	if (!input)
+		str = ft_strdup("");
+	else
+		str = ft_strdup(input);
+	if (!str)
+		exit_mini("string_handler", 1);
+	return (str);
 }

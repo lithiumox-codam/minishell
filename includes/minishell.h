@@ -100,6 +100,7 @@ void	update_or_create_env(t_vector *env, char *key, char *value);
 char	**ft_export_split(char *src, char delimter);
 size_t	**return_sorted_arr(t_vector *env);
 void	ft_free_size_t(size_t **arr, size_t len);
+char	*string_handler(char *input);
 
 /* structs */
 t_token	*create_token(char *value, t_types type);
