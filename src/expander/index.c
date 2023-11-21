@@ -76,7 +76,7 @@ static bool	expand(t_token *token, t_shell *data)
 	t_vector	expanded_string;
 	size_t		i;
 
-	if (!vec_init(&expanded_string, 10, sizeof(char), NULL))
+	if (!vec_init(&expanded_string, 200, sizeof(char), NULL))
 		return (set_err(MALLOC, "expand", data));
 	i = 0;
 	while (token->value[i])
