@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/16 12:15:45 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/19 13:51:17 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/21 17:48:29 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,25 +36,17 @@ static bool	push_hdoc(char *filename, t_group *group, t_shell *data)
 }
 
 /**
- * @brief	sets up signal handling and avoid readline catching sigs
- * @note	SIGINT = Ctrl-C
- * @note	SIGQUIT = Ctrl-\
- */
-static void	setup_hdoc_signals(void)
-{
-	rl_catch_signals = 1;
-	signal(SIGINT, signal_hdoc);
-	signal(SIGQUIT, SIG_IGN);
-}
-
-/**
  * @note if signal ctrl D break while loop and return true
  */
-static bool	hdoc_read(size_t heredoc_fd, t_token *token, t_shell *data)
+static void	heredoc(char *filename, t_token *token, t_shell *data)
 {
 	char	*line;
+	int		heredoc_fd;
 
 	setup_hdoc_signals();
+	heredoc_fd = open(filename, O_CREAT | O_TRUNC | O_RDWR, 0644);
+	if (heredoc_fd == -1)
+		exec_err(NULL, PERR);
 	while (1)
 	{
 		line = readline(">");
@@ -63,34 +55,44 @@ static bool	hdoc_read(size_t heredoc_fd, t_token *token, t_shell *data)
 		if (token->type != HDOC_LITERAL)
 		{
 			if (!hdoc_expand(&line, data))
-				return (false);
+				exec_err("hdoc_expand", MALLOC);
 		}
-		if (g_signal.inte)
-			return (free(line), set_err(SIGNAL_C, NULL, data));
 		write(heredoc_fd, line, ft_strlen(line));
 		write(heredoc_fd, "\n", 1);
 		free(line);
 	}
 	free(line);
-	return (true);
+	if (close(heredoc_fd) != 0)
+		exec_err(NULL, PERR);
+	exit(0);
 }
 
 /**
  * @param	filename the filename to be given to the new file
  * @param	token	the hdoc token
- * @note	depending on expansion DQ logic can be removed
+ * @note	writes its own error messages.
  */
-bool	heredoc(char *filename, t_token *token, t_shell *data)
+bool	hdoc_child(char *filename, t_token *token, t_shell *data)
 {
-	int	heredoc_fd;
+	pid_t	pid;
+	int		status;
 
-	heredoc_fd = open(filename, O_CREAT | O_TRUNC | O_RDWR, 0644);
-	if (heredoc_fd == -1)
-		return (set_err(PERR, filename, data));
-	if (!hdoc_read(heredoc_fd, token, data))
-		return (close(heredoc_fd), false);
-	if (close(heredoc_fd) != 0)
-		return (set_err(PERR, filename, data));
+	pid = fork();
+	if (pid == -1)
+		return (set_err(PERR, NULL, data));
+	if (pid == 0)
+	{
+		heredoc(filename, token, data);
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+		if (WEXITSTATUS(status) != 0)
+		{
+			g_signal.exit_status = WEXITSTATUS(status);
+			return (false);
+		}
+	}
 	return (true);
 }
 
@@ -113,9 +115,9 @@ bool	hdoc_found(t_group *group, size_t i, t_shell *data)
 	if (!filename)
 		return (set_err(MALLOC, "hdoc_found", data));
 	token = vec_get(&data->token_vec, i);
-	if (!push_hdoc(filename, group, data))
+	if (!hdoc_child(filename, token, data))
 		return (false);
-	if (!heredoc(filename, token, data))
+	if (!push_hdoc(filename, group, data))
 		return (false);
 	return (true);
 }

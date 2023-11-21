@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/11/17 18:32:22 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/21 17:27:00 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ void	ft_env(t_group *group, t_vector *env_vec);
 void	signal_main(int signal_num);
 void	signal_hdoc(int signal_num);
 void	signal_child(int signal_num);
+void	setup_hdoc_signals(void);
 
 /* structs */
 t_token	*create_token(char *value, t_types type);

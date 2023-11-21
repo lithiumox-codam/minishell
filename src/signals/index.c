@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/11/17 11:36:59 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/19 14:39:04 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/21 17:28:02 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,24 @@ void	signal_main(int signal_num)
 	}
 }
 
+/**
+ * @brief	sets up signal handling and avoid readline catching sigs
+ * @note	SIGINT = Ctrl-C
+ * @note	SIGQUIT = Ctrl-\
+ */
+void	setup_hdoc_signals(void)
+{
+	rl_catch_signals = 1;
+	signal(SIGINT, signal_hdoc);
+	signal(SIGQUIT, SIG_IGN);
+}
+
 void	signal_hdoc(int signal_num)
 {
 	if (signal_num == SIGINT)
 	{
-		g_signal.inte = true;
 		printf("\n");
+		exit(130);
 	}
 }
 
