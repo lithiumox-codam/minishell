@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/26 11:55:20 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/17 15:21:07 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/22 00:30:20 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static bool	check_quote_finish(char *input, size_t *i, t_shell *data)
 	while (input[(*i)] && input[(*i)] != quote)
 		(*i)++;
 	if (input[(*i)] == '\0')
-		return (set_err(SYNTAX_MINI, (char[2]){quote, '\0'}, data));
+		return (set_err(SYNTAX_MINI, NULL, data));
 	(*i)++;
 	return (true);
 }

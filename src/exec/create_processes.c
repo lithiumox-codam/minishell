@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 12:40:07 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/12 20:17:37 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/22 00:10:19 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ bool	create_processes(t_shell *data)
 	t_vector	*group_vec;
 	t_group		*group;
 
+	setup_child_signals();
 	group_vec = &data->exec->group_vec;
 	if (group_vec->length == 1)
 	{

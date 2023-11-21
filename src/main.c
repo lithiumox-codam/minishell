@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/19 14:28:26 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/22 00:27:35 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ t_signal	g_signal;
  */
 static void	setup_signals(void)
 {
-	// rl_done = 0;
 	rl_catch_signals = 0;
 	signal(SIGINT, signal_main);
 	signal(SIGQUIT, SIG_IGN);
@@ -55,7 +54,7 @@ static bool	function_map(char *input, t_shell *data)
 	function[3] = group_token_vec;
 	function[4] = executor;
 	if (!lexer(input, data))
-		return (false);
+		return (soft_exit(input, data), false);
 	i = -1;
 	while (i++ < 4)
 	{
@@ -78,7 +77,6 @@ static void	loop(t_shell *data)
 	{
 		setup_signals();
 		input = readline(" ❯ ");
-		rl_redisplay();
 		if (input == NULL)
 		{
 			free_shell(data, true);
