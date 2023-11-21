@@ -43,7 +43,6 @@ static bool	hdoc_read(size_t heredoc_fd, t_token *token, t_shell *data)
 {
 	char	*line;
 
-	// char	*expanded_line;
 	while (1)
 	{
 		line = readline(">");
