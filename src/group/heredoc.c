@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/16 12:15:45 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/21 17:48:29 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/21 20:41:32 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,10 +114,10 @@ bool	hdoc_found(t_group *group, size_t i, t_shell *data)
 	free(nb);
 	if (!filename)
 		return (set_err(MALLOC, "hdoc_found", data));
+	if (!push_hdoc(filename, group, data))
+		return (false);
 	token = vec_get(&data->token_vec, i);
 	if (!hdoc_child(filename, token, data))
-		return (false);
-	if (!push_hdoc(filename, group, data))
 		return (false);
 	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:05 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/17 16:19:50 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/21 20:48:13 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,13 +141,13 @@ bool	group_token_vec(t_shell *data)
 		if (!group)
 			return (set_err(MALLOC, "group_token_v", data));
 		if (!set_cmd(group, i, data))
-			return (false);
+			return (clear_group(group), free(group), false);
 		if (!alloc_args(group, i, data))
-			return (false);
+			return (clear_group(group), free(group), false);
 		if (!group_tokens(group, &i, data))
-			return (false);
+			return (clear_group(group), free(group), false);
 		if (!vec_push(&data->exec->group_vec, group))
-			return (set_err(MALLOC, "group_token_v", data));
+			return (clear_group(group), free(group), set_err(MALLOC, "group_token_v", data));
 		i++;
 	}
 	return (true);
