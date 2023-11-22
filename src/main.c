@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/22 14:20:16 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/22 14:27:56 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,6 @@ static void	setup_signals(void)
 	rl_catch_signals = 0;
 	signal(SIGINT, signal_main);
 	signal(SIGQUIT, SIG_IGN);
-}
-
-static void	debug(void)
-{
-	printf("\033[1;32m●\n");
-	printf("\033[1;34m│\n");
-	printf("├── Debug mode enabled\n");
-	printf("\033[1;34m│\n");
-	printf("\033[0m");
 }
 
 static void	soft_exit(char *input, t_shell *data)
@@ -100,8 +91,6 @@ int	main(int ac, char **av, char **env)
 	t_shell	*data;
 
 	(void)av;
-	if (DEBUG)
-		debug();
 	if (ac != 1)
 	{
 		write(2, "Too maaaaaaaaaaany arguments\n", 20);

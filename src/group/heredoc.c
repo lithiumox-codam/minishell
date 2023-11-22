@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/16 12:15:45 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/22 14:16:17 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/22 14:22:03 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ static void	heredoc(char *filename, t_token *token, t_shell *data)
  */
 bool	hdoc_child(char *filename, t_token *token, t_shell *data)
 {
-	int		heredoc_fd;
 	pid_t	pid;
 	int		status;
 
