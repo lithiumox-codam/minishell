@@ -6,12 +6,21 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/31 22:20:10 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/22 17:16:22 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/22 22:50:56 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
+/**
+ * @brief Validates the input of the export builtin
+ *
+ * @param arg The argument to validate
+ * @param i The index of the argument
+ * @param data The data struct
+ * @return true When the argument is valid
+ * @return false When the argument is invalid
+ */
 static bool	validate_input(char *arg, size_t *i, t_shell *data)
 {
 	size_t	j;
@@ -95,6 +104,15 @@ static void	add_env(t_vector *env_vec, char *key, char *value)
 		clear_token(token);
 }
 
+/**
+ * @brief A helper function for the export builtin that handles the
+ * export of a variable that already exists or adds a new variable
+ * using add_env
+ *
+ * @param token The token to update
+ * @param data The data struct
+ * @param env The env array that contains the key and value (can be null)
+ */
 static void	export_helper(t_env *token, t_shell *data, char **env)
 {
 	if (token)
