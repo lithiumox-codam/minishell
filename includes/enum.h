@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/13 17:41:00 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/20 20:59:54 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/22 23:31:57 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ typedef enum e_error
 	COMMAND_NOT_FOUND = 127,
 	NOT_VALID = 128,
 	UNEXPECTED_EOF = 130,
-	SYNTAX_ERROR = 258,
+	SYNTAX_ERROR = 2,
 }	t_error;
 
 /**
