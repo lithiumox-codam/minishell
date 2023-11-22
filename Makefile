@@ -1,6 +1,7 @@
 NAME = minishell
 SRC = main \
     utils/error \
+	utils/error_extra \
     utils/miscellaneous \
     structs/token \
     structs/env \
