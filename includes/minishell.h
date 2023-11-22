@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/11/21 18:15:24 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/22 14:20:29 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <libft.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 # include <stdarg.h>
 # include <stdbool.h>
 # include <stdio.h>
@@ -101,6 +102,13 @@ char	**ft_export_split(char *src, char delimter);
 size_t	**return_sorted_arr(t_vector *env);
 void	ft_free_size_t(size_t **arr, size_t len);
 char	*string_handler(char *input);
+
+/* signals */
+void	signal_main(int signal_num);
+void	setup_hdoc_signals(void);
+void	signal_hdoc(int signal_num);
+void	setup_child_signals(void);
+void	signal_child(int signal_num);
 
 /* structs */
 t_token	*create_token(char *value, t_types type);

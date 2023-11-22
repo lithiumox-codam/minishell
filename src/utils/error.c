@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/19 21:42:24 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/20 21:01:00 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/22 14:18:28 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ void	exit_mini(char *str, int exit_code)
 {
 	if (str)
 	{
-		write(STDERR_FILENO, "minishell: ", 11);
+		write(STDERR_FILENO, "minishell: ", 12);
 		write(STDERR_FILENO, str, ft_strlen(str));
 		write(STDERR_FILENO, "\n", 1);
 	}
 	else
-		write(STDERR_FILENO, "minishell: error\n", 16);
+		write(STDERR_FILENO, "minishell: error\n", 18);
 	exit(exit_code);
 }
 
@@ -59,7 +59,7 @@ void	write_err(t_shell *data)
 	}
 	if (data->exit_type == MALLOC)
 	{
-		write(STDERR_FILENO, "minishell: malloc error in : ", 28);
+		write(STDERR_FILENO, "minishell: malloc error in : ", 30);
 		write(STDERR_FILENO, data->exit_msg, ft_strlen(data->exit_msg));
 		write(STDERR_FILENO, "\n", 1);
 		data->error_type = CATCH_ALL;
@@ -67,31 +67,23 @@ void	write_err(t_shell *data)
 	if (data->exit_type == SYNTAX)
 	{
 		write(STDERR_FILENO, "minishell: syntax error near unexpected token `",
-			47);
+			48);
 		write(STDERR_FILENO, data->exit_msg, ft_strlen(data->exit_msg));
 		write(STDERR_FILENO, "'\n", 2);
 		data->error_type = SYNTAX_ERROR;
 	}
 	if (data->exit_type == SYNTAX_MINI)
 	{
-		write(STDERR_FILENO, "minishell: unfinished operator : `", 34);
-		write(STDERR_FILENO, data->exit_msg, ft_strlen(data->exit_msg));
-		write(STDERR_FILENO, "`\n", 2);
-		data->error_type = MISUSE_OF_SHELL;
+		write(STDERR_FILENO, "minishell: syntax error: unfinished quote\n", 43);
+		data->error_type = 2;
 	}
 	if (data->exit_type == OUT_OF_SCOPE)
 	{
-		write(STDERR_FILENO, "minishell: operator: `", 23);
-		write(STDERR_FILENO, data->exit_msg, ft_strlen(data->exit_msg));
-		write(STDERR_FILENO, "`: out of project scope\n", 25);
-		data->error_type = MISUSE_OF_SHELL;
+		write(2, "minishell: operators: () ; \\ & ||: out of scope\n", 49);
+		data->error_type = 2;
 	}
 	if (data->exit_type == SIGNAL_C)
-	{
-		write(STDERR_FILENO, "^C\n", 3);
-		data->error_type = UNEXPECTED_EOF;
-	}
-	free_shell(data, false);
+		data->error_type = 130;
 }
 
 /**
@@ -106,30 +98,30 @@ void	exec_err(char *str, t_exit type)
 	}
 	if (type == MALLOC)
 	{
-		write(STDERR_FILENO, "minishell: malloc error in : ", 28);
+		write(STDERR_FILENO, "minishell: malloc error in : ", 30);
 		write(STDERR_FILENO, str, ft_strlen(str));
 		write(STDERR_FILENO, "\n", 1);
 		exit(1);
 	}
 	if (type == NOT_FOUND)
 	{
-		write(STDERR_FILENO, "minishell: ", 11);
+		write(STDERR_FILENO, "minishell: ", 12);
 		write(STDERR_FILENO, str, ft_strlen(str));
-		write(STDERR_FILENO, ": command not found\n", 20);
+		write(STDERR_FILENO, ": command not found\n", 21);
 		exit(127);
 	}
 	if (type == PERMISSION)
 	{
-		write(STDERR_FILENO, "minishell: ", 11);
+		write(STDERR_FILENO, "minishell: ", 12);
 		write(STDERR_FILENO, str, ft_strlen(str));
-		write(STDERR_FILENO, ": Permission denied\n", 20);
+		write(STDERR_FILENO, ": Permission denied\n", 21);
 		exit(126);
 	}
 	if (type == NO_SUCH)
 	{
-		write(STDERR_FILENO, "minishell: ", 11);
+		write(STDERR_FILENO, "minishell: ", 12);
 		write(STDERR_FILENO, str, ft_strlen(str));
-		write(STDERR_FILENO, ": No such file or directory\n", 28);
+		write(STDERR_FILENO, ": No such file or directory\n", 29);
 		exit(1);
 	}
 }

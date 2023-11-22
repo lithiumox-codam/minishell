@@ -35,7 +35,8 @@ SRC = main \
 	lexer/index \
 	expander/index \
 	expander/expand_env \
-	expander/expand_quotes
+	expander/expand_quotes \
+	signals/index
 
 SRCS = $(addsuffix .c, $(addprefix src/, $(SRC)))
 OBJS = $(patsubst src/%.c, build/%.o, $(SRCS))

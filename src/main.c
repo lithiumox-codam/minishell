@@ -6,11 +6,23 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/21 17:59:51 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/22 14:20:16 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+/**
+ * @brief	sets up signal handling and avoid readline catching sigs
+ * @note	SIGINT = Ctrl-C
+ * @note	SIGQUIT = Ctrl-\
+ */
+static void	setup_signals(void)
+{
+	rl_catch_signals = 0;
+	signal(SIGINT, signal_main);
+	signal(SIGQUIT, SIG_IGN);
+}
 
 static void	debug(void)
 {
@@ -40,7 +52,7 @@ static bool	function_map(char *input, t_shell *data)
 	function[3] = group_token_vec;
 	function[4] = executor;
 	if (!lexer(input, data))
-		return (false);
+		return (soft_exit(input, data), false);
 	i = -1;
 	while (i++ < 4)
 	{
@@ -61,8 +73,15 @@ static void	loop(t_shell *data)
 
 	while (1)
 	{
+		setup_signals();
 		input = readline(" ❯ ");
-		if (!input || input[0] == '\0')
+		if (input == NULL)
+		{
+			free_shell(data, true);
+			printf("exit\n");
+			exit(0);
+		}
+		if (input[0] == '\0')
 		{
 			free(input);
 			continue ;
