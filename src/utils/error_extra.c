@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/11/22 22:29:17 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/22 22:36:19 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/23 00:38:24 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ void	exec_err_extra(char *str, t_exit type)
 		write(STDERR_FILENO, "minishell: ", 12);
 		write(STDERR_FILENO, str, ft_strlen(str));
 		write(STDERR_FILENO, ": Permission denied\n", 21);
-		exit(1);
+		exit(126);
 	}
 	if (type == NO_SUCH)
 	{
 		write(STDERR_FILENO, "minishell: ", 12);
 		write(STDERR_FILENO, str, ft_strlen(str));
 		write(STDERR_FILENO, ": No such file or directory\n", 29);
-		exit(1);
+		exit(127);
 	}
 }
 

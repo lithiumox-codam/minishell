@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 16:08:08 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/22 16:25:13 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/23 00:36:45 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ void	exec_absolute_path(t_group *group, t_process type, t_vector *env_vec)
 {
 	char	**env;
 
+	if (access(group->cmd, F_OK) != 0)
+		exec_err(group->cmd, NO_SUCH);
 	if (access(group->cmd, X_OK) != 0)
 		exec_err(group->cmd, PERMISSION);
 	env = combine_env(env_vec);

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/01 17:36:19 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/12 21:40:20 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/23 00:34:00 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	check_cmd(t_group *group, t_process type, t_vector *env_vec)
 
 	if (group->cmd == NULL || group->cmd[0] == '\0')
 		exec_err("", NOT_FOUND);
-	if (access(group->cmd, F_OK) == 0)
+	if (checkchar('/', group->cmd))
 		exec_absolute_path(group, type, env_vec);
 	i = 0;
 	while (i < env_vec->length)
