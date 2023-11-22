@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/11/22 14:20:29 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/22 21:18:08 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ char	**ft_export_split(char *src, char delimter);
 size_t	**return_sorted_arr(t_vector *env);
 void	ft_free_size_t(size_t **arr, size_t len);
 char	*string_handler(char *input);
-
+void	write_err_cd(t_shell *data, size_t option, char *path, char *extra);
 /* signals */
 void	signal_main(int signal_num);
 void	setup_hdoc_signals(void);

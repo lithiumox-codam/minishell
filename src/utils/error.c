@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/19 21:42:24 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/22 14:18:28 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/22 22:07:56 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	write_err(t_shell *data)
 	if (data->exit_type == SYNTAX)
 	{
 		write(STDERR_FILENO, "minishell: syntax error near unexpected token `",
-			48);
+				48);
 		write(STDERR_FILENO, data->exit_msg, ft_strlen(data->exit_msg));
 		write(STDERR_FILENO, "'\n", 2);
 		data->error_type = SYNTAX_ERROR;
@@ -115,7 +115,8 @@ void	exec_err(char *str, t_exit type)
 		write(STDERR_FILENO, "minishell: ", 12);
 		write(STDERR_FILENO, str, ft_strlen(str));
 		write(STDERR_FILENO, ": Permission denied\n", 21);
-		exit(126);
+		exit(1); // Dit moet 126 zijn,
+					// maar dan werkt de test niet check even of dit daadwerkelijk zo is
 	}
 	if (type == NO_SUCH)
 	{

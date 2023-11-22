@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/31 22:20:10 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/20 21:49:48 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/22 17:16:22 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,24 @@ static bool	validate_input(char *arg, size_t *i, t_shell *data)
 	j = 0;
 	if (!ft_isalpha(arg[0]))
 	{
-		printf("export: `%s': not a valid identifier\n", arg);
+		write(2, "export: `", 9);
+		write(2, arg, ft_strlen(arg));
+		write(2, "': not a valid identifier\n", 26);
 		data->error_type = CATCH_ALL;
 		return ((*i)++, false);
 	}
-	while (arg[j] && arg[j] != '=')
+	while (arg[j] && ft_isalnum(arg[j]))
 		j++;
+	if (arg[j] == '\0')
+		return (true);
+	if (arg[j] != '=')
+	{
+		write(2, "export: `", 9);
+		write(2, arg, ft_strlen(arg));
+		write(2, "': not a valid identifier\n", 26);
+		data->error_type = CATCH_ALL;
+		return ((*i)++, false);
+	}
 	return (true);
 }
 
@@ -124,5 +136,4 @@ void	ft_export(t_group *group, t_shell *data)
 		ft_free(env);
 		i++;
 	}
-	data->error_type = NO_ERROR;
 }

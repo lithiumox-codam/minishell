@@ -28,6 +28,7 @@ SRC = main \
 	built_in/export \
 	built_in/echo \
 	built_in/cd \
+	built_in/cd_err \
 	built_in/utils \
 	built_in/unset \
 	built_in/env \

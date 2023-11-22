@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/11/14 17:29:00 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/11/21 15:32:46 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/22 21:33:01 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static bool	error_check(t_shell *data, t_group *group)
 
 	if (group->args[2])
 	{
-		printf("cd: too many arguments\n");
+		write(2, "cd: too many arguments\n", 23);
 		data->error_type = CATCH_ALL;
 		return (false);
 	}
@@ -64,12 +64,11 @@ static bool	error_check(t_shell *data, t_group *group)
 		path = safe_env_get(&data->env, "OLDPWD");
 		if (!path)
 		{
-			printf("cd: OLDPWD not set\n");
+			write(2, "cd: OLDPWD not set\n", 19);
 			data->error_type = CATCH_ALL;
 			return (false);
 		}
 		printf("%s\n", path);
-		data->error_type = CATCH_ALL;
 		return (false);
 	}
 	return (true);
@@ -86,12 +85,14 @@ static char	*get_path(t_group *group, t_shell *data)
 {
 	char	*path;
 
+	if (!group->args)
+		return (NULL);
 	if (!group->args[1] || !ft_strcmp(group->args[1], "~"))
 	{
 		path = ft_strdup(safe_env_get(&data->env, "HOME"));
 		if (!path)
 		{
-			printf("cd: HOME not set\n");
+			printf("minishell: cd: HOME not set\n");
 			data->error_type = CATCH_ALL;
 			return (NULL);
 		}
@@ -120,22 +121,14 @@ void	ft_cd(t_group *group, t_shell *data)
 		return ;
 	oldpwd = getcwd(NULL, 0);
 	if (!oldpwd)
-	{
-		printf("cd: error retrieving current directory: %s\n", strerror(errno));
-		data->error_type = CATCH_ALL;
-		return ;
-	}
+		return (write_err_cd(data, 1, group->args[1], NULL));
 	path = get_path(group, data);
 	if (!path)
 		return ;
 	if (chdir(path) == -1)
-	{
-		printf("cd: %s: %s\n", path, strerror(errno));
-		data->error_type = CATCH_ALL;
-	}
+		return (write_err_cd(data, 2, path, strerror(errno)));
 	else
 		update_env(data, oldpwd);
-	data->error_type = NO_ERROR;
 	free(oldpwd);
 	free(path);
 }

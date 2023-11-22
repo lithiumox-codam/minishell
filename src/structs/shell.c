@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/03 18:11:09 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/20 20:57:12 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/22 17:21:05 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ static t_shell	*init_subsequent_shell(t_shell *data)
 	data->exec = NULL;
 	data->exit_type = GOOD;
 	data->exit_msg = NULL;
+	data->error_type = NO_ERROR;
 	return (data);
 }
 
