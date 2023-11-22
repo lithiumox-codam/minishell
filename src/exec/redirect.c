@@ -6,60 +6,81 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 16:32:48 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/12 21:41:07 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/22 16:13:44 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static void	out_redirect(t_group *group)
+typedef struct s_local_fd
 {
-	int		fd;
-	size_t	i;
-	t_token	*red_out;
+	int		in_fd;
+	int		out_fd;
+	int		*fds;
+	int		count;
+}			t_fds;
 
-	i = 0;
-	while (i < (&group->out_red)->length)
+static void	set_out_redirect(t_token *token, t_fds *fds)
+{
+	int	fd;
+
+	if (access(token->value, F_OK) == 0)
 	{
-		red_out = vec_get(&group->out_red, i);
-		if (access(red_out->value, F_OK) == 0)
-		{
-			if (red_out->type == A_REDIRECT)
-				fd = open(red_out->value, O_WRONLY | O_APPEND);
-			else
-				fd = open(red_out->value, O_TRUNC | O_WRONLY);
-		}
+		if (token->type == A_REDIRECT)
+			fd = open(token->value, O_WRONLY | O_APPEND);
 		else
-			fd = open(red_out->value, O_CREAT | O_WRONLY, 0644);
-		if (fd == -1)
-			exec_err(NULL, PERR);
-		if (dup2(fd, STDOUT_FILENO) == -1)
-			exec_err(NULL, PERR);
-		if (close(fd) == -1)
-			perror("minishell: close_out_redirect");
-		i++;
+			fd = open(token->value, O_TRUNC | O_WRONLY);
+	}
+	else
+		fd = open(token->value, O_CREAT | O_WRONLY, 0644);
+	if (fd == -1)
+		exec_err(NULL, PERR);
+	(*fds).out_fd = fd;
+	(*fds).fds[(*fds).count] = fd;
+	(*fds).count++;
+}
+
+void	set_in_redirect(t_token *token, t_fds *fds)
+{
+	int	fd;
+
+	fd = open(token->value, O_RDONLY);
+	if (fd == -1)
+		exec_err(NULL, PERR);
+	(*fds).in_fd = fd;
+	(*fds).fds[(*fds).count] = fd;
+	(*fds).count++;
+}
+
+void	validate_redirect(t_token *token)
+{
+	if (token->type == I_REDIRECT)
+	{
+		if (access(token->value, F_OK) == -1)
+			exec_err(token->value, NO_SUCH);
+		if (access(token->value, R_OK) == -1)
+			exec_err(token->value, PERMISSION);
+	}
+	else if (access(token->value, F_OK) == 0)
+	{
+		if (access(token->value, W_OK) == -1)
+			exec_err(token->value, PERMISSION);
 	}
 }
 
-static void	in_redirect(t_group *group)
+void	close_fds(t_fds *fds)
 {
-	size_t	i;
-	t_token	*red_in;
-	int		fd;
+	int	i;
 
 	i = 0;
-	while (i < (&group->in_red)->length)
+	while (i < fds->count)
 	{
-		red_in = vec_get(&group->in_red, i);
-		fd = open(red_in->value, O_RDONLY);
-		if (fd == -1)
-			exec_err(NULL, PERR);
-		if (dup2(fd, STDIN_FILENO) == -1)
-			exec_err(NULL, PERR);
-		if (close(fd) == -1)
-			perror("minishell: close_in_redirect");
+		if (fds->fds[i] != fds->in_fd && fds->fds[i] != fds->out_fd)
+			if (close(fds->fds[i]) == -1)
+				exec_err(NULL, PERR);
 		i++;
 	}
+	free(fds->fds);
 }
 
 /**
@@ -67,34 +88,30 @@ static void	in_redirect(t_group *group)
  */
 void	handle_redirects(t_group *group)
 {
-	in_redirect(group);
-	out_redirect(group);
-}
-
-void	validate_redirects(t_group *group)
-{
 	size_t	i;
-	t_token	*red_token;
+	t_token	*token;
+	t_fds	fds;
 
+	if (group->redirects.length == 0)
+		return ;
+	fds.fds = malloc(sizeof(int) * (&group->redirects)->length);
+	if (!fds.fds)
+		exec_err(NULL, MALLOC);
+	fds.count = 0;
+	fds.in_fd = -1;
+	fds.out_fd = -1;
 	i = 0;
-	while (i < (&group->in_red)->length)
+	while (i < (&group->redirects)->length)
 	{
-		red_token = vec_get(&group->in_red, i);
-		if (access(red_token->value, F_OK) == -1)
-			exec_err(red_token->value, NO_SUCH);
-		if (access(red_token->value, R_OK) == -1)
-			exec_err(red_token->value, PERMISSION);
+		token = vec_get(&group->redirects, i);
+		validate_redirect(token);
+		if (token->type == I_REDIRECT)
+			set_in_redirect(token, &fds);
+		else
+			set_out_redirect(token, &fds);
 		i++;
 	}
-	i = 0;
-	while (i < (&group->out_red)->length)
-	{
-		red_token = vec_get(&group->out_red, i);
-		if (access(red_token->value, F_OK) == 0)
-		{
-			if (access(red_token->value, W_OK) == -1)
-				exec_err(red_token->value, PERMISSION);
-		}
-		i++;
-	}
+	group->in_red = fds.in_fd;
+	group->out_red = fds.out_fd;
+	close_fds(&fds);
 }

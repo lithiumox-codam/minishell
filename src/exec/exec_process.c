@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 16:08:08 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/22 14:14:21 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/22 16:18:12 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,25 @@ static void	close_unused(t_process type, t_group *group)
 	}
 }
 
+static void	dup_redirects(t_group *group)
+{
+	if (group->in_red != -1)
+	{
+		if (dup2(group->in_red, STDIN_FILENO) == -1)
+			perror("minishell: in_red");
+	}
+	if (group->out_red != -1)
+	{
+		if (dup2(group->out_red, STDOUT_FILENO) == -1)
+			perror("minishell: out_red");
+	}
+}
+
 void	dup_fd(t_group *group, t_process type)
 {
 	if (type == SINGLE)
 	{
-		handle_redirects(group);
+		dup_redirects(group);
 		return ;
 	}
 	if (type == LEFT || type == MIDDLE)
@@ -49,7 +63,7 @@ void	dup_fd(t_group *group, t_process type)
 		if (close(group->left_pipe[0]) == -1)
 			perror("minishell: left_pipe[0]");
 	}
-	handle_redirects(group);
+	dup_redirects(group);
 }
 
 void	exec_process(t_group *group, t_process type, t_shell *data)
@@ -57,8 +71,7 @@ void	exec_process(t_group *group, t_process type, t_shell *data)
 	char	**env;
 
 	close_unused(type, group);
-	validate_redirects(group);
-	dup_fd(group, type);
+	handle_redirects(group);
 	if (group->cmd == NULL)
 		exit(0);
 	if (is_builtin(group->cmd))

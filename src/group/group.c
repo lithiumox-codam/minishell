@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:05 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/21 20:48:13 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/22 15:21:49 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,8 @@ bool	add_redirect(t_token *token, t_group *group, size_t i, t_shell *data)
 	dup = dup_token(token);
 	if (!dup)
 		return (set_err(MALLOC, "add_redirect", data));
-	if (token->type == I_REDIRECT)
-	{
-		if (!vec_push(&group->in_red, (void *)dup))
-			return (set_err(MALLOC, "add_redirect", data));
-	}
-	if (token->type == O_REDIRECT || token->type == A_REDIRECT)
-	{
-		if (!vec_push(&group->out_red, (void *)dup))
-			return (set_err(MALLOC, "add_redirect", data));
-	}
+	if (!vec_push(&group->redirects, (void *)dup))
+		return (set_err(MALLOC, "add_redirect", data));
 	return (true);
 }
 

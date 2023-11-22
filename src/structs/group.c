@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 20:42:59 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/19 13:54:50 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/22 15:21:10 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ void	clear_group(void *data)
 	if (!data)
 		return ;
 	p = (t_group *)data;
-	vec_free(&p->in_red);
-	vec_free(&p->out_red);
+	vec_free(&p->redirects);
 	if (p->cmd)
 	{
 		free(p->cmd);
@@ -73,10 +72,10 @@ t_group	*create_group(void)
 	p = malloc(sizeof(t_group));
 	if (!p)
 		return (NULL);
-	if (!vec_init(&p->in_red, 2, sizeof(t_token), clear_token))
+	if (!vec_init(&p->redirects, 2, sizeof(t_token), clear_token))
 		return (free(p), NULL);
-	if (!vec_init(&p->out_red, 2, sizeof(t_token), clear_token))
-		return (vec_free(&p->in_red), free(p), NULL);
+	p->in_red = -1;
+	p->out_red = -1;
 	p->cmd = NULL;
 	p->args = NULL;
 	p->pd = -2;

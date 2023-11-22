@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/10 11:15:16 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/11/18 23:06:40 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/22 15:20:21 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,9 @@ typedef struct s_group
 {
 	char		*cmd;
 	char		**args;
-	t_vector	in_red;
-	t_vector	out_red;
+	t_vector	redirects;
+	int			in_red;
+	int			out_red;
 	pid_t		pd;
 	int			left_pipe[2];
 	int			right_pipe[2];

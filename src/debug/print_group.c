@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/03 13:57:39 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/07 21:01:23 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/22 16:11:52 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,8 @@ void	p_group(t_group *group)
 	printf("Command: %s\n", group->cmd);
 	printf("Arguments: ");
 	print_array(group->args);
-	printf("Input Redirection: ");
-	print_vector(&group->in_red, print_token);
-	printf("\n");
-	printf("Output Redirection: ");
-	print_vector(&group->out_red, print_token);
+	printf("Redirection: ");
+	print_vector(&group->redirects, print_token);
 	printf("\n");
 	printf("Left Pipe[0]: %d\n", group->left_pipe[0]);
 	printf("Left Pipe[1]: %d\n", group->left_pipe[1]);
