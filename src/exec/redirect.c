@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 16:32:48 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/22 16:13:44 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/22 16:29:35 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ static void	set_out_redirect(t_token *token, t_fds *fds)
 		fd = open(token->value, O_CREAT | O_WRONLY, 0644);
 	if (fd == -1)
 		exec_err(NULL, PERR);
-	(*fds).out_fd = fd;
-	(*fds).fds[(*fds).count] = fd;
-	(*fds).count++;
+	fds->out_fd = fd;
+	fds->fds[fds->count] = fd;
+	fds->count++;
 }
 
 void	set_in_redirect(t_token *token, t_fds *fds)
@@ -47,9 +47,9 @@ void	set_in_redirect(t_token *token, t_fds *fds)
 	fd = open(token->value, O_RDONLY);
 	if (fd == -1)
 		exec_err(NULL, PERR);
-	(*fds).in_fd = fd;
-	(*fds).fds[(*fds).count] = fd;
-	(*fds).count++;
+	fds->in_fd = fd;
+	fds->fds[(*fds).count] = fd;
+	fds->count++;
 }
 
 void	validate_redirect(t_token *token)
@@ -68,10 +68,12 @@ void	validate_redirect(t_token *token)
 	}
 }
 
-void	close_fds(t_fds *fds)
+void	close_fds(t_group *group, t_fds *fds)
 {
 	int	i;
 
+	group->in_red = fds->in_fd;
+	group->out_red = fds->out_fd;
 	i = 0;
 	while (i < fds->count)
 	{
@@ -111,7 +113,5 @@ void	handle_redirects(t_group *group)
 			set_out_redirect(token, &fds);
 		i++;
 	}
-	group->in_red = fds.in_fd;
-	group->out_red = fds.out_fd;
-	close_fds(&fds);
+	close_fds(group, &fds);
 }
