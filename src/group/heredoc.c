@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/16 12:15:45 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/22 14:22:03 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/22 15:22:02 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static bool	push_hdoc(char *filename, t_group *group, t_shell *data)
 	red_token = create_token(filename, I_REDIRECT);
 	if (!red_token)
 		return (free(fname), set_err(MALLOC, "push_hdoc", data));
-	if (!vec_push(&group->in_red, (void *)red_token))
+	if (!vec_push(&group->redirects, (void *)red_token))
 		return (free(fname), set_err(MALLOC, "push_hdoc", data));
 	*fname = ft_strdup(filename);
 	if (!*fname)
