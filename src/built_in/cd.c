@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/11/14 17:29:00 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/11/22 21:33:01 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/22 22:15:34 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ static bool	error_check(t_shell *data, t_group *group)
 {
 	char	*path;
 
+	if (!group->args[1])
+		return (true);
 	if (group->args[2])
 	{
 		write(2, "cd: too many arguments\n", 23);
