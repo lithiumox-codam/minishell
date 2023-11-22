@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/13 17:41:00 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/30 18:26:44 by julius        ########   odam.nl         */
+/*   Updated: 2023/11/20 20:59:54 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,18 @@ typedef enum e_exit
 	SIGNAL_C,
 	OUT_OF_SCOPE
 }	t_exit;
+
+typedef enum e_error
+{
+	NO_ERROR = 0,
+	CATCH_ALL = 1,
+	MISUSE_OF_SHELL = 2,
+	PERMISSION_DENIED = 126,
+	COMMAND_NOT_FOUND = 127,
+	NOT_VALID = 128,
+	UNEXPECTED_EOF = 130,
+	SYNTAX_ERROR = 258,
+}	t_error;
 
 /**
  * @brief defines which process is being executed

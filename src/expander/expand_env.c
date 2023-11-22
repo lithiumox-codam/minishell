@@ -6,13 +6,11 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/26 16:02:26 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/14 16:21:20 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/20 17:38:25 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-extern t_signal	g_signal;
 
 static bool	push_status(size_t *i, t_vector *vec, t_shell *data)
 {
@@ -20,7 +18,7 @@ static bool	push_status(size_t *i, t_vector *vec, t_shell *data)
 	int		j;
 
 	(*i)++;
-	exit_string = ft_itoa(g_signal.exit_status);
+	exit_string = ft_itoa(data->error_type);
 	if (!exit_string)
 		return (set_err(MALLOC, "push_status", data));
 	j = 0;
@@ -88,7 +86,7 @@ bool	expand_env(char *str, size_t *i, t_vector *vec, t_shell *data)
 	if (!env_token)
 		return (true);
 	j = 0;
-	while (env_token->value[j])
+	while (env_token->value && env_token->value[j])
 	{
 		if (!char_vec_push(vec, env_token->value[j]))
 			return (set_err(MALLOC, "expand_env", data));

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/26 11:55:20 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/03 14:46:50 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/22 14:17:00 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static bool	check_quote_finish(char *input, size_t *i, t_shell *data)
 	while (input[(*i)] && input[(*i)] != quote)
 		(*i)++;
 	if (input[(*i)] == '\0')
-		return (set_err(SYNTAX_MINI, (char[2]){quote, '\0'}, data));
+		return (set_err(SYNTAX_MINI, NULL, data));
 	(*i)++;
 	return (true);
 }
@@ -107,7 +107,7 @@ bool	lexer(char *input, t_shell *data)
 		{
 			if (checkchar(input[i], "();\\&"))
 			{
-				return (set_err(OUT_OF_SCOPE, (char[2]){input[i], '\0'}, data));
+				return (set_err(OUT_OF_SCOPE, NULL, data));
 			}
 			if (checkchar(input[i], "<>"))
 				if (!build_redir_token(input, &i, data))

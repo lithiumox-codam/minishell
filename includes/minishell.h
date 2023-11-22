@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/11/16 23:17:36 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/22 14:20:29 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <libft.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 # include <stdarg.h>
 # include <stdbool.h>
 # include <stdio.h>
@@ -71,10 +72,10 @@ bool	hdoc_expand(char **str, t_shell *data);
 /* executor */
 bool	executor(t_shell *data);
 bool	create_processes(t_shell *data);
-void	exec_process(t_group *group, t_process type, t_vector *env_vec);
+void	exec_process(t_group *group, t_process type, t_shell *data);
 void	dup_fd(t_group *group, t_process type);
 void	check_cmd(t_group *group, t_process type, t_vector *env_vec);
-void	exec_built_in(t_group *group, t_process type, t_vector *env_vec);
+void	exec_built_in(t_group *group, t_process type, t_shell *data);
 void	exec_absolute_path(t_group *group, t_process type, t_vector *env_vec);
 void	handle_redirects(t_group *group);
 void	validate_redirects(t_group *group);
@@ -89,13 +90,25 @@ char	**combine_env(t_vector *env_vec);
 
 /* built_in */
 void	ft_exit(t_group *group, t_shell *data);
-void	ft_cd(t_group *group, t_vector *env_vec);
-void	ft_export(t_group *group, t_vector *env_vec);
-void	ft_unset(t_group *group, t_vector *env_vec);
+void	ft_cd(t_group *group, t_shell *data);
+void	ft_export(t_group *group, t_shell *data);
+void	ft_unset(t_group *group, t_shell *data);
 void	ft_echo(t_group *group);
 void	ft_pwd(void);
 void	ft_env(t_vector *env_vec);
 void	print_env_dec(t_vector *env, char *arg_2);
+void	update_or_create_env(t_vector *env, char *key, char *value);
+char	**ft_export_split(char *src, char delimter);
+size_t	**return_sorted_arr(t_vector *env);
+void	ft_free_size_t(size_t **arr, size_t len);
+char	*string_handler(char *input);
+
+/* signals */
+void	signal_main(int signal_num);
+void	setup_hdoc_signals(void);
+void	signal_hdoc(int signal_num);
+void	setup_child_signals(void);
+void	signal_child(int signal_num);
 
 /* structs */
 t_token	*create_token(char *value, t_types type);
@@ -118,6 +131,7 @@ void	exec_err(char *str, t_exit type);
 void	write_err(t_shell *data);
 bool	rm_quotes(t_token *token, bool set_string);
 bool	type_compare(size_t num_args, t_types type, ...);
+bool	filter_operators(void *item);
 // bool	out_of_scope(t_vector *found, t_shell *data);
 bool	is_redirect(t_token *token);
 

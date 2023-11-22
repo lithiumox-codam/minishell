@@ -6,13 +6,11 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/04 15:01:59 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/17 15:25:17 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/20 20:56:32 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-extern t_signal	g_signal;
 
 int long long	ft_exit_atoi(char *str)
 {
@@ -39,7 +37,7 @@ static bool	check_args(t_group *group, t_shell *data)
 	if (group->args[2] != NULL)
 	{
 		write(1, "minishell: exit: too many arguments\n", 37);
-		g_signal.exit_status = 1;
+		data->error_type = CATCH_ALL;
 		return (false);
 	}
 	return (true);
@@ -66,7 +64,7 @@ void	ft_exit(t_group *group, t_shell *data)
 		{
 			printf("minishell: exit: %s: numeric argument required\n",
 				group->args[1]);
-			g_signal.exit_status = 2;
+			data->error_type = CATCH_ALL;
 			return ;
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/11 21:12:42 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/26 13:04:49 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/21 14:48:24 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,14 @@ void	free_found(t_vector *found)
 {
 	vec_free(found);
 	free(found);
+}
+
+bool	filter_operators(void *item)
+{
+	t_token	*token;
+
+	token = (t_token *)item;
+	return (token->type >= 2 && token->type <= 7);
 }
 
 // /**

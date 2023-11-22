@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/16 12:15:45 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/30 22:42:16 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/22 14:22:03 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,70 +14,81 @@
 
 static bool	push_hdoc(char *filename, t_group *group, t_shell *data)
 {
-	char	*fname;
-	t_token	*fname_token;
+	char	**fname;
 	t_token	*red_token;
 
-	fname = ft_strdup(filename);
+	fname = malloc(sizeof(char *));
 	if (!fname)
 		return (set_err(MALLOC, "push_hdoc", data));
 	red_token = create_token(filename, I_REDIRECT);
 	if (!red_token)
-		return (set_err(MALLOC, "push_hdoc", data));
+		return (free(fname), set_err(MALLOC, "push_hdoc", data));
 	if (!vec_push(&group->in_red, (void *)red_token))
-		return (set_err(MALLOC, "push_hdoc", data));
-	fname_token = create_token(fname, STRING);
-	if (!fname_token)
-		return (set_err(MALLOC, "push_hdoc", data));
-	if (!vec_push(&data->exec->fname_vec, (void *)fname_token))
-		return (set_err(MALLOC, "push_hdoc", data));
+		return (free(fname), set_err(MALLOC, "push_hdoc", data));
+	*fname = ft_strdup(filename);
+	if (!*fname)
+		return (free(fname), set_err(MALLOC, "push_hdoc", data));
+	if (!vec_push(&data->exec->fname_vec, (void *)fname))
+		return (free(*fname), free(fname), set_err(MALLOC, "push_hdoc", data));
 	return (true);
 }
-
-
 
 /**
  * @note if signal ctrl D break while loop and return true
  */
-static bool	hdoc_read(size_t heredoc_fd, t_token *token, t_shell *data)
+static void	heredoc(char *filename, t_token *token, t_shell *data)
 {
 	char	*line;
+	int		heredoc_fd;
 
-	// char	*expanded_line;
+	setup_hdoc_signals();
+	heredoc_fd = open(filename, O_CREAT | O_TRUNC | O_RDWR, 0644);
+	if (heredoc_fd == -1)
+		exec_err(NULL, PERR);
 	while (1)
 	{
 		line = readline(">");
-		if (!line || ft_strcmp(line, token->value) == 0)
+		if (line == NULL || ft_strcmp(line, token->value) == 0)
 			break ;
 		if (token->type != HDOC_LITERAL)
 		{
 			if (!hdoc_expand(&line, data))
-				return (false);
+				exec_err("hdoc_expand", MALLOC);
 		}
 		write(heredoc_fd, line, ft_strlen(line));
 		write(heredoc_fd, "\n", 1);
 		free(line);
 	}
 	free(line);
-	return (true);
+	if (close(heredoc_fd) != 0)
+		exec_err(NULL, PERR);
+	exit(0);
 }
 
 /**
  * @param	filename the filename to be given to the new file
  * @param	token	the hdoc token
- * @note	depending on expansion DQ logic can be removed
+ * @note	writes its own error messages.
  */
-bool	heredoc(char *filename, t_token *token, t_shell *data)
+bool	hdoc_child(char *filename, t_token *token, t_shell *data)
 {
-	int		heredoc_fd;
+	pid_t	pid;
+	int		status;
 
-	heredoc_fd = open(filename, O_CREAT | O_TRUNC | O_RDWR, 0644);
-	if (heredoc_fd == -1)
-		return (set_err(PERR, filename, data));
-	if (!hdoc_read(heredoc_fd, token, data))
-		return (close(heredoc_fd), false);
-	if (close(heredoc_fd) != 0)
-		return (set_err(PERR, filename, data));
+	pid = fork();
+	if (pid == -1)
+		return (set_err(PERR, NULL, data));
+	if (pid == 0)
+		heredoc(filename, token, data);
+	else
+	{
+		waitpid(pid, &status, 0);
+		if (WEXITSTATUS(status) != 0)
+		{
+			data->error_type = WEXITSTATUS(status);
+			return (false);
+		}
+	}
 	return (true);
 }
 
@@ -92,12 +103,17 @@ bool	hdoc_found(t_group *group, size_t i, t_shell *data)
 {
 	t_token	*token;
 	char	*filename;
+	char	*nb;
 
-	filename = ft_strjoin("./src/hdoc_files/", ft_itoa((i)));
+	nb = ft_itoa(i);
+	filename = ft_strjoin("./src/hdoc_files/", nb);
+	free(nb);
 	if (!filename)
 		return (set_err(MALLOC, "hdoc_found", data));
-	token = vec_get(&data->token_vec, i);
-	if (!heredoc(filename, token, data))
+	if (!push_hdoc(filename, group, data))
 		return (false);
-	return (push_hdoc(filename, group, data));
+	token = vec_get(&data->token_vec, i);
+	if (!hdoc_child(filename, token, data))
+		return (false);
+	return (true);
 }

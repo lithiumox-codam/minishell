@@ -6,13 +6,11 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/03 18:11:09 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/14 16:21:24 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/20 20:57:12 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-extern t_signal	g_signal;
 
 /**
  * @brief	frees the main data struct
@@ -36,16 +34,41 @@ void	free_shell(t_shell *data, bool close_shell)
 }
 
 /**
- * @brief Create a g_signal struct object
- *
- * @return t_signal The created g_signal struct
+ * @brief A helper function for init_shell for the first init
+ * @param env The enviroment char array
+ * @return t_shell* The created data struct
  */
-void	create_signal_struct(void)
+static t_shell	*init_first_shell(char **env)
 {
-	g_signal.inte = false;
-	g_signal.quit = false;
-	g_signal.pipe = false;
-	g_signal.exit_status = 0;
+	t_shell	*data;
+
+	data = malloc(sizeof(t_shell));
+	if (!data)
+		exit_mini("failed to init data", 1);
+	if (!vec_init(&data->token_vec, 3, sizeof(t_token), clear_token))
+		exit_mini("failed to vec_init token_vec", 1);
+	if (!vec_init(&data->env, 50, sizeof(t_env), clear_env))
+		exit_mini("failed to vec_init env", 1);
+	init_env(env, &data->env);
+	data->exec = NULL;
+	data->exit_type = GOOD;
+	data->error_type = NO_ERROR;
+	data->exit_msg = NULL;
+	return (data);
+}
+
+/**
+ * @brief A helper function for init_shell for the subsequent inits
+ * @return t_shell* The created data struct
+ */
+static t_shell	*init_subsequent_shell(t_shell *data)
+{
+	if (!vec_init(&data->token_vec, 3, sizeof(t_token), clear_token))
+		exit_mini("failed to vec_init env", 1);
+	data->exec = NULL;
+	data->exit_type = GOOD;
+	data->exit_msg = NULL;
+	return (data);
 }
 
 /**
@@ -62,27 +85,8 @@ t_shell	*init_shell(char **env, bool first_init)
 
 	data = NULL;
 	if (first_init)
-	{
-		data = malloc(sizeof(t_shell));
-		if (!data)
-			exit_mini("failed to init data", 1);
-		if (!vec_init(&data->token_vec, 3, sizeof(t_token), clear_token))
-			exit_mini("failed to vec_init token_vec", 1);
-		if (!vec_init(&data->env, 50, sizeof(t_env), clear_env))
-			exit_mini("failed to vec_init env", 1);
-		init_env(env, &data->env);
-		data->exec = NULL;
-		data->exit_type = GOOD;
-		data->exit_msg = NULL;
-		create_signal_struct();
-	}
+		data = init_first_shell(env);
 	else
-	{
-		if (!vec_init(&data->token_vec, 3, sizeof(t_token), clear_token))
-			exit_mini("failed to vec_init env", 1);
-		data->exec = NULL;
-		data->exit_type = GOOD;
-		data->exit_msg = NULL;
-	}
+		init_subsequent_shell(data);
 	return (data);
 }

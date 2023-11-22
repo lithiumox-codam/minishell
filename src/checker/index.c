@@ -6,19 +6,11 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/02 16:57:32 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/03 15:04:37 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/21 14:48:16 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-bool	filter_operators(void *item)
-{
-	t_token	*token;
-
-	token = (t_token *)item;
-	return (token->type >= 2 && token->type <= 7);
-}
 
 static bool	check_double_ops(t_vector *found, t_shell *data)
 {

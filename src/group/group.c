@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/31 19:55:05 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/30 21:54:33 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/21 20:48:13 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ bool	alloc_args(t_group *group, size_t i, t_shell *data)
 
 /**
 	* @note check the else statement depending on how we will handle quotes
-	 (ie. could be else if (token->type == STRING
+		(ie. could be else if (token->type == STRING
 		|| token->type == QUOTE_STRING)
  *
  */
@@ -141,13 +141,14 @@ bool	group_token_vec(t_shell *data)
 		if (!group)
 			return (set_err(MALLOC, "group_token_v", data));
 		if (!set_cmd(group, i, data))
-			return (false);
+			return (clear_group(group), free(group), false);
 		if (!alloc_args(group, i, data))
-			return (false);
+			return (clear_group(group), free(group), false);
 		if (!group_tokens(group, &i, data))
-			return (false);
+			return (clear_group(group), free(group), false);
 		if (!vec_push(&data->exec->group_vec, group))
-			return (set_err(MALLOC, "group_token_v", data));
+			return (clear_group(group), free(group), set_err(MALLOC,
+					"group_token_v", data));
 		i++;
 	}
 	return (true);

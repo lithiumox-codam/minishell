@@ -6,21 +6,22 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/12 14:11:01 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/14 16:21:52 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/22 14:27:56 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-t_signal	g_signal;
-
-static void	debug(void)
+/**
+ * @brief	sets up signal handling and avoid readline catching sigs
+ * @note	SIGINT = Ctrl-C
+ * @note	SIGQUIT = Ctrl-\
+ */
+static void	setup_signals(void)
 {
-	printf("\033[1;32m●\n");
-	printf("\033[1;34m│\n");
-	printf("├── Debug mode enabled\n");
-	printf("\033[1;34m│\n");
-	printf("\033[0m");
+	rl_catch_signals = 0;
+	signal(SIGINT, signal_main);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 static void	soft_exit(char *input, t_shell *data)
@@ -33,8 +34,8 @@ static void	soft_exit(char *input, t_shell *data)
 
 static bool	function_map(char *input, t_shell *data)
 {
-	bool	(*function[5])(t_shell *);
-	int		i;
+	int			i;
+	static bool	(*function[5])(t_shell *);
 
 	function[0] = parser;
 	function[1] = check_tokens;
@@ -42,7 +43,7 @@ static bool	function_map(char *input, t_shell *data)
 	function[3] = group_token_vec;
 	function[4] = executor;
 	if (!lexer(input, data))
-		return (false);
+		return (soft_exit(input, data), false);
 	i = -1;
 	while (i++ < 4)
 	{
@@ -63,8 +64,15 @@ static void	loop(t_shell *data)
 
 	while (1)
 	{
-		input = readline("\nminishell\n❯ ");
-		if (!input || input[0] == '\0')
+		setup_signals();
+		input = readline(" ❯ ");
+		if (input == NULL)
+		{
+			free_shell(data, true);
+			printf("exit\n");
+			exit(0);
+		}
+		if (input[0] == '\0')
 		{
 			free(input);
 			continue ;
@@ -83,11 +91,9 @@ int	main(int ac, char **av, char **env)
 	t_shell	*data;
 
 	(void)av;
-	if (DEBUG)
-		debug();
 	if (ac != 1)
 	{
-		write(2, "Too many arguments\n", 20);
+		write(2, "Too maaaaaaaaaaany arguments\n", 20);
 		return (1);
 	}
 	data = init_shell(env, true);

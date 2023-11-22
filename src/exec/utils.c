@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/01 19:44:05 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/14 16:21:13 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/22 14:15:03 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,23 @@ bool	is_special_builtin(char *str)
 	return (false);
 }
 
+static int	protected_strlen(char *s)
+{
+	int	i;
+
+	i = 0;
+	if (!s)
+		return (0);
+	while (s[i])
+		i++;
+	return (i);
+}
+
 char	**combine_env(t_vector *env_vec)
 {
-	char **env;
-	t_env *env_token;
-	size_t i;
+	char	**env;
+	t_env	*env_token;
+	size_t	i;
 
 	i = 0;
 	env = malloc(sizeof(char *) * (env_vec->length + 1));
@@ -48,7 +60,7 @@ char	**combine_env(t_vector *env_vec)
 	{
 		env_token = vec_get(env_vec, i);
 		env[i] = ft_calloc(ft_strlen(env_token->key)
-				+ ft_strlen(env_token->value) + 2, sizeof(char));
+				+ protected_strlen(env_token->value) + 2, sizeof(char));
 		ft_strcpy(env[i], env_token->key);
 		ft_strcat(env[i], "=");
 		ft_strcat(env[i], env_token->value);

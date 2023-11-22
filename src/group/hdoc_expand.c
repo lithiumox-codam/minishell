@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/30 22:03:02 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/10/30 22:38:55 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/18 20:33:47 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,4 @@ bool	hdoc_expand(char **str, t_shell *data)
 		}
 	}
 	return ((str_vec_to_string(&vec, str, data)));
-}	
+}
