@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/13 17:41:00 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/22 23:31:57 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/23 14:01:15 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,10 @@ typedef enum e_exit
 	MALLOC,
 	NOT_FOUND,
 	PERMISSION,
+	PERMISSION_CMD,
 	NO_SUCH,
+	NO_SUCH_CMD,
+	IS_DIRECT,
 	SYNTAX,
 	SYNTAX_MINI,
 	SIGNAL_C,
@@ -68,7 +71,7 @@ typedef enum e_error
 	NO_ERROR = 0,
 	CATCH_ALL = 1,
 	MISUSE_OF_SHELL = 2,
-	PERMISSION_DENIED = 126,
+	PERMISSION_DENIED = 1,
 	COMMAND_NOT_FOUND = 127,
 	NOT_VALID = 128,
 	UNEXPECTED_EOF = 130,

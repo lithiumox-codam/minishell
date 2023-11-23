@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/09/01 17:36:19 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/23 00:34:00 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/23 14:04:38 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,6 @@ void	check_cmd(t_group *group, t_process type, t_vector *env_vec)
 		i++;
 	}
 	if (i == env_vec->length)
-		exec_err(group->cmd, NO_SUCH);
+		exec_err(group->cmd, NO_SUCH_CMD);
 	find_cmd_path(group, env->value);
 }
