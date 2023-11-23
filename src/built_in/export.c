@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/31 22:20:10 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/22 22:50:56 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/23 15:15:18 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static bool	validate_input(char *arg, size_t *i, t_shell *data)
 		data->error_type = CATCH_ALL;
 		return ((*i)++, false);
 	}
-	while (arg[j] && ft_isalnum(arg[j]))
+	while (arg[j] && (ft_isalnum(arg[j]) || arg[j] == '_'))
 		j++;
 	if (arg[j] == '\0')
 		return (true);

@@ -6,27 +6,11 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/11/14 17:29:00 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/11/23 13:37:57 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/23 15:12:58 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-/**
- * @brief Updates the value of an environment variable when it already exists
- * @param env_var The env struct
- * @param key The key to compare to
- * @return void
- */
-static void	update_env(t_shell *data, char *oldpwd)
-{
-	char	*buff;
-
-	buff = getcwd(NULL, 0);
-	update_or_create_env(&data->env, "OLDPWD", oldpwd);
-	update_or_create_env(&data->env, "PWD", buff);
-	free(buff);
-}
 
 /**
  * @brief Helper function to safely get an environment variable
@@ -42,6 +26,26 @@ static char	*safe_env_get(t_vector *env, char *key)
 	if (env_var)
 		return (env_var->value);
 	return (NULL);
+}
+
+/**
+ * @brief Updates the value of an environment variable when it already exists
+ * @param env_var The env struct
+ * @param key The key to compare to
+ * @return void
+ */
+static void	update_env(t_shell *data)
+{
+	char	*buff;
+	char	*env;
+
+	env = safe_env_get(&data->env, "PWD");
+	if (!env)
+		return ;
+	buff = getcwd(NULL, 0);
+	update_or_create_env(&data->env, "OLDPWD", env);
+	update_or_create_env(&data->env, "PWD", buff);
+	free(buff);
 }
 
 /**
@@ -117,20 +121,15 @@ static char	*get_path(t_group *group, t_shell *data)
 void	ft_cd(t_group *group, t_shell *data)
 {
 	char	*path;
-	char	*oldpwd;
 
 	if (!error_check(data, group))
 		return ;
-	oldpwd = getcwd(NULL, 0);
-	if (!oldpwd)
-		return (write_err_cd(data, 1, group->args[1], NULL));
 	path = get_path(group, data);
 	if (!path)
 		return ;
 	if (chdir(path) == -1)
-		return (write_err_cd(data, 2, path, strerror(errno)));
+		return (write_err_cd(data, 2, path, strerror(errno)), free(path));
 	else
-		update_env(data, oldpwd);
-	free(oldpwd);
+		update_env(data);
 	free(path);
 }
