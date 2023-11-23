@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 16:32:48 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/22 16:29:35 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/22 17:39:51 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	set_out_redirect(t_token *token, t_fds *fds)
 	if (access(token->value, F_OK) == 0)
 	{
 		if (token->type == A_REDIRECT)
-			fd = open(token->value, O_WRONLY | O_APPEND);
+			fd = open(token->value, O_WRONLY | O_APPEND, 0644);
 		else
 			fd = open(token->value, O_TRUNC | O_WRONLY);
 	}

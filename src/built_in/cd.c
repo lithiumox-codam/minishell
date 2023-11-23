@@ -6,27 +6,11 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/11/14 17:29:00 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/11/21 15:32:46 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/23 15:12:58 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-/**
- * @brief Updates the value of an environment variable when it already exists
- * @param env_var The env struct
- * @param key The key to compare to
- * @return void
- */
-static void	update_env(t_shell *data, char *oldpwd)
-{
-	char	*buff;
-
-	buff = getcwd(NULL, 0);
-	update_or_create_env(&data->env, "OLDPWD", oldpwd);
-	update_or_create_env(&data->env, "PWD", buff);
-	free(buff);
-}
 
 /**
  * @brief Helper function to safely get an environment variable
@@ -45,6 +29,26 @@ static char	*safe_env_get(t_vector *env, char *key)
 }
 
 /**
+ * @brief Updates the value of an environment variable when it already exists
+ * @param env_var The env struct
+ * @param key The key to compare to
+ * @return void
+ */
+static void	update_env(t_shell *data)
+{
+	char	*buff;
+	char	*env;
+
+	env = safe_env_get(&data->env, "PWD");
+	if (!env)
+		return ;
+	buff = getcwd(NULL, 0);
+	update_or_create_env(&data->env, "OLDPWD", env);
+	update_or_create_env(&data->env, "PWD", buff);
+	free(buff);
+}
+
+/**
  * @brief Prints the error message for cd
  * @param path The path that caused the error
  * @return void
@@ -53,9 +57,11 @@ static bool	error_check(t_shell *data, t_group *group)
 {
 	char	*path;
 
+	if (!group->args[1])
+		return (true);
 	if (group->args[2])
 	{
-		printf("cd: too many arguments\n");
+		write(2, "minishell: cd: too many arguments\n", 35);
 		data->error_type = CATCH_ALL;
 		return (false);
 	}
@@ -64,12 +70,11 @@ static bool	error_check(t_shell *data, t_group *group)
 		path = safe_env_get(&data->env, "OLDPWD");
 		if (!path)
 		{
-			printf("cd: OLDPWD not set\n");
+			write(2, "minishell: cd: OLDPWD not set\n", 31);
 			data->error_type = CATCH_ALL;
 			return (false);
 		}
 		printf("%s\n", path);
-		data->error_type = CATCH_ALL;
 		return (false);
 	}
 	return (true);
@@ -86,12 +91,14 @@ static char	*get_path(t_group *group, t_shell *data)
 {
 	char	*path;
 
+	if (!group->args)
+		return (NULL);
 	if (!group->args[1] || !ft_strcmp(group->args[1], "~"))
 	{
 		path = ft_strdup(safe_env_get(&data->env, "HOME"));
 		if (!path)
 		{
-			printf("cd: HOME not set\n");
+			write(2, "minishell: cd: HOME not set\n", 29);
 			data->error_type = CATCH_ALL;
 			return (NULL);
 		}
@@ -114,28 +121,15 @@ static char	*get_path(t_group *group, t_shell *data)
 void	ft_cd(t_group *group, t_shell *data)
 {
 	char	*path;
-	char	*oldpwd;
 
 	if (!error_check(data, group))
 		return ;
-	oldpwd = getcwd(NULL, 0);
-	if (!oldpwd)
-	{
-		printf("cd: error retrieving current directory: %s\n", strerror(errno));
-		data->error_type = CATCH_ALL;
-		return ;
-	}
 	path = get_path(group, data);
 	if (!path)
 		return ;
 	if (chdir(path) == -1)
-	{
-		printf("cd: %s: %s\n", path, strerror(errno));
-		data->error_type = CATCH_ALL;
-	}
+		return (write_err_cd(data, 2, path, strerror(errno)), free(path));
 	else
-		update_env(data, oldpwd);
-	data->error_type = NO_ERROR;
-	free(oldpwd);
+		update_env(data);
 	free(path);
 }

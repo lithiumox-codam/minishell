@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/19 16:08:08 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/22 16:25:13 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/23 14:04:07 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,15 @@ void	exec_process(t_group *group, t_process type, t_shell *data)
 
 void	exec_absolute_path(t_group *group, t_process type, t_vector *env_vec)
 {
-	char	**env;
+	char		**env;
+	struct stat	statbuf;
 
+	if (stat(group->cmd, &statbuf) != 0)
+		exec_err(group->cmd, NO_SUCH_CMD);
+	if (S_ISDIR(statbuf.st_mode))
+		exec_err(group->cmd, IS_DIRECT);
 	if (access(group->cmd, X_OK) != 0)
-		exec_err(group->cmd, PERMISSION);
+		exec_err(group->cmd, PERMISSION_CMD);
 	env = combine_env(env_vec);
 	dup_fd(group, type);
 	if (!execve(group->cmd, group->args, env))

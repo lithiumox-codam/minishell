@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/11/16 18:52:54 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/21 18:26:53 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/22 23:00:58 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	print_env_dec(t_vector *env, char *arg_2)
 	size_t	i;
 	size_t	**arr;
 	char	*value;
+	char	*key;
 
 	i = 0;
 	if (arg_2)
@@ -31,14 +32,12 @@ void	print_env_dec(t_vector *env, char *arg_2)
 	arr = return_sorted_arr(env);
 	while (i < env->length)
 	{
+		key = ((t_env *)vec_get(env, *arr[i]))->key;
 		value = ((t_env *)vec_get(env, *arr[i]))->value;
 		if (value)
-		{
-			printf("declare -x %s=\"%s\"\n", ((t_env *)vec_get(env,
-						*arr[i]))->key, value);
-		}
+			printf("declare -x %s=\"%s\"\n", key, value);
 		else
-			printf("declare -x %s\n", ((t_env *)vec_get(env, *arr[i]))->key);
+			printf("declare -x %s\n", key);
 		i++;
 	}
 	ft_free_size_t(arr, env->length);
@@ -69,6 +68,13 @@ void	update_or_create_env(t_vector *env, char *key, char *value)
 	}
 }
 
+/**
+ * @brief A function for when the export command is given a string without a
+ * value (e.g. export FOO) then it will return a char ** with the key and NULL
+ *
+ * @param src The string to split
+ * @return char** The splitted string
+ */
 static char	**only_key_helper(char *src)
 {
 	char	**ret;

@@ -6,12 +6,22 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/11/16 23:12:07 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/21 18:15:44 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/22 22:55:19 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
+/**
+ * @brief The env command built-in
+ * @details Prints the enviroment variables
+ *
+ * @warning This function also sorts the enviroment variables alphabetically
+ * which is technically not part of the env command but if you want me to
+ * remove it, I can. I just thought it would be nice to have it sorted.
+ *
+ * @param env_vec The enviroment vector
+ */
 void	ft_env(t_vector *env_vec)
 {
 	size_t	i;

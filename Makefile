@@ -1,6 +1,7 @@
 NAME = minishell
 SRC = main \
     utils/error \
+	utils/error_extra \
     utils/miscellaneous \
     structs/token \
     structs/env \
@@ -28,6 +29,7 @@ SRC = main \
 	built_in/export \
 	built_in/echo \
 	built_in/cd \
+	built_in/cd_err \
 	built_in/utils \
 	built_in/unset \
 	built_in/env \
@@ -44,7 +46,7 @@ LIBFT = libft/libft.a
 
 DEBUG ?= 0
 DEBUG_FLAGS = -g
-CODAM_FLAGS = -Wall -Wextra -Werror
+CODAM_FLAGS = -Wall -Wextra -Werror -fsanitize=address
 LINKER = -lreadline
 INCLUDES = -I $(CURDIR)/includes -I $(CURDIR)/libft/includes
 

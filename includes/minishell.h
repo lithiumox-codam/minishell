@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/09 21:25:59 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/11/22 14:20:29 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/23 14:15:44 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <structs.h>
+# include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
@@ -102,7 +103,7 @@ char	**ft_export_split(char *src, char delimter);
 size_t	**return_sorted_arr(t_vector *env);
 void	ft_free_size_t(size_t **arr, size_t len);
 char	*string_handler(char *input);
-
+void	write_err_cd(t_shell *data, size_t option, char *path, char *extra);
 /* signals */
 void	signal_main(int signal_num);
 void	setup_hdoc_signals(void);
@@ -128,7 +129,9 @@ bool	compare_env_key(void *item, void *key);
 void	exit_mini(char *str, int exit_code);
 bool	set_err(t_exit type, char *msg, t_shell *data);
 void	exec_err(char *str, t_exit type);
+void	exec_err_extra(char *str, t_exit type);
 void	write_err(t_shell *data);
+void	write_err_extra(t_shell *data);
 bool	rm_quotes(t_token *token, bool set_string);
 bool	type_compare(size_t num_args, t_types type, ...);
 bool	filter_operators(void *item);

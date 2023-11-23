@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/19 21:42:24 by mdekker/jde   #+#    #+#                 */
-/*   Updated: 2023/11/22 14:18:28 by mdekker       ########   odam.nl         */
+/*   Updated: 2023/11/22 22:33:11 by mdekker/jde   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,24 +64,7 @@ void	write_err(t_shell *data)
 		write(STDERR_FILENO, "\n", 1);
 		data->error_type = CATCH_ALL;
 	}
-	if (data->exit_type == SYNTAX)
-	{
-		write(STDERR_FILENO, "minishell: syntax error near unexpected token `",
-			48);
-		write(STDERR_FILENO, data->exit_msg, ft_strlen(data->exit_msg));
-		write(STDERR_FILENO, "'\n", 2);
-		data->error_type = SYNTAX_ERROR;
-	}
-	if (data->exit_type == SYNTAX_MINI)
-	{
-		write(STDERR_FILENO, "minishell: syntax error: unfinished quote\n", 43);
-		data->error_type = 2;
-	}
-	if (data->exit_type == OUT_OF_SCOPE)
-	{
-		write(2, "minishell: operators: () ; \\ & ||: out of scope\n", 49);
-		data->error_type = 2;
-	}
+	write_err_extra(data);
 	if (data->exit_type == SIGNAL_C)
 		data->error_type = 130;
 }
@@ -110,18 +93,5 @@ void	exec_err(char *str, t_exit type)
 		write(STDERR_FILENO, ": command not found\n", 21);
 		exit(127);
 	}
-	if (type == PERMISSION)
-	{
-		write(STDERR_FILENO, "minishell: ", 12);
-		write(STDERR_FILENO, str, ft_strlen(str));
-		write(STDERR_FILENO, ": Permission denied\n", 21);
-		exit(126);
-	}
-	if (type == NO_SUCH)
-	{
-		write(STDERR_FILENO, "minishell: ", 12);
-		write(STDERR_FILENO, str, ft_strlen(str));
-		write(STDERR_FILENO, ": No such file or directory\n", 29);
-		exit(1);
-	}
+	exec_err_extra(str, type);
 }
