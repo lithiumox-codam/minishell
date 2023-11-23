@@ -6,7 +6,7 @@
 /*   By: mdekker/jde-baai <team@codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/11/14 17:29:00 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/11/22 22:15:34 by mdekker/jde   ########   odam.nl         */
+/*   Updated: 2023/11/23 13:37:57 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static bool	error_check(t_shell *data, t_group *group)
 		return (true);
 	if (group->args[2])
 	{
-		write(2, "cd: too many arguments\n", 23);
+		write(2, "minishell: cd: too many arguments\n", 35);
 		data->error_type = CATCH_ALL;
 		return (false);
 	}
@@ -66,7 +66,7 @@ static bool	error_check(t_shell *data, t_group *group)
 		path = safe_env_get(&data->env, "OLDPWD");
 		if (!path)
 		{
-			write(2, "cd: OLDPWD not set\n", 19);
+			write(2, "minishell: cd: OLDPWD not set\n", 31);
 			data->error_type = CATCH_ALL;
 			return (false);
 		}
@@ -94,7 +94,7 @@ static char	*get_path(t_group *group, t_shell *data)
 		path = ft_strdup(safe_env_get(&data->env, "HOME"));
 		if (!path)
 		{
-			printf("minishell: cd: HOME not set\n");
+			write(2, "minishell: cd: HOME not set\n", 29);
 			data->error_type = CATCH_ALL;
 			return (NULL);
 		}
